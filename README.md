@@ -1,24 +1,10 @@
-# README
+Current structure:
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+#### CONTROLLERS:
+- Home (index)
 
-Things you may want to cover:
+#### VIEWS:
+- Home (folder name), index(file name)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+#### MODELS:
+- Nothing (to check run: ApplicationRecord.descendants.map(&:name).sort)
