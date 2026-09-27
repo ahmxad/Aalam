@@ -36,3 +36,7 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+
+# daisyUI files
+/app/assets/tailwind/*.mjs
