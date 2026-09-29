@@ -9,6 +9,10 @@
     <%#= csrf_meta_tags %>
     <%#= csp_meta_tag %> <!-- Commented out -->
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Galindo&display=swap" rel="stylesheet">
+
     <%= yield :head %>
 
     <!-- ====== NEW FAVICON CONFIGURATION START ====== -->
@@ -30,10 +34,13 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= render "shared/navbar" %>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
-  </body>
+ <body class="flex min-h-screen flex-col">
+  <%= render "shared/navbar" %>
+
+  <main class="container mx-auto flex-1 px-5">
+    <%= yield %>
+  </main>
+
+  <%= render "shared/footer" %>
+</body>
 </html>
