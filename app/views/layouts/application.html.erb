@@ -11,14 +11,21 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <!-- ====== NEW FAVICON CONFIGURATION START ====== -->
+    <!-- 1. The classic fallback icon -->
+    <%= favicon_link_tag 'favicon/favicon.ico' %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <!-- 2. Standard browser tab icons (High-res and regular) -->
+    <%= favicon_link_tag 'favicon/favicon-32x32.png', rel: 'icon', type: 'image/png', sizes: '32x32' %>
+    <%= favicon_link_tag 'favicon/favicon-16x16.png', rel: 'icon', type: 'image/png', sizes: '16x16' %>
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <!-- 3. Apple Devices Home Screen Icon -->
+    <%= favicon_link_tag 'favicon/apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180' %>
+
+    <!-- 4. Android Devices Webmanifest mapping -->
+    <link rel="manifest" href="/site.webmanifest">
+    <!-- ====== NEW FAVICON CONFIGURATION END ====== -->
+    
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
