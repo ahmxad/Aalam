@@ -10,9 +10,9 @@
     </div>
     <div class="navbar-center hidden lg:flex">
       <ul class="menu menu-horizontal px-1">
-        <li><button>Home</button></li>
-        <li><button>Explore</button></li>
-        <li><button>Contact</button></li>
+        <li><%= link_to "Home", root_path %></li>
+        <li><%= link_to "Explore", explore_path %></li>
+        <li><%= link_to "Contact", contact_path %></li>
       </ul>
     </div>
     <div class="navbar-end">
@@ -22,9 +22,9 @@
 
   <div class="collapse-content lg:hidden z-1">
     <ul class="menu">
-      <li><button>Home</button></li>
-      <li><button>Explore</button></li>
-      <li><button>Contact</button></li>
+      <li><%= link_to "Home", root_path %></li>
+      <li><%= link_to "Explore", explore_path %></li>
+      <li><%= link_to "Contact", contact_path %></li>
     </ul>
   </div>
 </div>
