@@ -18,3 +18,8 @@ Current structure:
 
 - Views:
 - - Home, Explore, Contact
+
+#### Colors:
+- #F8E5D2
+- #9E483F
+- #EE9C44

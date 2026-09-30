@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  root "home#index"
-  get "home", to: "home#index"
-  get "explore", to: "explore#index"
-  get "contact", to: "contact#index"
+  root "pages#home"
+  get "home", to: "pages#home"
+  get "about", to: "pages#about"
+  get "explore", to: "pages#explore"
+  get "contact", to: "pages#contact"
   get "up" => "rails/health#show", as: :rails_health_check
 end
