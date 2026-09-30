@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get "contact/index"
   root "home#index"
   get "home", to: "home#index"
   get "explore", to: "explore#index"

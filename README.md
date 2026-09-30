@@ -1,10 +1,20 @@
 Current structure:
 
 #### CONTROLLERS:
-- Home (index)
+- Always use plural (exeption for static pages eg. Home)
+- But create one single Controller for static pages (eg. Pages)
 
 #### VIEWS:
 - Home (folder name), index(file name)
 
 #### MODELS:
 - Nothing (to check run: ApplicationRecord.descendants.map(&:name).sort)
+- Always generate in singular form
+
+
+#### Current structure:
+- Controlers:
+- - Home(index), Explore(index), Contact(index)
+
+- Views:
+- - Home, Explore, Contact
