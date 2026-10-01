@@ -1,4 +1,23 @@
-<div>
-  <h1 class="font-bold text-4xl">Pages#explore</h1>
-  <p>Find me in app/views/pages/explore.html.erb</p>
+<div class="max-w-4xl mx-auto my-10 px-4">
+  <h1 class="text-4xl font-bold mb-8 text-primary">Latest Articles</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <%if @posts.any?%>
+    <% @posts.each do |post| %>
+      <div class="card bg-base-100 shadow-xl border border-base-200">
+        <div class="card-body">
+          <h2 class="card-title text-xl font-semibold"><%= post.title %></h2>
+          <p class="text-base-content/70 text-sm"><%= post.summary %></p>
+          
+          <div class="card-actions justify-end mt-4">
+            <%# Generates a link to read the full post %>
+            <%= link_to "Read More", post_show_path(post), class: "btn btn-primary btn-sm" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <%else%>
+    <p>No posts</p>
+    <%end%>
+  </div>
 </div>
