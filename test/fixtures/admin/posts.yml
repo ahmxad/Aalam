@@ -1,0 +1,11 @@
+one:
+  card: one
+  title: MyString
+  summary: MyString
+  body: MyText
+
+two:
+  card: two
+  title: MyString
+  summary: MyString
+  body: MyText

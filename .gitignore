@@ -39,4 +39,4 @@
 
 
 # daisyUI files
-/app/assets/tailwind/*.mjs
+!/app/assets/tailwind/*.mjs
