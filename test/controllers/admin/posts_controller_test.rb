@@ -2,8 +2,14 @@ require "test_helper"
 
 class Admin::PostsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @admin_post = admin_posts(:one)
-  end
+  @admin_post = admin_posts(:one)
+  @user = User.create!(
+    email_address: "admin@test.com",
+    password: "password123!",
+    admin: true
+  )
+  sign_in_as(@user)
+end
 
   test "should get index" do
     get admin_posts_url

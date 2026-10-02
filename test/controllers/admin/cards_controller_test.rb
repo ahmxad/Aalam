@@ -2,8 +2,14 @@ require "test_helper"
 
 class Admin::CardsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @admin_card = admin_cards(:one)
-  end
+  @admin_card = admin_cards(:one)
+  @user = User.create!(
+    email_address: "admin@test.com",
+    password: "password123!",
+    admin: true
+  )
+  sign_in_as(@user)
+end
 
   test "should get index" do
     get admin_cards_url

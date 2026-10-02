@@ -1,4 +1,4 @@
-class Admin::PostsController < ApplicationController
+class Admin::PostsController < Admin::BaseController
   before_action :set_admin_post, only: %i[ show edit update destroy ]
   before_action :set_cards, only: %i[ new create edit update ]
 

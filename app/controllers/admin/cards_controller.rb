@@ -1,4 +1,4 @@
-class Admin::CardsController < ApplicationController
+class Admin::CardsController < Admin::BaseController
   before_action :set_admin_card, only: %i[ show edit update destroy ]
 
   # GET /admin/cards or /admin/cards.json
