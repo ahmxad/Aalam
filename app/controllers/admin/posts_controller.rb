@@ -13,6 +13,7 @@ class Admin::PostsController < ApplicationController
   # GET /admin/posts/new
   def new
     @admin_post = Admin::Post.new
+    @cards = Admin::Card.all
   end
 
   # GET /admin/posts/1/edit
@@ -63,8 +64,8 @@ class Admin::PostsController < ApplicationController
       @admin_post = Admin::Post.find(params.expect(:id))
     end
 
-    # Only allow a list of trusted parameters through.
-    def admin_post_params
-      params.expect(admin_post: [ :title, :summary, :body ])
-    end
+  # Only allow a list of trusted parameters through.
+  def admin_post_params
+    params.expect(admin_post: [ :card_id, :title, :summary, :body ])
+  end
 end

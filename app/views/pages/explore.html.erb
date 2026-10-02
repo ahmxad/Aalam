@@ -1,23 +1,27 @@
 <div class="max-w-4xl mx-auto my-10 px-4">
-  <h1 class="text-4xl font-bold mb-8 text-primary">Latest Articles</h1>
+  <h1 class="text-4xl font-bold mb-8 text-primary underline">Explore Catagories</h1>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <%if @posts.any?%>
-    <% @posts.each do |post| %>
-      <div class="card bg-base-100 shadow-xl border border-base-200">
-        <div class="card-body">
-          <h2 class="card-title text-xl font-semibold"><%= post.title %></h2>
-          <p class="text-base-content/70 text-sm"><%= post.summary %></p>
-          
-          <div class="card-actions justify-end mt-4">
-            <%# Generates a link to read the full post %>
-            <%= link_to "Read More", post_show_path(post), class: "btn btn-primary btn-sm" %>
+    <% if @cards.any? %>
+      <% @cards.each do |card| %>
+        <%= link_to card_path(card) do %>
+          <div class="card bg-base-100 shadow-xl border border-base-200">
+
+            <% if card.image.attached? %>
+              <%= image_tag card.image, class: "w-full h-64 object-cover rounded-lg" %>
+            <% end %>
+
+            <div class="card-body">
+              <h2 class="card-title text-xl font-semibold">
+                <%= card.title %>
+              </h2>
+            </div>
+
           </div>
-        </div>
-      </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p>No cards</p>
     <% end %>
-    <%else%>
-    <p>No posts</p>
-    <%end%>
   </div>
 </div>
