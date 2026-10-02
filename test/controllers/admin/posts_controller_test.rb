@@ -17,8 +17,9 @@ class Admin::PostsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create admin_post" do
     assert_difference("Admin::Post.count") do
-      post admin_posts_url, params: { admin_post: { body: @admin_post.body, summary: @admin_post.summary, title: @admin_post.title } }
-    end
+      post admin_posts_url, params: { admin_post: { body: @admin_post.body, card_id: @admin_post.card_id, summary: @admin_post.summary,
+      title: @admin_post.title } }
+  end
 
     assert_redirected_to admin_post_url(Admin::Post.last)
   end
@@ -34,7 +35,7 @@ class Admin::PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update admin_post" do
-    patch admin_post_url(@admin_post), params: { admin_post: { body: @admin_post.body, summary: @admin_post.summary, title: @admin_post.title } }
+    patch admin_post_url(@admin_post), params: { admin_post: { body: @admin_post.body, card_id: @admin_post.card_id, summary: @admin_post.summary, title: @admin_post.title } }
     assert_redirected_to admin_post_url(@admin_post)
   end
 

@@ -1,5 +1,6 @@
 class Admin::PostsController < ApplicationController
   before_action :set_admin_post, only: %i[ show edit update destroy ]
+  before_action :set_cards, only: %i[ new create edit update ]
 
   # GET /admin/posts or /admin/posts.json
   def index
@@ -13,7 +14,6 @@ class Admin::PostsController < ApplicationController
   # GET /admin/posts/new
   def new
     @admin_post = Admin::Post.new
-    @cards = Admin::Card.all
   end
 
   # GET /admin/posts/1/edit
@@ -62,6 +62,10 @@ class Admin::PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_admin_post
       @admin_post = Admin::Post.find(params.expect(:id))
+    end
+
+    def set_cards
+      @cards = Admin::Card.all
     end
 
   # Only allow a list of trusted parameters through.
