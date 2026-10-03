@@ -14,10 +14,12 @@ class Admin::CardsController < Admin::BaseController
   # GET /admin/cards/new
   def new
     @admin_card = Admin::Card.new
+    @topics = Admin::Topic.all
   end
 
   # GET /admin/cards/1/edit
   def edit
+    @topics = Admin::Topic.all
   end
 
   # POST /admin/cards or /admin/cards.json
@@ -31,6 +33,7 @@ class Admin::CardsController < Admin::BaseController
         format.html { redirect_to admin_card_path(@admin_card), notice: "Card was successfully created." }
         format.json { render :show, status: :created, location: admin_card_path(@admin_card) }
       else
+        @topics = Admin::Topic.all
         format.html { render :new, status: :unprocessable_content }
         format.json { render json: @admin_card.errors, status: :unprocessable_content }
       end
@@ -45,6 +48,7 @@ class Admin::CardsController < Admin::BaseController
         format.html { redirect_to admin_card_path(@admin_card), notice: "Card was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: admin_card_path(@admin_card) }
       else
+        @topics = Admin::Topic.all
         format.html { render :edit, status: :unprocessable_content }
         format.json { render json: @admin_card.errors, status: :unprocessable_content }
       end
@@ -71,6 +75,6 @@ class Admin::CardsController < Admin::BaseController
     # Only allow a list of trusted parameters through.
     def admin_card_params
       # ADDED: Added :image into the permitted attributes array
-      params.expect(admin_card: [ :title, :image ])
+      params.expect(admin_card: [ :title, :image, :topic_id ])
     end
 end

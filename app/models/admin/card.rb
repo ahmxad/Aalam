@@ -3,4 +3,7 @@ class Admin::Card < ApplicationRecord
   has_one_attached :image
 
   has_many :posts, class_name: "Admin::Post", dependent: :destroy
+
+  belongs_to :topic, class_name: "Admin::Topic"
+
 end

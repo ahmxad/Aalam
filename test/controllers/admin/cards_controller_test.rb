@@ -3,6 +3,10 @@ require "test_helper"
 class Admin::CardsControllerTest < ActionDispatch::IntegrationTest
   setup do
   @admin_card = admin_cards(:one)
+  @topic = Admin::Topic.create!(
+    title: "Test Topic"
+  )
+  @admin_card.update!(topic: @topic)
   @user = User.create!(
     email_address: "admin@test.com",
     password: "password123!",
@@ -23,7 +27,7 @@ end
 
   test "should create admin_card" do
     assert_difference("Admin::Card.count") do
-      post admin_cards_url, params: { admin_card: { title: @admin_card.title } }
+      post admin_cards_url, params: { admin_card: { title: @admin_card.title, topic_id: @admin_card.topic_id } }
     end
 
     assert_redirected_to admin_card_url(Admin::Card.last)
@@ -40,7 +44,7 @@ end
   end
 
   test "should update admin_card" do
-    patch admin_card_url(@admin_card), params: { admin_card: { title: @admin_card.title } }
+    patch admin_card_url(@admin_card), params: { admin_card: { title: @admin_card.title, topic_id: @admin_card.topic_id } }
     assert_redirected_to admin_card_url(@admin_card)
   end
 

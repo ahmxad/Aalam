@@ -11,6 +11,18 @@
     </div>
   <% end %>
 
+  <%# Drop down to select topics %>
+
+  <div class="my-5">
+    <%= form.label :topic %>
+    <%= form.collection_select :topic_id,
+        @topics,
+        :id,
+        :title,
+        { prompt: "Select a topic" },
+        class: "select select-bordered w-full" %>
+  </div>
+
   <div class="my-5 flex flex-col">
     <%= form.label :image, "Upload Card Image", class:"bg-red-400" %>
     <%= form.file_field :image, direct_upload: true, required: true %>

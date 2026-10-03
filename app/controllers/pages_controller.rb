@@ -7,7 +7,7 @@ class PagesController < ApplicationController
   end
 
   def explore
-    @cards = Admin::Card.all
+    @topics = Admin::Topic.with_attached_image.all
   end
 
   def about
@@ -19,4 +19,8 @@ def card
   @card = Admin::Card.find(params[:id])
   @posts = @card.posts
 end
+  def topic
+    @topic = Admin::Topic.find(params[:id])
+    @cards = @topic.cards.with_attached_image
+  end
 end

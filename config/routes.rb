@@ -2,11 +2,13 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   namespace :admin do
+    resources :topics
     resources :cards
     resources :posts
   end
   get "posts/:id", to: "pages#show", as: :post_show
   get "cards/:id", to: "pages#card", as: :card
+  get "topics/:id", to: "pages#topic", as: :topic
   root "pages#home"
   get "home", to: "pages#home"
   get "about", to: "pages#about"

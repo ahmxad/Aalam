@@ -1,0 +1,33 @@
+<div class="max-w-4xl mx-auto my-10 px-4">
+
+  <h1 class="text-4xl font-bold mb-8 text-primary underline">
+    <%= @topic.title %>
+  </h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <% if @cards.any? %>
+
+      <% @cards.each do |card| %>
+        <%= link_to card_path(card) do %>
+          <div class="card bg-base-100 shadow-xl border border-base-200">
+
+            <% if card.image.attached? %>
+              <%= image_tag card.image, class: "w-full h-64 object-cover rounded-lg" %>
+            <% end %>
+
+            <div class="card-body">
+              <h2 class="card-title text-xl font-semibold">
+                <%= card.title %>
+              </h2>
+            </div>
+
+          </div>
+        <% end %>
+      <% end %>
+
+    <% else %>
+      <p>No cards in this topic.</p>
+    <% end %>
+  </div>
+
+</div>

@@ -1,19 +1,21 @@
 <div class="max-w-4xl mx-auto my-10 px-4">
-  <h1 class="text-4xl font-bold mb-8 text-primary underline">Explore Catagories</h1>
+  <h1 class="text-4xl font-bold mb-8 text-primary underline">
+    Explore Topics
+  </h1>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <% if @cards.any? %>
-      <% @cards.each do |card| %>
-        <%= link_to card_path(card) do %>
+    <% if @topics.any? %>
+      <% @topics.each do |topic| %>
+        <%= link_to topic_path(topic) do %>
           <div class="card bg-base-100 shadow-xl border border-base-200">
 
-            <% if card.image.attached? %>
-              <%= image_tag card.image, class: "w-full h-64 object-cover rounded-lg" %>
+            <% if topic.image.attached? %>
+              <%= image_tag topic.image, class: "w-full h-64 object-cover rounded-lg" %>
             <% end %>
 
             <div class="card-body">
               <h2 class="card-title text-xl font-semibold">
-                <%= card.title %>
+                <%= topic.title %>
               </h2>
             </div>
 
@@ -21,7 +23,7 @@
         <% end %>
       <% end %>
     <% else %>
-      <p>No cards</p>
+      <p>No topics</p>
     <% end %>
   </div>
 </div>
