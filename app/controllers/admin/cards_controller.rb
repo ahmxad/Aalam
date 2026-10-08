@@ -67,10 +67,10 @@ class Admin::CardsController < Admin::BaseController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_admin_card
-      @admin_card = Admin::Card.find(params.expect(:id))
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_admin_card
+    @admin_card = Admin::Card.find_by!(slug: params[:id])
+  end
 
     # Only allow a list of trusted parameters through.
     def admin_card_params

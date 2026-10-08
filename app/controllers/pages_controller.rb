@@ -13,14 +13,17 @@ class PagesController < ApplicationController
   def about
   end
 def show
-    @post = Admin::Post.find(params[:id])
+  @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
+  @card = @topic.cards.find_by!(slug: params[:card_slug])
+  @post = @card.posts.find_by!(slug: params[:post_slug])
 end
 def card
-  @card = Admin::Card.find(params[:id])
+  @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
+  @card = @topic.cards.find_by!(slug: params[:card_slug])
   @posts = @card.posts
 end
   def topic
-    @topic = Admin::Topic.find(params[:id])
+    @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
     @cards = @topic.cards.with_attached_image
   end
 end

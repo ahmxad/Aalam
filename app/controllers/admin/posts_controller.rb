@@ -59,10 +59,10 @@ class Admin::PostsController < Admin::BaseController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_admin_post
-      @admin_post = Admin::Post.find(params.expect(:id))
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_admin_post
+    @admin_post = Admin::Post.find_by!(slug: params[:id])
+  end
 
     def set_cards
       @cards = Admin::Card.all

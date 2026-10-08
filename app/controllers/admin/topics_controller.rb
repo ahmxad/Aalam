@@ -25,7 +25,7 @@ class Admin::TopicsController < Admin::BaseController
 
     respond_to do |format|
       if @admin_topic.save
-        format.html { redirect_to @admin_topic, notice: "Topic was successfully created." }
+        format.html { redirect_to admin_topic_path(@admin_topic), notice: "Topic was successfully created." }
         format.json { render :show, status: :created, location: @admin_topic }
       else
         format.html { render :new, status: :unprocessable_content }
@@ -58,10 +58,10 @@ class Admin::TopicsController < Admin::BaseController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_admin_topic
-      @admin_topic = Admin::Topic.find(params.expect(:id))
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_admin_topic
+    @admin_topic = Admin::Topic.find_by!(slug: params[:id])
+  end
 
     # Only allow a list of trusted parameters through.
     def admin_topic_params

@@ -6,9 +6,9 @@ Rails.application.routes.draw do
     resources :cards
     resources :posts
   end
-  get "posts/:id", to: "pages#show", as: :post_show
-  get "cards/:id", to: "pages#card", as: :card
-  get "topics/:id", to: "pages#topic", as: :topic
+  get "topics/:topic_slug", to: "pages#topic", as: :topic
+  get "topics/:topic_slug/:card_slug", to: "pages#card", as: :topic_card
+  get "topics/:topic_slug/:card_slug/:post_slug", to: "pages#show", as: :topic_card_post
   root "pages#home"
   get "home", to: "pages#home"
   get "about", to: "pages#about"

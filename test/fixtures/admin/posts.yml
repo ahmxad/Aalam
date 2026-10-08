@@ -1,11 +1,13 @@
 one:
   card: one
   title: MyString
+  slug: mystring
   summary: MyString
   body: MyText
 
 two:
   card: two
-  title: MyString
+  title: MyString Two
+  slug: mystring-two
   summary: MyString
   body: MyText
