@@ -7,6 +7,7 @@ class Admin::Topic < ApplicationRecord
            dependent: :destroy
 
   validates :title, presence: true
+  validates :slug, uniqueness: true
 
   before_validation :generate_slug, if: -> { slug.blank? || will_save_change_to_title? }
 

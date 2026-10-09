@@ -11,15 +11,11 @@
     </div>
   <% end %>
 
-  <%= form.collection_select :card_id,
-      @cards,
-      :id,
-      :title,
-      { prompt: "Select a card" } ,
-    { required: true }%>
+  <%= form.collection_select :card_id, @cards, :id, ->(card) { "#{card.topic.title} — #{card.title}" }, { prompt: "Select a card" }, { required: true } %>
     
   <div class="my-5">
     <%= form.label :title %>
+    <div id="post-slug-availability" class="text-sm mt-2"></div>
     <%= form.text_field :title, required: true, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_post.errors[:title].none?, "border-red-400 focus:outline-red-600": admin_post.errors[:title].any?}] %>
   </div>
 

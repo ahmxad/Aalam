@@ -8,8 +8,7 @@
   <% @posts.each do |post| %>
     <article class="flex flex-col m-4 border-b p-4">
       <h2 class="font-bold text-red-400 text-5xl"><%= post.title %></h2>
-      <%= link_to "Read Post", topic_card_post_path(@topic, @card, post),
-          class: "btn btn-primary w-64" %>
+      <%= link_to "Read Post", topic_card_post_path(@topic.slug, @card.slug, post.slug), class: "btn btn-primary w-64" %>
     </article>
   <% end %>
 </div>

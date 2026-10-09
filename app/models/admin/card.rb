@@ -9,7 +9,7 @@ class Admin::Card < ApplicationRecord
   before_validation :generate_slug, if: -> { slug.blank? || will_save_change_to_title? }
 
   def to_param
-      slug
+    id.to_s
   end
 
   private

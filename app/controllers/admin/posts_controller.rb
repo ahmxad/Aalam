@@ -58,10 +58,32 @@ class Admin::PostsController < Admin::BaseController
     end
   end
 
+def check_slug
+  title = params[:title].to_s.strip
+  card_id = params[:card_id]
+
+  duplicate = Admin::Post.find_by(
+    "LOWER(title) = LOWER(?) AND card_id = ?",
+    title,
+    card_id
+  )
+
+  other_posts = Admin::Post
+    .includes(card: :topic)
+    .where("LOWER(posts.title) = LOWER(?)", title)
+    .where.not(card_id: card_id)
+
+  render json: {
+    available: duplicate.nil?,
+    existing_cards: other_posts.map do |post|
+      "#{post.card.title} (#{post.card.topic.title})"
+    end.uniq
+  }
+end
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_admin_post
-    @admin_post = Admin::Post.find_by!(slug: params[:id])
+    @admin_post = Admin::Post.find(params[:id])
   end
 
     def set_cards

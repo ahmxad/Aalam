@@ -15,6 +15,7 @@
     <%= form.label :image %>
     <%= form.file_field :image, class: "file-input file-input-bordered w-full" %>
     <%= form.label :title %>
+    <div id="slug-availability" class="text-sm mt-2"></div>
     <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_topic.errors[:title].none?, "border-red-400 focus:outline-red-600": admin_topic.errors[:title].any?}] %>
   </div>
 
