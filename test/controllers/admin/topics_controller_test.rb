@@ -2,14 +2,14 @@ require "test_helper"
 
 class Admin::TopicsControllerTest < ActionDispatch::IntegrationTest
   setup do
-  @admin_topic = admin_topics(:one)
-  @user = User.create!(
-    email_address: "admin@test.com",
-    password: "password123!",
-    admin: true
-  )
+    @admin_topic = admin_topics(:one)
 
-  sign_in_as(@user)
+    @user = User.create!(
+      email_address: "admin@test.com",
+      password: "password123!",
+      admin: true
+    )
+    sign_in_as(@user)
   end
 
   test "should get index" do
@@ -24,7 +24,9 @@ class Admin::TopicsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create admin_topic" do
     assert_difference("Admin::Topic.count") do
-      post admin_topics_url, params: { admin_topic: { title: @admin_topic.title } }
+      post admin_topics_url, params: {
+        admin_topic: { title: "Unique Topic for Creation Test" }
+      }
     end
 
     assert_redirected_to admin_topic_url(Admin::Topic.last)

@@ -5,4 +5,16 @@ class Admin::Card < ApplicationRecord
   has_many :posts, class_name: "Admin::Post", dependent: :destroy
 
   belongs_to :topic, class_name: "Admin::Topic"
+
+  before_validation :generate_slug, if: -> { slug.blank? || will_save_change_to_title? }
+
+  def to_param
+    id.to_s
+  end
+
+  private
+
+  def generate_slug
+      self.slug = title.to_s.parameterize
+  end
 end

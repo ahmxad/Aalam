@@ -66,11 +66,30 @@ class Admin::CardsController < Admin::BaseController
     end
   end
 
+
+  def check_slug
+    slug = params[:title].to_s.parameterize
+    topic_id = params[:topic_id]
+
+    duplicate = Admin::Card.find_by(slug: slug, topic_id: topic_id)
+
+    other_cards = Admin::Card
+      .includes(:topic)
+      .where(slug: slug)
+      .where.not(topic_id: topic_id)
+      .select { |card| card.topic.present? }
+
+    render json: {
+      available: duplicate.nil?,
+      existing_topics: other_cards.map { |card| card.topic.title }.uniq
+    }
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_admin_card
-      @admin_card = Admin::Card.find(params.expect(:id))
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_admin_card
+    @admin_card = Admin::Card.find(params[:id])
+  end
 
     # Only allow a list of trusted parameters through.
     def admin_card_params

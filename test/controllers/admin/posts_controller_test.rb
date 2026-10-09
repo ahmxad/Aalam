@@ -24,7 +24,7 @@ end
   test "should create admin_post" do
     assert_difference("Admin::Post.count") do
       post admin_posts_url, params: { admin_post: { body: @admin_post.body, card_id: @admin_post.card_id, summary: @admin_post.summary,
-      title: @admin_post.title } }
+      title: "Unique Test Post" } }
   end
 
     assert_redirected_to admin_post_url(Admin::Post.last)

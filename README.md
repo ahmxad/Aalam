@@ -23,3 +23,9 @@ Current structure:
 - #F8E5D2
 - #9E483F
 - #EE9C44
+
+
+#### Git:
+- make: git switch -c branch-name
+- show on github: git push -u origin branch-name
+- change branch: git checkout -b branch-name
