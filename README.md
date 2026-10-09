@@ -26,6 +26,14 @@ Current structure:
 
 
 #### Git:
+> make new branch for a feature
 - make: git switch -c branch-name
 - show on github: git push -u origin branch-name
-- change branch: git checkout -b branch-name
+> after deleting a branch (IF YOU DELETED FROM GITHUB)
+- change branch: git checkout main
+- git pull
+- git branch -d branch-name
+- git fetch --prune
+> rails specific (after switching to main)
+- bundle install
+- bin/rails db:migrate
