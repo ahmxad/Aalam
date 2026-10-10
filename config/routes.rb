@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   namespace :admin do
+    root "dashboard#index"
     get "topics/check_slug", to: "topics#check_slug"
     get "cards/check_slug", to: "cards#check_slug"
     get "posts/check_slug", to: "posts#check_slug"

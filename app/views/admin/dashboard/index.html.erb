@@ -1,0 +1,35 @@
+
+<div class="p-6">
+  <h1 class="text-3xl font-bold mb-2">Admin Dashboard</h1>
+  <p class="text-base-content/70 mb-8">Welcome to Aalam administration.</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card bg-base-200 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">Topics</h2>
+        <p class="text-4xl font-bold"><%= @topics_count %></p>
+        <%= link_to "Manage Topics", admin_topics_path, class: "btn btn-primary mt-4" %>
+      </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">Cards</h2>
+        <p class="text-4xl font-bold"><%= @cards_count %></p>
+        <%= link_to "Manage Cards", admin_cards_path, class: "btn btn-primary mt-4" %>
+      </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">Posts</h2>
+        <p class="text-4xl font-bold"><%= @posts_count %></p>
+        <%= link_to "Manage Posts", admin_posts_path, class: "btn btn-primary mt-4" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <%= link_to "View Website", root_path, class: "btn btn-outline" %>
+  </div>
+</div>
