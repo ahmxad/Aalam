@@ -1,0 +1,108 @@
+<div class="max-w-4xl mx-auto px-4 py-10">
+  <h1 class="text-3xl font-bold mb-6">Search Results</h1>
+
+  <% if params[:q].blank? %>
+    <p>Please enter something to search.</p>
+  <% else %>
+    <% topics = @topics || [] %>
+    <% cards = @cards || [] %>
+    <% posts = @posts || [] %>
+    <% total = topics.size + cards.size + posts.size %>
+
+    <p class="mb-8">
+      Found <%= total %> result(s) for
+      "<%= params[:q] %>"
+    </p>
+
+    <% if total.zero? %>
+      <p>No results found.</p>
+    <% end %>
+
+    <% if topics.any? %>
+      <h2 class="text-2xl font-bold mb-4">Topics</h2>
+
+      <div class="space-y-4 mb-8">
+        <% topics.each do |topic| %>
+          <article class="card bg-base-100 border border-base-300 shadow-sm">
+            <div class="card-body">
+              <h3 class="card-title"><%= topic.title %></h3>
+
+              <div class="card-actions justify-end">
+                <%= link_to "View Topic",
+                    topic_path(topic.slug),
+                    class: "btn btn-primary" %>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if cards.any? %>
+      <h2 class="text-2xl font-bold mb-4">Cards</h2>
+
+      <div class="space-y-4 mb-8">
+        <% cards.each do |card| %>
+          <article class="card bg-base-100 border border-base-300 shadow-sm">
+            <div class="card-body">
+              <p class="text-sm text-base-content/70">
+                Topic:
+                <%= link_to card.topic.title,
+                    topic_path(card.topic.slug) %>
+              </p>
+
+              <h3 class="card-title"><%= card.title %></h3>
+
+              <div class="card-actions justify-end">
+                <%= link_to "View Card",
+                    topic_card_path(card.topic.slug, card.slug),
+                    class: "btn btn-primary" %>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if posts.any? %>
+      <h2 class="text-2xl font-bold mb-4">Posts</h2>
+
+      <div class="space-y-4">
+        <% posts.each do |post| %>
+          <article class="card bg-base-100 border border-base-300 shadow-sm">
+            <div class="card-body">
+              <div class="text-sm breadcrumbs">
+                <ul>
+                  <li>
+                    <%= link_to post.card.topic.title,
+                        topic_path(post.card.topic.slug) %>
+                  </li>
+                  <li>
+                    <%= link_to post.card.title,
+                        topic_card_path(
+                          post.card.topic.slug,
+                          post.card.slug
+                        ) %>
+                  </li>
+                </ul>
+              </div>
+
+              <h3 class="card-title"><%= post.title %></h3>
+              <p><%= truncate(post.summary, length: 200) %></p>
+
+              <div class="card-actions justify-end">
+                <%= link_to "Read Post",
+                    topic_card_post_path(
+                      post.card.topic.slug,
+                      post.card.slug,
+                      post.slug
+                    ),
+                    class: "btn btn-primary" %>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get "topics/:topic_slug", to: "pages#topic", as: :topic
   get "topics/:topic_slug/:card_slug", to: "pages#card", as: :topic_card
   get "topics/:topic_slug/:card_slug/:post_slug", to: "pages#show", as: :topic_card_post
+  get "search", to: "pages#search", as: :search
   root "pages#home"
   get "home", to: "pages#home"
   get "about", to: "pages#about"
