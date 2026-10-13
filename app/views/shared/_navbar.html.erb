@@ -12,11 +12,14 @@
 
     </div>
     <div class="navbar-center hidden lg:flex">
-      <ul class="menu menu-horizontal px-1">
-        <li><%= link_to "Home", root_path %></li>
-        <li><%= link_to "About", about_path %></li>
-        <li><%= link_to "Explore", explore_path %></li>
-        <li><%= link_to "Contact", contact_path %></li>
+      <ul class="menu menu-horizontal gap-2 px-1">
+        <li><%= link_to "Home", root_path, class: "btn" %></li>
+        <li><%= link_to "About", about_path, class: "btn" %></li>
+        <li><div class="aura aura-holo">
+              <%= link_to "Explore", explore_path, class: "btn" %>
+            </div>
+        </li>
+        <li><%= link_to "Contact", contact_path, class: "btn" %></li>
       </ul>
     </div>
 <div class="navbar-end">
