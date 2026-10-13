@@ -2,6 +2,12 @@
   <div>
     <strong class="block font-bold mb-1 text-2xl">Title:</strong>
     <%= post.title %>
+    <p class="text-sm text-base-content/60 mt-2">
+      Created <%= post.created_at.strftime("%d %b %Y") %>
+    </p>
+    <p class="text-xs text-base-content/50 mt-1">
+      Updated <%= post.updated_at.strftime("%d %b %Y") %>
+    </p>
   </div>
   <div>
     <strong class="block font-bold mb-1 text-2xl">Summary:</strong>

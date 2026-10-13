@@ -5,13 +5,15 @@
 </div>
 <div class="max-w-3xl mx-auto my-10 px-4">
   <%# 1. Access the title and body fields directly from the @post variable %>
-  <h1 class="font-bold text-4xl mb-4"><%= @post.title %></h1>
-  <p class="text-base-content/70 mb-6 font-medium"><%= @post.summary %></p>
-  
+  <h1 class="font-bold text-4xl mb-2">
+    <%= @post.title %>
+  </h1>
+  <p class="text-sm text-base-content/60 mb-4">
+    Created <%= @post.created_at.strftime("%d %b %Y") %>
+  </p>
   <article class="prose max-w-none text-base-content">
     <%= @post.body %>
   </article>
-
   <div class="mt-8 border-t pt-4">
     <%# 2. Update this to root_path so you can go back to your homepage %>
     <%= link_to "Back to Home", root_path, class: "btn btn-outline btn-sm" %>

@@ -1,8 +1,12 @@
 <div class="max-w-4xl mx-auto my-10 px-4">
 
-  <h1 class="text-4xl font-bold mb-8 text-primary underline">
-    <%= @topic.title %>
-  </h1>
+  <h1 class="text-4xl font-bold mb-2 text-primary underline">
+  <%= @topic.title %>
+</h1>
+
+<p class="text-sm text-base-content/60 mb-8">
+  Created <%= @topic.created_at.strftime("%d %b %Y") %>
+</p>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <% if @cards.any? %>

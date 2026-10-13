@@ -2,23 +2,22 @@
   <h1 class="text-4xl font-bold mb-8 text-primary underline">
     Explore Topics
   </h1>
-
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <% if @topics.any? %>
       <% @topics.each do |topic| %>
         <%= link_to topic_path(topic) do %>
           <div class="card bg-base-100 shadow-xl border border-base-200">
-
             <% if topic.image.attached? %>
               <%= image_tag topic.image, class: "w-full h-64 object-cover rounded-lg" %>
             <% end %>
-
             <div class="card-body">
               <h2 class="card-title text-xl font-semibold">
                 <%= topic.title %>
               </h2>
+              <p class="text-sm text-base-content/60">
+                Created <%= topic.created_at.strftime("%d %b %Y") %>
+              </p>
             </div>
-
           </div>
         <% end %>
       <% end %>

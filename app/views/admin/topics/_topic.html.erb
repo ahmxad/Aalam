@@ -9,4 +9,12 @@
     <%= topic.title %>
   </div>
 
+  <div class="text-sm text-base-content/60">
+  Created <%= topic.created_at.strftime("%d %b %Y") %>
+</div>
+
+<div class="text-xs text-base-content/50">
+  Updated <%= topic.updated_at.strftime("%d %b %Y") %>
+</div>
+
 </div>
