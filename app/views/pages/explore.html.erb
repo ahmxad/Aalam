@@ -1,17 +1,17 @@
-<div class="max-w-4xl mx-auto my-10 px-4">
+<div class="max-w-6xl mx-auto my-10 px-4">
   <h1 class="text-4xl font-bold mb-8 text-primary underline">
     Explore Topics
   </h1>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <% if @topics.any? %>
       <% @topics.each do |topic| %>
-        <%= link_to topic_path(topic) do %>
-          <div class="card bg-base-100 shadow-xl border border-base-200">
+        <%= link_to topic_path(topic), class: "block hover:-translate-y-1 transition-transform" do %>
+          <div class="card card-sm bg-base-100 shadow-md border border-base-200 overflow-hidden">
             <% if topic.image.attached? %>
-              <%= image_tag topic.image, class: "w-full h-64 object-cover rounded-lg" %>
+              <%= image_tag topic.image.variant(resize_to_fill: [600, 320], format: :webp, saver: { quality: 80 }), class: "w-full h-40 object-cover" %>
             <% end %>
             <div class="card-body">
-              <h2 class="card-title text-xl font-semibold">
+              <h2 class="card-title text-base font-semibold">
                 <%= topic.title %>
               </h2>
               <p class="text-sm text-base-content/60">
