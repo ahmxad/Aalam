@@ -8,7 +8,7 @@
         <%= link_to topic_path(topic), class: "block hover:-translate-y-1 transition-transform" do %>
           <div class="card card-sm bg-base-100 shadow-md border border-base-200 overflow-hidden">
             <% if topic.image.attached? %>
-              <%= image_tag topic.image.variant(resize_to_fill: [600, 320], format: :webp, saver: { quality: 80 }), class: "w-full h-40 object-cover" %>
+              <%= image_tag topic.image.variant(:card), class: "w-full h-40 object-cover" %>
             <% end %>
             <div class="card-body">
               <h2 class="card-title text-base font-semibold">

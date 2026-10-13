@@ -4,7 +4,7 @@ class Admin::PostsController < Admin::BaseController
 
   # GET /admin/posts or /admin/posts.json
   def index
-    @admin_posts = Admin::Post.all
+    @topics = Admin::Topic.preload(cards: :posts).order(:title)
   end
 
   # GET /admin/posts/1 or /admin/posts/1.json
@@ -87,7 +87,7 @@ end
   end
 
     def set_cards
-      @cards = Admin::Card.all
+      @topics = Admin::Topic.preload(:cards).order(:title)
     end
 
   # Only allow a list of trusted parameters through.

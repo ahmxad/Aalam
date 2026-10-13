@@ -12,19 +12,23 @@ class PagesController < ApplicationController
 
   def about
   end
-def show
-  @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
-  @card = @topic.cards.find_by!(slug: params[:card_slug])
-  @post = @card.posts.find_by!(slug: params[:post_slug])
-end
+  def show
+    @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
+    @card = @topic.cards.find_by!(slug: params[:card_slug])
+    @post = @card.posts.find_by!(slug: params[:post_slug])
+
+    siblings = @card.posts
+    @previous_post = siblings.where("id < ?", @post.id).order(id: :desc).first
+    @next_post = siblings.where("id > ?", @post.id).order(:id).first
+  end
 def card
   @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
   @card = @topic.cards.find_by!(slug: params[:card_slug])
-  @posts = @card.posts
+  @posts = @card.posts.order(created_at: :desc)
 end
   def topic
     @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
-    @cards = @topic.cards.with_attached_image
+    @cards = @topic.cards.with_attached_image.includes(:posts).order(:title)
   end
 
   def search

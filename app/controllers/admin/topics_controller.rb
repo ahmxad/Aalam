@@ -3,11 +3,12 @@ class Admin::TopicsController < Admin::BaseController
 
   # GET /admin/topics or /admin/topics.json
   def index
-    @admin_topics = Admin::Topic.all
+    @admin_topics = Admin::Topic.with_attached_image.order(:title)
   end
 
   # GET /admin/topics/1 or /admin/topics/1.json
   def show
+    @cards = @admin_topic.cards.with_attached_image.order(:title)
   end
 
   # GET /admin/topics/new

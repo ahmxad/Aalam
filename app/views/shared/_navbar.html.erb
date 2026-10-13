@@ -1,55 +1,55 @@
-<div class="max-lg:collapse bg-base-200 shadow-sm w-full rounded-md">
-  <input id="navbar-1-toggle" class="peer hidden" type="checkbox" />
-  <label for="navbar-1-toggle" class="fixed inset-0 hidden max-lg:peer-checked:block"></label>
-  <div class="collapse-title navbar">
-    <div class="navbar-start">
-      <label for="navbar-1-toggle" class="btn btn-ghost lg:hidden">
-        <svg aria-label="Menu" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-      </label>
-    <div class="tooltip tooltip-right" data-tip="Aalam means world">
-        <%= image_tag 'logo.svg', alt: 'Website Logo', class: 'h-20 w-auto object-contain pl-4 cursor-pointer' %>
+<%# Active link gets the primary color, the rest stay subtle %>
+<% link_class = ->(path) { [ "btn btn-sm rounded-full", current_page?(path) ? "btn-primary" : "btn-ghost" ] } %>
+<header class="sticky top-0 z-50 px-3 pt-2">
+  <div class="max-lg:collapse w-full">
+    <input id="navbar-1-toggle" class="peer hidden" type="checkbox" />
+    <label for="navbar-1-toggle" class="fixed inset-0 hidden max-lg:peer-checked:block"></label>
+    <div class="collapse-title navbar min-h-0 p-0 gap-2">
+      <div class="navbar-start gap-2">
+        <label for="navbar-1-toggle" aria-label="Open menu"
+               class="btn btn-sm btn-square rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-sm lg:hidden">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+          </svg>
+        </label>
+        <div class="tooltip tooltip-bottom" data-tip="Aalam means world">
+          <%= link_to root_path, class: "flex items-center rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-sm px-3 py-1" do %>
+            <%= image_tag "logo.svg", alt: "Aalam logo", class: "h-8 w-auto object-contain" %>
+          <% end %>
+        </div>
+      </div>
+      <div class="navbar-center hidden lg:flex">
+        <ul class="flex items-center gap-1 rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-sm p-1">
+          <li><%= link_to "Home", root_path, class: link_class.(root_path) %></li>
+          <li><%= link_to "About", about_path, class: link_class.(about_path) %></li>
+          <li><%= link_to "Explore", explore_path, class: link_class.(explore_path) %></li>
+          <li><%= link_to "Contact", contact_path, class: link_class.(contact_path) %></li>
+        </ul>
+      </div>
+      <div class="navbar-end">
+        <%= form_with url: search_path, method: :get,
+              class: "join rounded-full overflow-hidden bg-white/40 backdrop-blur-md border border-white/60 shadow-sm" do |f| %>
+          <%= f.search_field :q,
+                placeholder: "Search...",
+                value: params[:q],
+                "aria-label": "Search",
+                class: "input input-sm join-item bg-transparent border-0 w-28 sm:w-44 lg:w-56 focus:outline-none" %>
+          <%= f.button type: "submit", name: nil, "aria-label": "Submit search", class: "btn btn-sm btn-primary join-item" do %>
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <circle cx="11" cy="11" r="7" stroke-width="2" />
+              <path stroke-linecap="round" stroke-width="2" d="m16 16 4 4" />
+            </svg>
+          <% end %>
+        <% end %>
+      </div>
     </div>
-
-    </div>
-    <div class="navbar-center hidden lg:flex">
-      <ul class="menu menu-horizontal gap-2 px-1">
-        <li><%= link_to "Home", root_path, class: "btn" %></li>
-        <li><%= link_to "About", about_path, class: "btn" %></li>
-        <li><div class="aura aura-holo">
-              <%= link_to "Explore", explore_path, class: "btn" %>
-            </div>
-        </li>
-        <li><%= link_to "Contact", contact_path, class: "btn" %></li>
+    <div class="collapse-content lg:hidden z-1 p-0">
+      <ul class="menu mt-2 rounded-box bg-white/60 backdrop-blur-md border border-white/60 shadow-sm">
+        <li><%= link_to "Home", root_path, class: ("menu-active" if current_page?(root_path)) %></li>
+        <li><%= link_to "About", about_path, class: ("menu-active" if current_page?(about_path)) %></li>
+        <li><%= link_to "Explore", explore_path, class: ("menu-active" if current_page?(explore_path)) %></li>
+        <li><%= link_to "Contact", contact_path, class: ("menu-active" if current_page?(contact_path)) %></li>
       </ul>
     </div>
-<div class="navbar-end">
-  <%= form_with url: search_path, method: :get, class: "flex items-center gap-2" do |f| %>
-    <%= f.search_field :q,
-        placeholder: "Search...",
-        value: params[:q],
-        class: "input w-36 sm:w-48 lg:w-64" %>
-
-    <%= f.button type: "submit", name: nil,
-    class: "btn btn-primary" do %>
-  <svg xmlns="http://www.w3.org/2000/svg"
-       class="h-5 w-5"
-       fill="none"
-       viewBox="0 0 24 24"
-       stroke="currentColor">
-    <circle cx="11" cy="11" r="7" stroke-width="2" />
-    <path stroke-linecap="round" stroke-width="2" d="m16 16 4 4" />
-  </svg>
-<% end %>
-  <% end %>
-</div>
   </div>
-
-  <div class="collapse-content lg:hidden z-1">
-    <ul class="menu">
-      <li><%= link_to "Home", root_path %></li>
-      <li><%= link_to "About", about_path %></li>
-      <li><%= link_to "Explore", explore_path %></li>
-      <li><%= link_to "Contact", contact_path %></li>
-    </ul>
-  </div>
-</div>
+</header>

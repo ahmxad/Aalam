@@ -1,18 +1,62 @@
-<div class="text-sm text-gray-500 mt-6 mb-6">
-  <%= @card.topic.title %> /
-  <%= @card.title %>
-</div>
-<div class="mt-12">
-  <h1 class="font-bold text-4xl bg-gray-200 w-full flex justify-center rounded-md">
-    <%= @card.title %>
-  </h1>
-  <p class="text-sm text-base-content/60 mt-2 mb-6">
-    Card created at: <%= @card.created_at.strftime("%d %b %Y") %>
-  </p>
-  <% @posts.each do |post| %>
-    <article class="flex flex-col m-4 border-b p-4">
-      <h2 class="font-bold text-red-400 text-5xl"><%= post.title %></h2>
-      <%= link_to "Read Post", topic_card_post_path(@topic.slug, @card.slug, post.slug), class: "btn btn-primary w-64" %>
-    </article>
+<% content_for :title, "#{@card.title} · #{@topic.title}" %>
+<div class="max-w-4xl mx-auto my-8 px-4">
+  <%# Breadcrumb %>
+  <div class="breadcrumbs text-sm mb-4">
+    <ul>
+      <li><%= link_to "Explore", explore_path %></li>
+      <li><%= link_to @topic.title, topic_path(@topic.slug) %></li>
+      <li><%= @card.title %></li>
+    </ul>
+  </div>
+  <%# Header %>
+  <header class="card bg-base-100 border border-base-200 shadow-md overflow-hidden mb-10">
+    <% if @card.image.attached? %>
+      <figure>
+        <%= image_tag @card.image.variant(:card), alt: @card.title, class: "w-full h-48 sm:h-64 object-cover" %>
+      </figure>
+    <% end %>
+    <div class="card-body">
+      <p class="text-xs font-semibold uppercase tracking-wide text-primary">
+        <%= @topic.title %>
+      </p>
+      <h1 class="text-3xl sm:text-4xl font-bold"><%= @card.title %></h1>
+      <div class="flex flex-wrap items-center gap-2 mt-1">
+        <span class="badge badge-ghost"><%= pluralize(@posts.size, "post") %></span>
+        <span class="text-sm text-base-content/60">
+          Created <%= @card.created_at.strftime("%d %b %Y") %>
+        </span>
+      </div>
+    </div>
+  </header>
+  <%# Posts %>
+  <% if @posts.any? %>
+    <div class="space-y-4">
+      <% @posts.each do |post| %>
+        <%= link_to topic_card_post_path(@topic.slug, @card.slug, post.slug),
+              class: "group block rounded-box border border-base-200 bg-base-100 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" do %>
+          <article>
+            <h2 class="text-xl font-semibold group-hover:text-primary transition-colors">
+              <%= post.title %>
+            </h2>
+            <p class="mt-2 text-base-content/70">
+              <%= truncate(post.summary, length: 160) %>
+            </p>
+            <div class="mt-3 flex items-center justify-between text-sm">
+              <span class="text-base-content/50">
+                <%= post.created_at.strftime("%d %b %Y") %>
+              </span>
+              <span class="font-medium text-primary">Read post &rarr;</span>
+            </div>
+          </article>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-16 text-base-content/60">
+      <p>No posts in this card yet.</p>
+    </div>
   <% end %>
+  <div class="mt-10">
+    <%= link_to "← Back to #{@topic.title}", topic_path(@topic.slug), class: "btn btn-ghost btn-sm" %>
+  </div>
 </div>

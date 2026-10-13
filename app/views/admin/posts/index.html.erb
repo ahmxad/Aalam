@@ -1,29 +1,81 @@
 <% content_for :title, "Posts" %>
-
-<div class="w-full mt-25 mb-25">
+<% total_posts = @topics.sum { |t| t.cards.sum { |c| c.posts.size } } %>
+<div class="max-w-5xl mx-auto mt-12 px-4">
   <% if flash[:notice].present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= flash[:notice] %></p>
+    <div role="alert" class="alert alert-success mb-6">
+      <span><%= flash[:notice] %></span>
+    </div>
   <% end %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Posts</h1>
-    <%= link_to "New post", new_admin_post_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="text-3xl font-bold">Posts</h1>
+      <p class="text-sm text-base-content/60">
+        <%= pluralize(total_posts, "post") %> in <%= pluralize(@topics.sum { |t| t.cards.size }, "card") %>,
+        <%= pluralize(@topics.size, "topic") %>
+      </p>
+    </div>
+    <%= link_to "New post", new_admin_post_path, class: "btn btn-primary" %>
   </div>
-
-  <div id="admin_posts" class="min-w-full divide-y divide-gray-900 space-y-5">
-    <% if @admin_posts.any? %>
-      <% @admin_posts.each do |admin_post| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render admin_post %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", admin_post, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_admin_post_path(admin_post), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", admin_post, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+  <% if @topics.any? %>
+    <div class="space-y-6">
+      <% @topics.each do |topic| %>
+        <% topic_posts = topic.cards.sum { |c| c.posts.size } %>
+        <%# Level 1: Topic %>
+        <details open class="group">
+          <summary class="flex items-center gap-3 cursor-pointer list-none select-none">
+            <span class="transition-transform group-open:rotate-90 text-base-content/50">▶</span>
+            <h2 class="text-xl font-bold"><%= topic.title %></h2>
+            <span class="badge badge-ghost"><%= pluralize(topic.cards.size, "card") %></span>
+            <span class="badge badge-ghost"><%= pluralize(topic_posts, "post") %></span>
+          </summary>
+          <div class="ml-3 mt-3 pl-5 border-l-2 border-base-300 space-y-4">
+            <% if topic.cards.any? %>
+              <% topic.cards.sort_by { |c| c.title.to_s.downcase }.each do |card| %>
+                <%# Level 2: Card %>
+                <details open class="group/card">
+                  <summary class="flex items-center gap-3 cursor-pointer list-none select-none">
+                    <span class="transition-transform group-open/card:rotate-90 text-base-content/50 text-sm">▶</span>
+                    <h3 class="text-lg font-semibold"><%= card.title %></h3>
+                    <span class="badge badge-sm badge-outline"><%= pluralize(card.posts.size, "post") %></span>
+                  </summary>
+                  <%# Level 3: Posts %>
+                  <div class="ml-3 mt-2 pl-5 border-l-2 border-base-200 space-y-2">
+                    <% if card.posts.any? %>
+                      <% card.posts.sort_by(&:created_at).reverse.each do |post| %>
+                        <div class="flex items-center justify-between gap-3 rounded-box border border-base-300 bg-base-100 p-3 hover:bg-base-200/50">
+                          <div class="min-w-0">
+                            <div class="font-semibold truncate"><%= post.title %></div>
+                            <div class="text-sm text-base-content/60 truncate"><%= truncate(post.summary, length: 100) %></div>
+                            <div class="text-xs text-base-content/40 mt-1">
+                              <%= post.slug %> · <%= post.created_at.strftime("%d %b %Y") %>
+                            </div>
+                          </div>
+                          <div class="flex gap-2 shrink-0">
+                            <%= link_to "View", admin_post_path(post), class: "btn btn-sm btn-ghost" %>
+                            <%= link_to "Edit", edit_admin_post_path(post), class: "btn btn-sm btn-outline" %>
+                            <%= button_to "Delete", admin_post_path(post), method: :delete,
+                                  class: "btn btn-sm btn-error btn-outline",
+                                  data: { turbo_confirm: "Ye post delete ho jayegi. Pakka?" } %>
+                          </div>
+                        </div>
+                      <% end %>
+                    <% else %>
+                      <p class="text-sm text-base-content/50 italic py-1">No posts in Card</p>
+                    <% end %>
+                  </div>
+                </details>
+              <% end %>
+            <% else %>
+              <p class="text-sm text-base-content/50 italic py-1">No card in topic.</p>
+            <% end %>
           </div>
-        </div>
+        </details>
       <% end %>
-    <% else %>
-      <p class="text-center my-10">No posts found.</p>
-    <% end %>
-  </div>
+    </div>
+  <% else %>
+    <div class="text-center py-16 text-base-content/60">
+      <p class="mb-4">No topics.</p>
+      <%= link_to "New topic", new_admin_topic_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
 </div>

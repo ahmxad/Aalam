@@ -6,6 +6,8 @@ class Admin::Post < ApplicationRecord
   validates :title, uniqueness: { scope: :card_id, case_sensitive: false }
 
   before_validation :generate_slug, if: -> { slug.blank? || will_save_change_to_title? }
+  validates :slug, presence: true
+  validates :slug, uniqueness: { scope: :card_id, message: "is already taken in this card" }
 
   def to_param
     id.to_s

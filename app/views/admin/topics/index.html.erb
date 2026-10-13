@@ -1,29 +1,60 @@
 <% content_for :title, "Topics" %>
-
-<div class="w-full mt-12">
+<div class="max-w-5xl mx-auto mt-12 px-4">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <div role="alert" class="alert alert-success mb-6">
+      <span><%= notice %></span>
+    </div>
   <% end %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Topics</h1>
-    <%= link_to "New topic", new_admin_topic_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-3xl font-bold">Topics</h1>
+      <p class="text-sm text-base-content/60"><%= pluralize(@admin_topics.size, "topic") %></p>
+    </div>
+    <%= link_to "New topic", new_admin_topic_path, class: "btn btn-primary" %>
   </div>
-
-  <div id="admin_topics" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @admin_topics.any? %>
-      <% @admin_topics.each do |admin_topic| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render admin_topic %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", admin_topic, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_admin_topic_path(admin_topic), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", admin_topic, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <p class="text-center my-10">No topics found.</p>
-    <% end %>
-  </div>
+  <% if @admin_topics.any? %>
+    <div class="overflow-x-auto rounded-box border border-base-300">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Topic</th>
+            <th>Created</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @admin_topics.each do |topic| %>
+            <tr class="hover">
+              <td>
+                <div class="flex items-center gap-3">
+                  <% if topic.image.attached? %>
+                    <%= image_tag topic.image.variant(:card), class: "w-16 h-12 object-cover rounded-md" %>
+                  <% end %>
+                  <div>
+                    <div class="font-semibold"><%= topic.title %></div>
+                    <div class="text-xs text-base-content/50"><%= topic.slug %></div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-sm"><%= topic.created_at.strftime("%d %b %Y") %></td>
+              <td>
+                <div class="flex justify-end gap-2">
+                  <%= link_to "View", admin_topic_path(topic), class: "btn btn-sm btn-ghost" %>
+                  <%= link_to "Edit", edit_admin_topic_path(topic), class: "btn btn-sm btn-outline" %>
+                  <%= button_to "Delete", admin_topic_path(topic), method: :delete,
+                        class: "btn btn-sm btn-error btn-outline",
+                        data: { turbo_confirm: "Ye topic, uske saare cards aur posts delete ho jayenge. Pakka?" } %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="text-center py-16 text-base-content/60">
+      <p class="mb-4">No topics yet.</p>
+      <%= link_to "Create First topic", new_admin_topic_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
 </div>

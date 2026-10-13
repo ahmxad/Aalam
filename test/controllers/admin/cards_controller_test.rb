@@ -2,18 +2,19 @@ require "test_helper"
 
 class Admin::CardsControllerTest < ActionDispatch::IntegrationTest
   setup do
-  @admin_card = admin_cards(:one)
-  @topic = Admin::Topic.create!(
-    title: "Test Topic"
-  )
-  @admin_card.update!(topic: @topic)
-  @user = User.create!(
-    email_address: "admin@test.com",
-    password: "password123!",
-    admin: true
-  )
-  sign_in_as(@user)
-end
+    @admin_card = admin_cards(:one)
+    @topic = Admin::Topic.create!(
+      title: "Test Topic",
+      image: sample_image
+    )
+    @admin_card.update!(topic: @topic)
+    @user = User.create!(
+      email_address: "admin@test.com",
+      password: "password123!",
+      admin: true
+    )
+    sign_in_as(@user)
+  end
 
   test "should get index" do
     get admin_cards_url
@@ -27,7 +28,13 @@ end
 
   test "should create admin_card" do
     assert_difference("Admin::Card.count") do
-      post admin_cards_url, params: { admin_card: { title: @admin_card.title, topic_id: @admin_card.topic_id } }
+      post admin_cards_url, params: {
+        admin_card: {
+          title: "Unique Card for Creation Test",
+          topic_id: @admin_card.topic_id,
+          image: fixture_file_upload("test.png", "image/png")
+        }
+      }
     end
 
     assert_redirected_to admin_card_url(Admin::Card.last)

@@ -1,15 +1,63 @@
-<% content_for :title, "Showing topic" %>
-
-<div class="md:w-2/3 w-full mt-12 mb-12">
+<% content_for :title, @admin_topic.title %>
+<div class="max-w-4xl mx-auto mt-12 px-4">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <div role="alert" class="alert alert-success mb-6">
+      <span><%= notice %></span>
+    </div>
   <% end %>
-
-  <h1 class="font-bold text-4xl">Showing topic</h1>
-
-  <%= render @admin_topic %>
-
-  <%= link_to "Edit this topic", edit_admin_topic_path(@admin_topic), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to topics", admin_topics_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this topic", @admin_topic, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+  <div class="breadcrumbs text-sm mb-4">
+    <ul>
+      <li><%= link_to "Topics", admin_topics_path %></li>
+      <li><%= @admin_topic.title %></li>
+    </ul>
+  </div>
+  <div class="card bg-base-100 border border-base-300 shadow-sm overflow-hidden">
+    <% if @admin_topic.image.attached? %>
+      <figure>
+        <%= image_tag @admin_topic.image.variant(:card), class: "w-full h-56 object-cover" %>
+      </figure>
+    <% end %>
+    <div class="card-body">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 class="text-3xl font-bold"><%= @admin_topic.title %></h1>
+          <p class="text-sm text-base-content/50 mt-1">/topics/<%= @admin_topic.slug %></p>
+        </div>
+        <%= link_to "View on site", topic_path(@admin_topic), class: "btn btn-sm btn-outline", target: "_blank", rel: "noopener" %>
+      </div>
+      <p class="text-sm text-base-content/60">
+        Created <%= @admin_topic.created_at.strftime("%d %b %Y") %> ·
+        Updated <%= @admin_topic.updated_at.strftime("%d %b %Y") %>
+      </p>
+      <div class="card-actions justify-end mt-4">
+        <%= link_to "Back", admin_topics_path, class: "btn btn-ghost" %>
+        <%= link_to "Edit", edit_admin_topic_path(@admin_topic), class: "btn btn-outline" %>
+        <%= button_to "Delete", admin_topic_path(@admin_topic), method: :delete,
+              class: "btn btn-error btn-outline",
+              data: { turbo_confirm: "This will delete the topic and all of its cards and posts. Are you sure?" } %>
+      </div>
+    </div>
+  </div>
+  <div class="mt-10">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-xl font-bold">Cards <span class="badge badge-ghost"><%= @cards.size %></span></h2>
+      <%= link_to "New card", new_admin_card_path, class: "btn btn-sm btn-primary" %>
+    </div>
+    <% if @cards.any? %>
+      <div class="space-y-2">
+        <% @cards.each do |card| %>
+          <%= link_to admin_card_path(card), class: "flex items-center gap-3 rounded-box border border-base-300 bg-base-100 p-3 hover:bg-base-200/50" do %>
+            <% if card.image.attached? %>
+              <%= image_tag card.image.variant(:card), class: "w-16 h-12 object-cover rounded-md shrink-0" %>
+            <% else %>
+              <div class="w-16 h-12 rounded-md bg-base-200 shrink-0"></div>
+            <% end %>
+            <span class="font-semibold"><%= card.title %></span>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-sm text-base-content/50 italic">No cards in this topic yet.</p>
+    <% end %>
+  </div>
 </div>

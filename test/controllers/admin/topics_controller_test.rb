@@ -24,8 +24,8 @@ class Admin::TopicsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create admin_topic" do
     assert_difference("Admin::Topic.count") do
-      post admin_topics_url, params: {
-        admin_topic: { title: "Unique Topic for Creation Test" }
+            post admin_topics_url, params: { admin_topic: { title: "Unique Topic for Creation Test", image: fixture_file_upload("test.png", "image/png")
+        }
       }
     end
 

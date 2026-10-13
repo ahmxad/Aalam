@@ -3,12 +3,12 @@ class Admin::CardsController < Admin::BaseController
 
   # GET /admin/cards or /admin/cards.json
   def index
-    # Optimization: Use .with_attached_image to prevent N+1 query performance database slowdowns
-    @admin_cards = Admin::Card.with_attached_image.all
+    @topics = Admin::Topic.with_attached_image.preload(cards: { image_attachment: :blob }).order(:title)
   end
 
   # GET /admin/cards/1 or /admin/cards/1.json
   def show
+    @posts = @admin_card.posts.order(created_at: :desc)
   end
 
   # GET /admin/cards/new
