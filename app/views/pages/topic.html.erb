@@ -7,43 +7,38 @@
       <li><%= @topic.title %></li>
     </ul>
   </div>
-  <%# Header %>
-  <header class="card bg-base-100 border border-base-200 shadow-md overflow-hidden mb-10">
+  <%# Hero header %>
+  <header class="surface-hero">
     <% if @topic.image.attached? %>
-      <figure>
-        <%= image_tag @topic.image.variant(:card), alt: @topic.title, class: "w-full h-48 sm:h-64 object-cover" %>
-      </figure>
+      <%= image_tag @topic.image.variant(:hero), alt: "", class: "surface-hero__media" %>
     <% end %>
-    <div class="card-body">
-      <h1 class="text-3xl sm:text-4xl font-bold"><%= @topic.title %></h1>
-      <div class="flex flex-wrap items-center gap-2 mt-1">
-        <span class="badge badge-ghost"><%= pluralize(@cards.size, "card") %></span>
-        <span class="text-sm text-base-content/60">
+    <div class="surface-hero__overlay"></div>
+    <div class="surface-hero__content">
+      <h1 class="surface-hero__title"><%= @topic.title %></h1>
+      <div class="flex flex-wrap items-center gap-3 mt-3">
+        <span class="badge badge-primary"><%= pluralize(@cards.size, "card") %></span>
+        <span class="text-sm text-base-content/70">
           Created <%= @topic.created_at.strftime("%d %b %Y") %>
         </span>
       </div>
     </div>
   </header>
-  <%# Cards %>
+  <%# Cards section %>
+  <div class="section-heading">
+    <h2 class="section-heading__title">Cards</h2>
+  </div>
   <% if @cards.any? %>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <% @cards.each do |card| %>
-        <%= link_to topic_card_path(@topic.slug, card.slug),
-              class: "group block transition hover:-translate-y-1" do %>
-          <div class="card card-sm bg-base-100 shadow-md border border-base-200 overflow-hidden h-full">
-            <% if card.image.attached? %>
-              <%= image_tag card.image.variant(:card), alt: card.title, class: "w-full h-40 object-cover" %>
-            <% else %>
-              <div class="w-full h-40 bg-base-200"></div>
-            <% end %>
-            <div class="card-body">
-              <h2 class="card-title text-base font-semibold group-hover:text-primary transition-colors">
-                <%= card.title %>
-              </h2>
-              <p class="text-sm text-base-content/60">
-                <%= pluralize(card.posts.size, "post") %>
-              </p>
-            </div>
+        <%= link_to topic_card_path(@topic.slug, card.slug), class: "surface-card" do %>
+          <% if card.image.attached? %>
+            <%= image_tag card.image.variant(:card), alt: card.title, class: "surface-card__media" %>
+          <% else %>
+            <div class="surface-card__placeholder"></div>
+          <% end %>
+          <div class="surface-card__body">
+            <h2 class="surface-card__title"><%= card.title %></h2>
+            <p class="surface-card__meta"><%= pluralize(card.posts.size, "post") %></p>
           </div>
         <% end %>
       <% end %>

@@ -1,0 +1,303 @@
+/* Reusable component styles. Colors come only from the active theme tokens,
+   so changing the theme in application.css restyles everything here. */
+@layer components {
+  /* A clickable card: use on a link and fill it with media and body parts */
+  .surface-card {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--color-base-300);
+    border-radius: var(--radius-box);
+    background-color: var(--color-base-200);
+    color: var(--color-base-content);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .surface-card:hover,
+  .surface-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: var(--color-primary);
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--color-primary) 60%, transparent),
+      0 12px 32px -12px color-mix(in oklab, var(--color-primary) 55%, transparent);
+  }
+
+  .surface-card__media {
+    display: block;
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .surface-card:hover .surface-card__media {
+    transform: scale(1.05);
+  }
+
+  .surface-card__body {
+    padding: 1rem;
+  }
+
+  .surface-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+
+  .surface-card:hover .surface-card__title {
+    color: var(--color-primary);
+  }
+
+  .surface-card__meta {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+  }
+
+    /* Image placeholder for cards without a picture */
+  .surface-card__placeholder {
+    height: 10rem;
+    background-color: color-mix(in oklab, var(--color-base-300) 40%, transparent);
+  }
+
+  /* A static (non-clickable) block, for page headers and content sections */
+  .surface-panel {
+    overflow: hidden;
+    border: 1px solid var(--color-base-300);
+    border-radius: var(--radius-box);
+    background-color: var(--color-base-200);
+    color: var(--color-base-content);
+  }
+
+  .surface-panel__media {
+    display: block;
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+  }
+
+  .surface-panel__body {
+    padding: 1.5rem;
+  }
+
+    /* A large header with an image behind the title */
+  .surface-hero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 16rem;
+    overflow: hidden;
+    border: 1px solid var(--color-base-300);
+    border-radius: var(--radius-box);
+    background-color: var(--color-base-200);
+  }
+
+  @media (min-width: 40rem) {
+    .surface-hero {
+      min-height: 22rem;
+    }
+  }
+
+  .surface-hero__media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Fades the image into the page color so the title stays readable */
+  .surface-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      var(--color-base-100) 0%,
+      color-mix(in oklab, var(--color-base-100) 55%, transparent) 45%,
+      transparent 100%
+    );
+  }
+
+  .surface-hero__content {
+    position: relative;
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .surface-hero__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  /* A section title followed by a thin separator line */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 3rem 0 1.5rem;
+  }
+
+  .section-heading__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .section-heading::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--color-base-300), transparent);
+  }
+
+  /* Breadcrumb links use the action color */
+  .breadcrumbs a {
+    color: var(--color-primary);
+  }
+
+    /* Call-to-action button: a glossy pill. Colors come from theme tokens. */
+  .cta-btn {
+    --cta-bg: var(--color-primary);
+    --cta-text: var(--color-primary-content);
+    --cta-font-size: 1rem;
+    --cta-pad-y: 0.75rem;
+    --cta-pad-x: 1.75rem;
+
+    display: inline-block;
+    position: relative;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 9999px;
+    background-color: var(--cta-bg);
+    transition: all 0.2s ease;
+    box-shadow:
+      inset 0 0.2rem 0.6rem rgba(255, 255, 255, 0.3),
+      inset 0 -0.1rem 0.25rem rgba(0, 0, 0, 0.5),
+      inset 0 -0.3rem 0.6rem rgba(255, 255, 255, 0.35),
+      0 0.6rem 1.5rem -0.5rem color-mix(in oklab, var(--cta-bg) 60%, transparent);
+  }
+
+  .cta-btn__surface {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: inherit;
+    padding: var(--cta-pad-y) var(--cta-pad-x);
+    font-size: var(--cta-font-size);
+    font-weight: 500;
+    color: var(--cta-text);
+  }
+
+  .cta-btn__label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transform: translateY(2%);
+    transition: all 0.2s ease;
+  }
+
+  /* The icon swaps on hover */
+  .cta-btn__icon--hover {
+    display: none;
+  }
+  .cta-btn:hover .cta-btn__icon--default {
+    display: none;
+  }
+  .cta-btn:hover .cta-btn__icon--hover {
+    display: inline-block;
+  }
+
+  .cta-btn__surface::before,
+  .cta-btn__surface::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  .cta-btn__surface::before {
+    left: -15%;
+    right: -15%;
+    bottom: 25%;
+    top: -100%;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+  .cta-btn__surface::after {
+    left: 6%;
+    right: 6%;
+    top: 12%;
+    bottom: 40%;
+    border-radius: 1rem 1rem 0 0;
+    box-shadow: inset 0 10px 8px -10px rgba(255, 255, 255, 0.8);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .cta-btn:hover {
+    box-shadow:
+      inset 0 0.2rem 0.4rem rgba(255, 255, 255, 0.4),
+      inset 0 -0.1rem 0.25rem rgba(0, 0, 0, 0.5),
+      inset 0 -0.3rem 0.6rem rgba(255, 255, 255, 0.5),
+      0 0.8rem 1.8rem -0.5rem color-mix(in oklab, var(--cta-bg) 75%, transparent);
+  }
+  .cta-btn:hover .cta-btn__surface::before {
+    transform: translateY(-5%);
+  }
+  .cta-btn:hover .cta-btn__surface::after {
+    opacity: 0.4;
+    transform: translateY(5%);
+  }
+  .cta-btn:hover .cta-btn__label {
+    transform: translateY(-4%);
+  }
+  .cta-btn:active {
+    transform: translateY(3px);
+  }
+
+  .cta-btn:focus-visible {
+    outline: 2px solid var(--color-base-content);
+    outline-offset: 3px;
+  }
+
+  /* Sizes and color variants */
+  .cta-btn--sm {
+    --cta-font-size: 0.875rem;
+    --cta-pad-y: 0.4rem;
+    --cta-pad-x: 1rem;
+  }
+  .cta-btn--secondary {
+    --cta-bg: var(--color-secondary);
+    --cta-text: var(--color-secondary-content);
+  }
+  .cta-btn--danger {
+    --cta-bg: var(--color-error);
+    --cta-text: var(--color-error-content);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-btn,
+    .cta-btn__label,
+    .cta-btn__surface::before,
+    .cta-btn__surface::after,
+    
+    .surface-card,
+    .surface-card__media,
+    .surface-card__title {
+      transition: none;
+    }
+
+    .surface-card:hover,
+    .surface-card:focus-visible,
+    .surface-card:hover .surface-card__media {
+      transform: none;
+    }
+  }
+}

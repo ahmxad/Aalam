@@ -1,12 +1,54 @@
 @import "tailwindcss";
+@import "./components.css";
 
 @source not "./daisyui{,*}.mjs";
 
 @plugin "./daisyui.mjs";
 
-/* Optional for custom themes – Docs: https://daisyui.com/docs/themes/#how-to-add-a-new-custom-theme */
-@plugin "./daisyui-theme.mjs"{
-  /* custom theme here */
+@plugin "./daisyui-theme.mjs" {
+  name: "aalam";
+  color-scheme: dark;
+
+  /* Page and surfaces */
+  --color-base-100: #000000;
+  --color-base-200: #141414;
+  --color-base-300: #494949;
+  --color-base-content: #ffffff;
+
+  /* Main action color */
+  --color-primary: #ff5d73;
+  --color-primary-content: #000000;
+
+  /* Dark supporting color */
+  --color-secondary: #494949;
+  --color-secondary-content: #ffffff;
+
+  /* Muted supporting color */
+  --color-accent: #7c7a7a;
+  --color-accent-content: #000000;
+
+  /* Raised dark surfaces (for example the footer) */
+  --color-neutral: #494949;
+  --color-neutral-content: #ffffff;
+
+  /* Status colors, only used for alerts and messages */
+  --color-info: #4a90c2;
+  --color-info-content: #000000;
+  --color-success: #4caf50;
+  --color-success-content: #000000;
+  --color-warning: #f5b83d;
+  --color-warning-content: #000000;
+  --color-error: #d62839;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
 body {
