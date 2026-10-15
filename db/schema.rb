@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_13_130542) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_15_052932) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -80,6 +80,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_130542) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "slug_histories", force: :cascade do |t|
+    t.string "sluggable_type", null: false
+    t.bigint "sluggable_id", null: false
+    t.string "slug", null: false
+    t.bigint "scope_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sluggable_type", "slug", "scope_id"], name: "index_slug_histories_on_lookup"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_slug_histories_on_sluggable"
   end
 
   create_table "users", force: :cascade do |t|

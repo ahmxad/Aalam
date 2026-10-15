@@ -1,5 +1,6 @@
 class Admin::Card < ApplicationRecord
   # Connects a single image file to this card
+  include SlugHistoryTracking
   include ImageValidatable
   has_one_attached :image do |attachable|
     attachable.variant :card, resize_to_fill: [ 600, 320 ], format: :webp, saver: { quality: 80 }
@@ -17,6 +18,10 @@ class Admin::Card < ApplicationRecord
 
   def to_param
     id.to_s
+  end
+
+  def self.slug_scope_attribute
+    :topic_id
   end
 
   private

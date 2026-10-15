@@ -1,5 +1,11 @@
 class PagesController < ApplicationController
   allow_unauthenticated_access
+
+  before_action :load_topic, only: %i[topic card show]
+  before_action :load_card, only: %i[card show]
+  before_action :load_post, only: :show
+  before_action :redirect_to_current_url, only: %i[topic card show]
+
   def home
     @topics = Admin::Topic.with_attached_image.order(created_at: :desc).limit(3)
     @posts = Admin::Post.joins(card: :topic).includes(card: :topic).order(created_at: :desc).limit(3)
@@ -15,21 +21,14 @@ class PagesController < ApplicationController
   def about
   end
   def show
-    @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
-    @card = @topic.cards.find_by!(slug: params[:card_slug])
-    @post = @card.posts.find_by!(slug: params[:post_slug])
-
     siblings = @card.posts
     @previous_post = siblings.where("id < ?", @post.id).order(id: :desc).first
     @next_post = siblings.where("id > ?", @post.id).order(:id).first
   end
-def card
-  @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
-  @card = @topic.cards.find_by!(slug: params[:card_slug])
-  @posts = @card.posts.order(created_at: :desc)
-end
+  def card
+    @posts = @card.posts.order(created_at: :desc)
+  end
   def topic
-    @topic = Admin::Topic.find_by!(slug: params[:topic_slug])
     @cards = @topic.cards.with_attached_image.includes(:posts).order(:title)
   end
 
@@ -53,5 +52,42 @@ end
         "posts.title ILIKE :q OR posts.summary ILIKE :q OR posts.body ILIKE :q",
         q: pattern
       )
+  end
+
+  private
+
+  def load_topic
+    @topic, outdated = Admin::Topic.find_by_slug_or_history(params[:topic_slug])
+    raise ActiveRecord::RecordNotFound unless @topic
+
+    @url_outdated ||= outdated
+  end
+
+  def load_card
+    @card, outdated = Admin::Card.find_by_slug_or_history(params[:card_slug], scope_id: @topic.id)
+    raise ActiveRecord::RecordNotFound unless @card
+
+    @url_outdated ||= outdated
+  end
+
+  def load_post
+    @post, outdated = Admin::Post.find_by_slug_or_history(params[:post_slug], scope_id: @card.id)
+    raise ActiveRecord::RecordNotFound unless @post
+
+    @url_outdated ||= outdated
+  end
+
+  # An old URL answers with a permanent redirect to the current URL of the same page
+  def redirect_to_current_url
+    return unless @url_outdated
+
+    path =
+      case action_name
+      when "topic" then topic_path(@topic.slug)
+      when "card" then topic_card_path(@card.topic.slug, @card.slug)
+      else topic_card_post_path(@post.card.topic.slug, @post.card.slug, @post.slug)
+      end
+
+    redirect_to path, status: :moved_permanently
   end
 end

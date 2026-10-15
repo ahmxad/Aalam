@@ -1,4 +1,5 @@
 class Admin::Topic < ApplicationRecord
+  include SlugHistoryTracking
   include ImageValidatable
   has_one_attached :image do |attachable|
     attachable.variant :card, resize_to_fill: [ 600, 320 ], format: :webp, saver: { quality: 80 }
