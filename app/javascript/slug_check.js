@@ -1,4 +1,3 @@
-console.log("SLUG CHECK LOADED")
 document.addEventListener("turbo:load", () => {
   const titleInput = document.querySelector("#admin_topic_title")
   const availability = document.querySelector("#slug-availability")
