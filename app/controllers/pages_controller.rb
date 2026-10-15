@@ -1,6 +1,8 @@
 class PagesController < ApplicationController
   allow_unauthenticated_access
   def home
+    @topics = Admin::Topic.with_attached_image.order(created_at: :desc).limit(3)
+    @posts = Admin::Post.joins(card: :topic).includes(card: :topic).order(created_at: :desc).limit(3)
   end
 
   def contact

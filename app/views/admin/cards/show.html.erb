@@ -1,7 +1,7 @@
 <% content_for :title, @admin_card.title %>
 <div class="max-w-4xl mx-auto mt-12 px-4">
   <% if notice.present? %>
-    <div role="alert" class="alert alert-success mb-6">
+    <div role="alert" class="notice notice--success mb-6">
       <span><%= notice %></span>
     </div>
   <% end %>
@@ -14,13 +14,13 @@
       <li><%= @admin_card.title %></li>
     </ul>
   </div>
-  <div class="card bg-base-100 border border-base-300 shadow-sm overflow-hidden">
+  <div class="surface-panel">
     <% if @admin_card.image.attached? %>
       <figure>
         <%= image_tag @admin_card.image.variant(:card), class: "w-full h-56 object-cover" %>
       </figure>
     <% end %>
-    <div class="card-body">
+    <div class="surface-panel__body space-y-2">
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 class="text-3xl font-bold"><%= @admin_card.title %></h1>

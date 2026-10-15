@@ -3,7 +3,7 @@
 <% topic = card.topic %>
 <div class="max-w-4xl mx-auto mt-12 px-4">
   <% if notice.present? %>
-    <div role="alert" class="alert alert-success mb-6">
+    <div role="alert" class="notice notice--success mb-6">
       <span><%= notice %></span>
     </div>
   <% end %>
@@ -17,8 +17,8 @@
       <li><%= @admin_post.title %></li>
     </ul>
   </div>
-  <div class="card bg-base-100 border border-base-300 shadow-sm">
-    <div class="card-body">
+  <div class="surface-panel">
+    <div class="surface-panel__body space-y-2">
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 class="text-3xl font-bold"><%= @admin_post.title %></h1>

@@ -1,8 +1,8 @@
 <%= form_with(model: admin_post, class: "contents") do |form| %>
-  <div class="card bg-base-100 border border-base-300 shadow-sm">
-    <div class="card-body space-y-4">
+  <div class="surface-panel">
+    <div class="surface-panel__body space-y-4">
       <% if admin_post.errors.any? %>
-        <div role="alert" class="alert alert-error alert-soft">
+        <div role="alert" class="notice notice--error">
           <div>
             <p class="font-semibold"><%= pluralize(admin_post.errors.count, "error") %> prevented this post from being saved:</p>
             <ul class="list-disc ml-5 text-sm">

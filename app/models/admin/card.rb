@@ -4,6 +4,7 @@ class Admin::Card < ApplicationRecord
   has_one_attached :image do |attachable|
     attachable.variant :card, resize_to_fill: [ 600, 320 ], format: :webp, saver: { quality: 80 }
     attachable.variant :thumb, resize_to_limit: [ 512, 512 ], format: :webp, saver: { quality: 80 }
+    attachable.variant :hero, resize_to_fill: [ 1600, 640 ], format: :webp, saver: { quality: 80 }
   end
 
   has_many :posts, class_name: "Admin::Post", dependent: :destroy

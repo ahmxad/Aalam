@@ -8,47 +8,40 @@
       <li><%= @card.title %></li>
     </ul>
   </div>
-  <%# Header %>
-  <header class="card bg-base-100 border border-base-200 shadow-md overflow-hidden mb-10">
+  <%# Hero header %>
+  <header class="surface-hero">
     <% if @card.image.attached? %>
-      <figure>
-        <%= image_tag @card.image.variant(:card), alt: @card.title, class: "w-full h-48 sm:h-64 object-cover" %>
-      </figure>
+      <%= image_tag @card.image.variant(:hero), alt: "", class: "surface-hero__media" %>
     <% end %>
-    <div class="card-body">
-      <p class="text-xs font-semibold uppercase tracking-wide text-primary">
-        <%= @topic.title %>
-      </p>
-      <h1 class="text-3xl sm:text-4xl font-bold"><%= @card.title %></h1>
-      <div class="flex flex-wrap items-center gap-2 mt-1">
-        <span class="badge badge-ghost"><%= pluralize(@posts.size, "post") %></span>
-        <span class="text-sm text-base-content/60">
+    <div class="surface-hero__overlay"></div>
+    <div class="surface-hero__content">
+      <p class="text-xs font-semibold uppercase tracking-wide text-primary"><%= @topic.title %></p>
+      <h1 class="surface-hero__title"><%= @card.title %></h1>
+      <div class="flex flex-wrap items-center gap-3 mt-3">
+        <span class="badge badge-primary"><%= pluralize(@posts.size, "post") %></span>
+        <span class="text-sm text-base-content/70">
           Created <%= @card.created_at.strftime("%d %b %Y") %>
         </span>
       </div>
     </div>
   </header>
-  <%# Posts %>
+  <%# Posts section %>
+  <div class="section-heading">
+    <h2 class="section-heading__title">Posts</h2>
+  </div>
   <% if @posts.any? %>
     <div class="space-y-4">
       <% @posts.each do |post| %>
-        <%= link_to topic_card_post_path(@topic.slug, @card.slug, post.slug),
-              class: "group block rounded-box border border-base-200 bg-base-100 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" do %>
-          <article>
-            <h2 class="text-xl font-semibold group-hover:text-primary transition-colors">
-              <%= post.title %>
-            </h2>
-            <p class="mt-2 text-base-content/70">
-              <%= truncate(post.summary, length: 160) %>
-            </p>
-            <div class="mt-3 flex items-center justify-between text-sm">
-              <span class="text-base-content/50">
-                <%= post.created_at.strftime("%d %b %Y") %>
-              </span>
-              <span class="font-medium text-primary">Read post &rarr;</span>
-            </div>
-          </article>
-        <% end %>
+        <article class="surface-row">
+          <div class="min-w-0">
+            <h2 class="surface-row__title"><%= post.title %></h2>
+            <p class="surface-row__text"><%= truncate(post.summary, length: 160) %></p>
+            <p class="surface-row__meta"><%= post.created_at.strftime("%d %b %Y") %></p>
+          </div>
+          <div class="shrink-0">
+            <%= cta_link_to "Read post", topic_card_post_path(@topic.slug, @card.slug, post.slug) %>
+          </div>
+        </article>
       <% end %>
     </div>
   <% else %>

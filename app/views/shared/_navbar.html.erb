@@ -5,7 +5,7 @@
   <%# Closes the mobile menu when clicking anywhere outside it %>
   <label for="navbar-toggle" class="fixed inset-0 hidden peer-checked:block lg:peer-checked:hidden"></label>
   <%# One single glass bar %>
-  <div class="relative flex items-center gap-2 rounded-full bg-base-100/70 backdrop-blur-md border border-base-300 shadow-sm px-2 py-1">
+  <div class="relative flex items-center gap-2 rounded-full bg-base-200/70 backdrop-blur-md border border-base-300 px-2 py-1">
     <label for="navbar-toggle" aria-label="Open menu" class="btn btn-sm btn-circle btn-ghost lg:hidden">
       <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
@@ -41,7 +41,7 @@
   </div>
   <%# Mobile menu, opens below the bar %>
   <div class="relative mt-2 hidden peer-checked:block lg:hidden">
-    <ul class="menu rounded-box bg-base-100/90 backdrop-blur-md border border-base-300 shadow-sm">
+    <ul class="menu rounded-box bg-base-200/95 backdrop-blur-md border border-base-300 shadow-sm">
       <li><%= link_to "Home", root_path, class: ("menu-active" if current_page?(root_path)) %></li>
       <li><%= link_to "About", about_path, class: ("menu-active" if current_page?(about_path)) %></li>
       <li><%= link_to "Explore", explore_path, class: ("menu-active" if current_page?(explore_path)) %></li>

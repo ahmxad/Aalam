@@ -1,6 +1,6 @@
+<% content_for :title, params[:q].present? ? "Search: #{params[:q]}" : "Search" %>
 <div class="max-w-4xl mx-auto px-4 py-10">
   <h1 class="text-3xl font-bold mb-6">Search Results</h1>
-
   <% if params[:q].blank? %>
     <p>Please enter something to search.</p>
   <% else %>
@@ -8,97 +8,74 @@
     <% cards = @cards || [] %>
     <% posts = @posts || [] %>
     <% total = topics.size + cards.size + posts.size %>
-
-    <p class="mb-8">
+    <p class="mb-2 text-base-content/70">
       Found <%= total %> result(s) for
       "<%= params[:q] %>"
     </p>
-
     <% if total.zero? %>
       <p>No results found.</p>
     <% end %>
-
     <% if topics.any? %>
-      <h2 class="text-2xl font-bold mb-4">Topics</h2>
-
-      <div class="space-y-4 mb-8">
+      <div class="section-heading">
+        <h2 class="section-heading__title">Topics</h2>
+        <span class="badge badge-primary badge-sm"><%= topics.size %></span>
+      </div>
+      <div class="space-y-4">
         <% topics.each do |topic| %>
-          <article class="card bg-base-100 border border-base-300 shadow-sm">
-            <div class="card-body">
-              <h3 class="card-title"><%= topic.title %></h3>
-
-              <div class="card-actions justify-end">
-                <%= link_to "View Topic",
-                    topic_path(topic.slug),
-                    class: "btn btn-primary" %>
-              </div>
+          <article class="surface-row">
+            <div class="min-w-0">
+              <h3 class="surface-row__title"><%= topic.title %></h3>
+            </div>
+            <div class="shrink-0">
+              <%= link_to "View Topic", topic_path(topic.slug), class: "btn btn-primary btn-sm" %>
             </div>
           </article>
         <% end %>
       </div>
     <% end %>
-
     <% if cards.any? %>
-      <h2 class="text-2xl font-bold mb-4">Cards</h2>
-
-      <div class="space-y-4 mb-8">
+      <div class="section-heading">
+        <h2 class="section-heading__title">Cards</h2>
+        <span class="badge badge-primary badge-sm"><%= cards.size %></span>
+      </div>
+      <div class="space-y-4">
         <% cards.each do |card| %>
-          <article class="card bg-base-100 border border-base-300 shadow-sm">
-            <div class="card-body">
-              <p class="text-sm text-base-content/70">
+          <article class="surface-row">
+            <div class="min-w-0">
+              <p class="surface-row__meta mt-0!">
                 Topic:
-                <%= link_to card.topic.title,
-                    topic_path(card.topic.slug) %>
+                <%= link_to card.topic.title, topic_path(card.topic.slug), class: "text-primary hover:underline" %>
               </p>
-
-              <h3 class="card-title"><%= card.title %></h3>
-
-              <div class="card-actions justify-end">
-                <%= link_to "View Card",
-                    topic_card_path(card.topic.slug, card.slug),
-                    class: "btn btn-primary" %>
-              </div>
+              <h3 class="surface-row__title"><%= card.title %></h3>
+            </div>
+            <div class="shrink-0">
+              <%= link_to "View Card", topic_card_path(card.topic.slug, card.slug), class: "btn btn-primary btn-sm" %>
             </div>
           </article>
         <% end %>
       </div>
     <% end %>
-
     <% if posts.any? %>
-      <h2 class="text-2xl font-bold mb-4">Posts</h2>
-
+      <div class="section-heading">
+        <h2 class="section-heading__title">Posts</h2>
+        <span class="badge badge-primary badge-sm"><%= posts.size %></span>
+      </div>
       <div class="space-y-4">
         <% posts.each do |post| %>
-          <article class="card bg-base-100 border border-base-300 shadow-sm">
-            <div class="card-body">
-              <div class="text-sm breadcrumbs">
-                <ul>
-                  <li>
-                    <%= link_to post.card.topic.title,
-                        topic_path(post.card.topic.slug) %>
-                  </li>
-                  <li>
-                    <%= link_to post.card.title,
-                        topic_card_path(
-                          post.card.topic.slug,
-                          post.card.slug
-                        ) %>
-                  </li>
-                </ul>
+          <article class="surface-row">
+            <div class="min-w-0">
+              <div class="trail">
+                <%= link_to post.card.topic.title, topic_path(post.card.topic.slug), class: "trail__item trail__item--primary" %>
+                <span class="trail__sep" aria-hidden="true">›</span>
+                <%= link_to post.card.title, topic_card_path(post.card.topic.slug, post.card.slug), class: "trail__item" %>
               </div>
-
-              <h3 class="card-title"><%= post.title %></h3>
-              <p><%= truncate(post.summary, length: 200) %></p>
-
-              <div class="card-actions justify-end">
-                <%= link_to "Read Post",
-                    topic_card_post_path(
-                      post.card.topic.slug,
-                      post.card.slug,
-                      post.slug
-                    ),
-                    class: "btn btn-primary" %>
-              </div>
+              <h3 class="surface-row__title"><%= post.title %></h3>
+              <p class="surface-row__text"><%= truncate(post.summary, length: 200) %></p>
+            </div>
+            <div class="shrink-0">
+              <%= link_to "Read Post",
+                    topic_card_post_path(post.card.topic.slug, post.card.slug, post.slug),
+                    class: "btn btn-primary btn-sm" %>
             </div>
           </article>
         <% end %>

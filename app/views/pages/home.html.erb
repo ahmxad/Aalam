@@ -1,8 +1,63 @@
-<div class="mt-25">
-  <h1 class="font-bold text-2xl mb-6">Welcome</h1>
-  <% if authenticated? && Current.user&.admin? %>
-    <%= link_to "Cards", admin_cards_path, class: "btn btn-primary" %>
-    <%= link_to "Posts", admin_posts_path, class: "btn btn-primary" %>
-    <%= link_to "Topics", admin_topics_path, class: "btn btn-primary" %>
+<% content_for :title, "Aalam" %>
+<div class="max-w-5xl mx-auto my-8 px-4">
+  <%# Hero %>
+  <section class="page-hero">
+    <p class="page-hero__eyebrow text-2xl">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+    <h1 class="page-hero__title">Explore the <span class="page-hero__accent">world</span> of ideas</h1>
+    <p class="page-hero__text">
+      A personal blog of topics, related categories and posts about the things I learn and think about.
+    </p>
+    <div class="page-hero__actions">
+      <%= cta_link_to "Explore topics", explore_path %>
+      <% if authenticated? && Current.user&.admin? %>
+        <%= link_to "Admin", admin_root_path, class: "btn btn-outline" %>
+      <% end %>
+    </div>
+  </section>
+  <%# Latest topics %>
+  <% if @topics.any? %>
+    <div class="section-heading">
+      <h2 class="section-heading__title">Latest topics</h2>
+      <%= link_to "View all", explore_path, class: "ml-auto text-sm text-primary hover:underline order-last" %>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% @topics.each do |topic| %>
+        <%= link_to topic_path(topic), class: "surface-card" do %>
+          <% if topic.image.attached? %>
+            <%= image_tag topic.image.variant(:card), alt: topic.title, class: "surface-card__media" %>
+          <% else %>
+            <div class="surface-card__placeholder"></div>
+          <% end %>
+          <div class="surface-card__body">
+            <h3 class="surface-card__title"><%= topic.title %></h3>
+            <p class="surface-card__meta">Created <%= topic.created_at.strftime("%d %b %Y") %></p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+  <%# Latest posts %>
+  <% if @posts.any? %>
+    <div class="section-heading">
+      <h2 class="section-heading__title">Latest posts</h2>
+    </div>
+    <div class="space-y-4">
+      <% @posts.each do |post| %>
+        <article class="surface-row">
+          <div class="min-w-0">
+            <div class="trail">
+              <%= link_to post.card.topic.title, topic_path(post.card.topic.slug), class: "trail__item trail__item--primary" %>
+              <span class="trail__sep" aria-hidden="true">›</span>
+              <%= link_to post.card.title, topic_card_path(post.card.topic.slug, post.card.slug), class: "trail__item" %>
+            </div>
+            <h3 class="surface-row__title"><%= post.title %></h3>
+            <p class="surface-row__text"><%= truncate(post.summary, length: 160) %></p>
+          </div>
+          <div class="shrink-0">
+            <%= cta_link_to "Read post", topic_card_post_path(post.card.topic.slug, post.card.slug, post.slug), size: :sm %>
+          </div>
+        </article>
+      <% end %>
+    </div>
   <% end %>
 </div>
