@@ -1,5 +1,11 @@
 class PagesController < ApplicationController
+  SEARCH_LIMIT = 20
+  MAX_QUERY_LENGTH = 100
+
   allow_unauthenticated_access
+
+  rate_limit to: 30, within: 1.minute, only: :search,
+    with: -> { render plain: "Too many searches. Please wait a minute and try again.", status: :too_many_requests }
 
   before_action :load_topic, only: %i[topic card show]
   before_action :load_card, only: %i[card show]
@@ -33,25 +39,36 @@ class PagesController < ApplicationController
   end
 
   def search
-    query = params[:q].to_s.strip
-    return if query.blank?
+    @query = params[:q].to_s.strip.first(MAX_QUERY_LENGTH)
+    return if @query.blank?
 
-    pattern = "%#{ActiveRecord::Base.sanitize_sql_like(query)}%"
+    @search_limit = SEARCH_LIMIT
+    pattern = "%#{ActiveRecord::Base.sanitize_sql_like(@query)}%"
 
     @topics = Admin::Topic
       .where("title ILIKE ?", pattern)
+      .order(:title)
+      .limit(SEARCH_LIMIT)
+      .load
 
     @cards = Admin::Card
       .joins(:topic)
       .includes(:topic)
       .where("admin_cards.title ILIKE ?", pattern)
+      .order(:title)
+      .limit(SEARCH_LIMIT)
+      .load
 
     @posts = Admin::Post
+      .joins(card: :topic)
       .includes(card: :topic)
       .where(
         "posts.title ILIKE :q OR posts.summary ILIKE :q OR posts.body ILIKE :q",
         q: pattern
       )
+      .order(created_at: :desc)
+      .limit(SEARCH_LIMIT)
+      .load
   end
 
   private

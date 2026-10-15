@@ -28,7 +28,7 @@
           class: "join ml-auto rounded-full overflow-hidden bg-base-100/70 border border-base-300" do |f| %>
       <%= f.search_field :q,
             placeholder: "Search...",
-            value: params[:q],
+            value: params[:q].to_s.first(PagesController::MAX_QUERY_LENGTH), maxlength: PagesController::MAX_QUERY_LENGTH,
             "aria-label": "Search",
             class: "input input-sm join-item bg-transparent border-0 w-28 sm:w-44 lg:w-56 focus:outline-none" %>
       <%= f.button type: "submit", name: nil, "aria-label": "Submit search", class: "btn btn-sm btn-primary join-item" do %>
