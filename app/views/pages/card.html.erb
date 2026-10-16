@@ -9,15 +9,15 @@
     </ul>
   </div>
   <%# Hero header %>
-  <header class="surface-hero">
+  <header class="surface-hero" data-controller="reveal" data-reveal-trigger-value="load">
     <% if @card.image.attached? %>
       <%= image_tag @card.image.variant(:hero), alt: "", class: "surface-hero__media" %>
     <% end %>
     <div class="surface-hero__overlay"></div>
     <div class="surface-hero__content">
-      <p class="text-xs font-semibold uppercase tracking-wide text-primary"><%= @topic.title %></p>
-      <h1 class="surface-hero__title"><%= @card.title %></h1>
-      <div class="flex flex-wrap items-center gap-3 mt-3">
+      <p class="text-xs font-semibold uppercase tracking-wide text-primary" data-reveal-item><%= @topic.title %></p>
+      <h1 class="surface-hero__title" data-reveal-item><%= @card.title %></h1>
+      <div class="flex flex-wrap items-center gap-3 mt-3" data-reveal-item>
         <span class="badge badge-primary"><%= pluralize(@posts.size, "post") %></span>
         <span class="text-sm text-base-content/70">
           Created <%= @card.created_at.strftime("%d %b %Y") %>
@@ -30,9 +30,9 @@
     <h2 class="section-heading__title">Posts</h2>
   </div>
   <% if @posts.any? %>
-    <div class="space-y-4">
+    <div class="space-y-4" data-controller="reveal">
       <% @posts.each do |post| %>
-        <article class="surface-row">
+        <article class="surface-row" data-reveal-item>
           <div class="min-w-0">
             <h2 class="surface-row__title"><%= post.title %></h2>
             <p class="surface-row__text"><%= truncate(post.summary, length: 160) %></p>

@@ -9,10 +9,10 @@
 <div class="max-w-5xl mx-auto my-8 px-4">
 
   <%# Hero %>
-  <section class="page-hero">
-    <p class="page-hero__eyebrow">About Aalam</p>
-    <h1 class="page-hero__title">A small corner of the <span class="page-hero__accent">world</span></h1>
-    <p class="page-hero__text">
+  <section class="page-hero" data-controller="reveal" data-reveal-trigger-value="load">
+    <p class="page-hero__eyebrow" data-reveal-item>About Aalam</p>
+    <h1 class="page-hero__title" data-reveal-item>A small corner of the <span class="page-hero__accent">world</span></h1>
+    <p class="page-hero__text" data-reveal-item>
       Aalam means world. This is a personal blog where I write down what I learn, build and think about.
       Everything here is my own views and opinions.
     </p>
@@ -23,9 +23,9 @@
     <h2 class="section-heading__title">How Aalam is organised</h2>
   </div>
 
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-3" data-controller="reveal">
     <% structure.each_with_index do |(title, text), index| %>
-      <div class="surface-panel">
+      <div class="surface-panel" data-reveal-item>
         <div class="surface-panel__body space-y-2">
           <span class="badge badge-primary badge-sm"><%= index + 1 %></span>
           <h3 class="text-lg font-semibold"><%= title %></h3>

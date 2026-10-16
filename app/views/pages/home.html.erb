@@ -1,13 +1,13 @@
 <% content_for :title, "Aalam" %>
 <div class="max-w-5xl mx-auto my-8 px-4">
   <%# Hero %>
-  <section class="page-hero">
-    <p class="page-hero__eyebrow text-2xl">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-    <h1 class="page-hero__title">Explore the <span class="page-hero__accent">world</span> of ideas</h1>
-    <p class="page-hero__text">
+  <section class="page-hero" data-controller="reveal" data-reveal-trigger-value="load">
+    <p class="page-hero__eyebrow text-2xl" data-reveal-item>بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+    <h1 class="page-hero__title" data-reveal-item>Explore the <span class="page-hero__accent">world</span> of ideas</h1>
+    <p class="page-hero__text" data-reveal-item>
       A personal blog of topics, related categories and posts about the things I learn and think about.
     </p>
-    <div class="page-hero__actions">
+    <div class="page-hero__actions" data-reveal-item>
       <%= cta_link_to "Explore topics", explore_path %>
       <% if authenticated? && Current.user&.admin? %>
         <%= link_to "Admin", admin_root_path, class: "btn btn-outline" %>
@@ -20,9 +20,9 @@
       <h2 class="section-heading__title">Latest topics</h2>
       <%= link_to "View all", explore_path, class: "ml-auto text-sm text-primary hover:underline order-last" %>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-controller="reveal">
       <% @topics.each do |topic| %>
-        <%= link_to topic_path(topic), class: "surface-card" do %>
+        <%= link_to topic_path(topic), class: "surface-card", data: { reveal_item: true } do %>
           <% if topic.image.attached? %>
             <%= image_tag topic.image.variant(:card), alt: topic.title, class: "surface-card__media" %>
           <% else %>
@@ -41,9 +41,9 @@
     <div class="section-heading">
       <h2 class="section-heading__title">Latest posts</h2>
     </div>
-    <div class="space-y-4">
+    <div class="space-y-4" data-controller="reveal">
       <% @posts.each do |post| %>
-        <article class="surface-row">
+        <article class="surface-row" data-reveal-item>
           <div class="min-w-0">
             <div class="trail">
               <%= link_to post.card.topic.title, topic_path(post.card.topic.slug), class: "trail__item trail__item--primary" %>

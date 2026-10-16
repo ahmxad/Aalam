@@ -12,46 +12,48 @@
   </div>
   <article>
     <%# Header %>
-    <header class="mb-8">
-      <p class="text-xs font-semibold uppercase tracking-wide text-primary">
+    <header class="mb-8" data-controller="reveal" data-reveal-trigger-value="load">
+      <p class="text-xs font-semibold uppercase tracking-wide text-primary" data-reveal-item>
         <%= link_to @card.title, topic_card_path(@topic.slug, @card.slug) %>
       </p>
-      <h1 class="article-title"><%= @post.title %></h1>
-      <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-base-content/60">
+      <h1 class="article-title" data-reveal-item><%= @post.title %></h1>
+      <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-base-content/60" data-reveal-item>
         <span><%= @post.created_at.strftime("%d %b %Y") %></span>
         <span class="badge badge-primary badge-sm"><%= reading_minutes %> min read</span>
       </div>
       <% if @post.summary.present? %>
-        <p class="article-lead"><%= @post.summary %></p>
+        <p class="article-lead" data-reveal-item><%= @post.summary %></p>
       <% end %>
     </header>
     <%# Body: keep this on one line, line breaks inside would show as blank lines %>
     <div class="article-body"><%= @post.body %></div>
   </article>
   <%# Previous / next %>
-  <div class="section-heading">
-    <h2 class="section-heading__title">Keep reading</h2>
-  </div>
-  <nav aria-label="More posts in this card" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-    <% if @previous_post %>
-      <%= link_to topic_card_post_path(@topic.slug, @card.slug, @previous_post.slug), class: "surface-card" do %>
-        <div class="surface-card__body">
-          <p class="surface-card__meta">&larr; Previous</p>
-          <h3 class="surface-card__title"><%= @previous_post.title %></h3>
-        </div>
+  <% if @previous_post || @next_post %>
+    <div class="section-heading">
+      <h2 class="section-heading__title">Keep reading</h2>
+    </div>
+    <nav aria-label="More posts in this card" class="grid grid-cols-1 gap-4 sm:grid-cols-2" data-controller="reveal">
+      <% if @previous_post %>
+        <%= link_to topic_card_post_path(@topic.slug, @card.slug, @previous_post.slug), class: "surface-card", data: { reveal_item: true } do %>
+          <div class="surface-card__body">
+            <p class="surface-card__meta">&larr; Previous</p>
+            <h3 class="surface-card__title"><%= @previous_post.title %></h3>
+          </div>
+        <% end %>
+      <% else %>
+        <div></div>
       <% end %>
-    <% else %>
-      <div></div>
-    <% end %>
-    <% if @next_post %>
-      <%= link_to topic_card_post_path(@topic.slug, @card.slug, @next_post.slug), class: "surface-card text-right" do %>
-        <div class="surface-card__body">
-          <p class="surface-card__meta">Next &rarr;</p>
-          <h3 class="surface-card__title"><%= @next_post.title %></h3>
-        </div>
+      <% if @next_post %>
+        <%= link_to topic_card_post_path(@topic.slug, @card.slug, @next_post.slug), class: "surface-card text-right", data: { reveal_item: true } do %>
+          <div class="surface-card__body">
+            <p class="surface-card__meta">Next &rarr;</p>
+            <h3 class="surface-card__title"><%= @next_post.title %></h3>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
-  </nav>
+    </nav>
+  <% end %>
   <div class="mt-8">
     <%= link_to "← Back to #{@card.title}", topic_card_path(@topic.slug, @card.slug), class: "btn btn-ghost btn-sm" %>
   </div>

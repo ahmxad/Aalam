@@ -8,14 +8,14 @@
     </ul>
   </div>
   <%# Hero header %>
-  <header class="surface-hero">
+  <header class="surface-hero" data-controller="reveal" data-reveal-trigger-value="load">
     <% if @topic.image.attached? %>
       <%= image_tag @topic.image.variant(:hero), alt: "", class: "surface-hero__media" %>
     <% end %>
     <div class="surface-hero__overlay"></div>
     <div class="surface-hero__content">
-      <h1 class="surface-hero__title"><%= @topic.title %></h1>
-      <div class="flex flex-wrap items-center gap-3 mt-3">
+      <h1 class="surface-hero__title" data-reveal-item><%= @topic.title %></h1>
+      <div class="flex flex-wrap items-center gap-3 mt-3" data-reveal-item>
         <span class="badge badge-primary"><%= pluralize(@cards.size, "card") %></span>
         <span class="text-sm text-base-content/70">
           Created <%= @topic.created_at.strftime("%d %b %Y") %>
@@ -28,9 +28,9 @@
     <h2 class="section-heading__title">Cards</h2>
   </div>
   <% if @cards.any? %>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-controller="reveal">
       <% @cards.each do |card| %>
-        <%= link_to topic_card_path(@topic.slug, card.slug), class: "surface-card" do %>
+        <%= link_to topic_card_path(@topic.slug, card.slug), class: "surface-card", data: { reveal_item: true } do %>
           <% if card.image.attached? %>
             <%= image_tag card.image.variant(:card), alt: card.title, class: "surface-card__media" %>
           <% else %>

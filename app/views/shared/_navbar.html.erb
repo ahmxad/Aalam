@@ -1,6 +1,6 @@
 <%# Active link gets the primary color, the rest stay subtle %>
 <% link_class = ->(path) { [ "btn btn-sm", current_page?(path) ? "btn-primary" : "btn-ghost" ] } %>
-<header class="sticky top-0 z-50 px-3 pt-2 [--radius-field:0]">
+<header class="sticky top-0 z-50 px-3 pt-2">
   <input id="navbar-toggle" class="peer hidden" type="checkbox" />
   <%# Closes the mobile menu when clicking anywhere outside it %>
   <label for="navbar-toggle" class="fixed inset-0 hidden peer-checked:block lg:peer-checked:hidden"></label>
