@@ -2,22 +2,16 @@
   <h1 class="text-4xl font-bold mb-8 text-primary underline">
     Explore Topics
   </h1>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-controller="reveal">
     <% if @topics.any? %>
       <% @topics.each do |topic| %>
-        <%= link_to topic_path(topic), class: "block hover:-translate-y-1 transition-transform" do %>
-          <div class="card card-sm bg-base-100 shadow-md border border-base-200 overflow-hidden">
-            <% if topic.image.attached? %>
-              <%= image_tag topic.image.variant(resize_to_fill: [600, 320], format: :webp, saver: { quality: 80 }), class: "w-full h-40 object-cover" %>
-            <% end %>
-            <div class="card-body">
-              <h2 class="card-title text-base font-semibold">
-                <%= topic.title %>
-              </h2>
-              <p class="text-sm text-base-content/60">
-                Created <%= topic.created_at.strftime("%d %b %Y") %>
-              </p>
-            </div>
+        <%= link_to topic_path(topic), class: "surface-card", data: { reveal_item: true } do %>
+          <% if topic.image.attached? %>
+            <%= image_tag topic.image.variant(:card), alt: topic.title, class: "surface-card__media" %>
+          <% end %>
+          <div class="surface-card__body">
+            <h2 class="surface-card__title"><%= topic.title %></h2>
+            <p class="surface-card__meta">Created <%= topic.created_at.strftime("%d %b %Y") %></p>
           </div>
         <% end %>
       <% end %>

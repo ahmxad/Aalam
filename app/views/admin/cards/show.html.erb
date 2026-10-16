@@ -1,15 +1,73 @@
-<% content_for :title, "Showing card" %>
-
-<div class="md:w-2/3 w-full mt-12">
+<% content_for :title, @admin_card.title %>
+<div class="max-w-4xl mx-auto mt-12 px-4">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <div role="alert" class="notice notice--success mb-6">
+      <span><%= notice %></span>
+    </div>
   <% end %>
-
-  <h1 class="font-bold text-4xl">Showing card</h1>
-
-  <%= render @admin_card %>
-
-  <%= link_to "Edit this card", edit_admin_card_path(@admin_card), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to cards", admin_cards_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this card", @admin_card, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+  <div class="breadcrumbs text-sm mb-4">
+    <ul>
+      <li><%= link_to "Cards", admin_cards_path %></li>
+      <% if @admin_card.topic %>
+        <li><%= link_to @admin_card.topic.title, admin_topic_path(@admin_card.topic) %></li>
+      <% end %>
+      <li><%= @admin_card.title %></li>
+    </ul>
+  </div>
+  <div class="surface-panel">
+    <% if @admin_card.image.attached? %>
+      <figure>
+        <%= image_tag @admin_card.image.variant(:card), class: "w-full h-56 object-cover" %>
+      </figure>
+    <% end %>
+    <div class="surface-panel__body space-y-2">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 class="text-3xl font-bold"><%= @admin_card.title %></h1>
+          <% if @admin_card.topic %>
+            <p class="text-sm text-base-content/50 mt-1">
+              /topics/<%= @admin_card.topic.slug %>/<%= @admin_card.slug %>
+            </p>
+          <% end %>
+        </div>
+        <% if @admin_card.topic %>
+          <%= link_to "View on site",
+                topic_card_path(@admin_card.topic.slug, @admin_card.slug),
+                class: "btn btn-sm btn-outline",
+                target: "_blank",
+                rel: "noopener" %>
+        <% end %>
+      </div>
+      <p class="text-sm text-base-content/60">
+        Created <%= @admin_card.created_at.strftime("%d %b %Y") %> ·
+        Updated <%= @admin_card.updated_at.strftime("%d %b %Y") %>
+      </p>
+      <div class="card-actions justify-end mt-4">
+        <%= link_to "Back", admin_cards_path, class: "btn btn-ghost" %>
+        <%= link_to "Edit", edit_admin_card_path(@admin_card), class: "btn btn-outline" %>
+        <%= button_to "Delete", admin_card_path(@admin_card), method: :delete,
+              class: "btn btn-error btn-outline",
+              data: { turbo_confirm: "This will delete the card and all of its posts. Are you sure?" } %>
+      </div>
+    </div>
+  </div>
+  <div class="mt-10">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-xl font-bold">Posts <span class="badge badge-ghost"><%= @posts.size %></span></h2>
+      <%= link_to "New post", new_admin_post_path, class: "btn btn-sm btn-primary" %>
+    </div>
+    <% if @posts.any? %>
+      <div class="space-y-2">
+        <% @posts.each do |post| %>
+          <%= link_to admin_post_path(post), class: "block rounded-box border border-base-300 bg-base-100 p-3 hover:bg-base-200/50" do %>
+            <div class="font-semibold"><%= post.title %></div>
+            <div class="text-sm text-base-content/60 truncate"><%= truncate(post.summary, length: 120) %></div>
+            <div class="text-xs text-base-content/40 mt-1"><%= post.created_at.strftime("%d %b %Y") %></div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-sm text-base-content/50 italic">No posts in this card yet.</p>
+    <% end %>
+  </div>
 </div>

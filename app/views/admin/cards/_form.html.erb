@@ -1,37 +1,42 @@
 <%= form_with(model: admin_card, class: "contents") do |form| %>
-  <% if admin_card.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(admin_card.errors.count, "error") %> prohibited this admin_card from being saved:</h2>
-
-      <ul class="list-disc ml-6">
-        <% admin_card.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+  <div class="surface-panel">
+    <div class="surface-panel__body space-y-4">
+      <% if admin_card.errors.any? %>
+        <div role="alert" class="notice notice--error">
+          <div>
+            <p class="font-semibold"><%= pluralize(admin_card.errors.count, "error") %> prevented this card from being saved:</p>
+            <ul class="list-disc ml-5 text-sm">
+              <% admin_card.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+      <div class="flex flex-col gap-2">
+        <%= form.label :topic_id, "Topic", class: "font-semibold" %>
+        <%= form.collection_select :topic_id, @topics, :id, :title, { prompt: "Select a topic" }, required: true, class: ["select select-bordered w-full", { "select-error": admin_card.errors[:topic].any? }] %>
+      </div>
+      <div class="flex flex-col gap-2">
+        <%= form.label :title, class: "font-semibold" %>
+        <%= form.text_field :title, required: true, placeholder: "Card title", class: ["input input-bordered w-full", { "input-error": admin_card.errors[:title].any? || admin_card.errors[:slug].any? }] %>
+        <div id="slug-availability" class="text-sm"></div>
+      </div>
+      <div class="flex flex-col gap-2">
+        <%= form.label :image, class: "font-semibold" %>
+        <% if admin_card.persisted? && admin_card.image.attachment&.persisted? %>
+          <div class="flex items-center gap-3">
+            <%= image_tag admin_card.image.variant(:card), class: "w-24 h-16 object-cover rounded-md" %>
+            <span class="text-sm text-base-content/60">Current image. Choosing a new one will replace it.</span>
+          </div>
         <% end %>
-      </ul>
+        <%= form.file_field :image, direct_upload: true, accept: "image/jpeg,image/png,image/webp", required: !admin_card.image.attached?, class: ["file-input file-input-bordered w-full", { "file-input-error": admin_card.errors[:image].any? }] %>
+        <p class="text-xs text-base-content/50">JPEG, PNG or WebP, up to 5 MB.</p>
+      </div>
+      <div class="card-actions justify-end pt-2">
+        <%= link_to "Cancel", admin_cards_path, class: "btn btn-ghost" %>
+        <%= form.submit class: "btn btn-primary" %>
+      </div>
     </div>
-  <% end %>
-
-  <%# Drop down to select topics %>
-
-  <div class="my-5">
-    <%= form.label :topic %>
-    <%= form.collection_select :topic_id,
-        @topics,
-        :id,
-        :title,
-        { prompt: "Select a topic" },
-        class: "select select-bordered w-full" %>
-  </div>
-
-  <div class="my-5 flex flex-col">
-    <%= form.label :image, "Upload Card Image", { class: "file-input border-2 border-black" } %>
-    <%= form.file_field :image, direct_upload: true, required: true %>
-    <%= form.label :title, class:"font-bold text-2xl" %>
-    <div id="slug-availability" class="text-sm mt-2"></div>
-    <%= form.text_field :title, required: true, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_card.errors[:title].none?, "border-red-400 focus:outline-red-600": admin_card.errors[:title].any?}] %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>

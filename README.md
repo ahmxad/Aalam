@@ -20,9 +20,12 @@ Current structure:
 - - Home, Explore, Contact
 
 #### Colors:
-- #F8E5D2
-- #9E483F
-- #EE9C44
+- #000000
+- #ffffff
+- #494949
+- #7c7a7a
+- #ff5d73
+
 
 
 #### Git:
@@ -37,3 +40,7 @@ Current structure:
 > rails specific (after switching to main)
 - bundle install
 - bin/rails db:migrate
+- bin/rails test
+- bin/rubocop
+- bin/importmap audit
+- bin/brakeman --no-pager

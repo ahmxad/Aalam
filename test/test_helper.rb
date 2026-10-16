@@ -12,5 +12,12 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+    def sample_image
+      {
+        io: StringIO.new(File.binread(Rails.root.join("test/fixtures/files/test.png"))),
+        filename: "test.png",
+        content_type: "image/png"
+      }
+    end
   end
 end

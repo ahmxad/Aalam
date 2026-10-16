@@ -1,29 +1,70 @@
 <% content_for :title, "Cards" %>
-
-<div class="w-full mt-12">
+<div class="max-w-5xl mx-auto mt-12 px-4">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <div role="alert" class="notice notice--success mb-6">
+      <span><%= notice %></span>
+    </div>
   <% end %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Cards</h1>
-    <%= link_to "New card", new_admin_card_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="text-3xl font-bold">Cards</h1>
+      <p class="text-sm text-base-content/60">
+        <%= pluralize(@topics.sum { |t| t.cards.size }, "card") %> in <%= pluralize(@topics.size, "topic") %>
+      </p>
+    </div>
+    <%= link_to "New card", new_admin_card_path, class: "btn btn-primary" %>
   </div>
-
-  <div id="admin_cards" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @admin_cards.any? %>
-      <% @admin_cards.each do |admin_card| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render admin_card %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", admin_card, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_admin_card_path(admin_card), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", admin_card, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+  <% if @topics.any? %>
+    <div class="space-y-8">
+      <% @topics.each do |topic| %>
+        <section>
+          <%# Topic header %>
+          <div class="flex items-center gap-3 mb-3">
+            <% if topic.image.attached? %>
+              <%= image_tag topic.image.variant(:card), class: "w-12 h-12 object-cover rounded-lg" %>
+            <% end %>
+            <h2 class="text-xl font-bold"><%= topic.title %></h2>
+            <span class="badge badge-ghost"><%= pluralize(topic.cards.size, "card") %></span>
+            <%= link_to "Edit topic", edit_admin_topic_path(topic), class: "btn btn-xs btn-ghost ml-auto" %>
           </div>
-        </div>
+          <%# Cards under this topic %>
+          <div class="ml-6 pl-4 border-l-2 border-base-300 space-y-2">
+            <% if topic.cards.any? %>
+              <% topic.cards.sort_by { |c| c.title.to_s.downcase }.each do |card| %>
+                <div class="flex items-center justify-between gap-3 rounded-box border border-base-300 bg-base-100 p-3 hover:bg-base-200/50">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <% if card.image.attached? %>
+                      <%= image_tag card.image.variant(:card), class: "w-16 h-12 object-cover rounded-md shrink-0" %>
+                    <% else %>
+                      <div class="w-16 h-12 rounded-md bg-base-200 flex items-center justify-center text-xs text-base-content/40 shrink-0">No image</div>
+                    <% end %>
+                    <div class="min-w-0">
+                      <div class="font-semibold truncate"><%= card.title %></div>
+                      <div class="text-xs text-base-content/50">
+                        <%= card.slug %> · <%= card.created_at.strftime("%d %b %Y") %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex gap-2 shrink-0">
+                    <%= link_to "View", admin_card_path(card), class: "btn btn-sm btn-ghost" %>
+                    <%= link_to "Edit", edit_admin_card_path(card), class: "btn btn-sm btn-outline" %>
+                    <%= button_to "Delete", admin_card_path(card), method: :delete,
+                          class: "btn btn-sm btn-error btn-outline",
+                          data: { turbo_confirm: "Card and posts will be deleted. Sure?" } %>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="text-sm text-base-content/50 italic py-2">No card in topic.</p>
+            <% end %>
+          </div>
+        </section>
       <% end %>
-    <% else %>
-      <p class="text-center my-10">No cards found.</p>
-    <% end %>
-  </div>
+    </div>
+  <% else %>
+    <div class="text-center py-16 text-base-content/60">
+      <p class="mb-4">No Topic, create one first.</p>
+      <%= link_to "New topic", new_admin_topic_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
 </div>

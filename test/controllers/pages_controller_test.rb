@@ -15,8 +15,9 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get explore_url
     assert_response :success
   end
+
   test "search finds a topic without cards or posts" do
-    topic = Admin::Topic.create!(title: "Standalone Topic")
+    topic = Admin::Topic.create!(title: "Standalone Topic", image: sample_image)
 
     get search_url, params: { q: topic.title }
 
@@ -26,10 +27,11 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search finds a card and displays its topic" do
-    topic = Admin::Topic.create!(title: "Search Test Topic")
+    topic = Admin::Topic.create!(title: "Search Test Topic", image: sample_image)
     card = Admin::Card.create!(
       title: "Unique Search Card",
-      topic: topic
+      topic: topic,
+      image: sample_image
     )
 
     get search_url, params: { q: card.title }
@@ -41,22 +43,23 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search finds a post and displays its hierarchy" do
-    topic = Admin::Topic.create!(title: "Post Search Topic")
+    topic = Admin::Topic.create!(title: "Post Search Topic", image: sample_image)
     card = Admin::Card.create!(
       title: "Post Search Card",
-      topic: topic
+      topic: topic,
+      image: sample_image
     )
-    post = Admin::Post.create!(
+    blog_post = Admin::Post.create!(
       title: "Unique Search Post",
       summary: "A test summary",
       body: "A test body",
       card: card
     )
 
-    get search_url, params: { q: post.title }
+    get search_url, params: { q: blog_post.title }
 
     assert_response :success
-    assert_select "h3", text: post.title
+    assert_select "h3", text: blog_post.title
     assert_select "a", text: "Read Post"
     assert_select "a", text: topic.title
     assert_select "a", text: card.title

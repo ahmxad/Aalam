@@ -1,4 +1,16 @@
-ActiveRecord::Schema[8.1].define(version: 2026_10_09_123059) do
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema[8.1].define(version: 2026_10_15_052932) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -36,6 +48,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_123059) do
     t.datetime "updated_at", null: false
     t.bigint "topic_id"
     t.string "slug"
+    t.index ["topic_id", "slug"], name: "index_admin_cards_on_topic_id_and_slug", unique: true
     t.index ["topic_id"], name: "index_admin_cards_on_topic_id"
   end
 
@@ -56,6 +69,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_123059) do
     t.bigint "card_id", null: false
     t.string "slug"
     t.index "card_id, lower((title)::text)", name: "index_posts_on_card_id_and_lower_title", unique: true
+    t.index ["card_id", "slug"], name: "index_posts_on_card_id_and_slug", unique: true
     t.index ["card_id"], name: "index_posts_on_card_id"
   end
 
@@ -66,6 +80,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_123059) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "slug_histories", force: :cascade do |t|
+    t.string "sluggable_type", null: false
+    t.bigint "sluggable_id", null: false
+    t.string "slug", null: false
+    t.bigint "scope_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sluggable_type", "slug", "scope_id"], name: "index_slug_histories_on_lookup"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_slug_histories_on_sluggable"
   end
 
   create_table "users", force: :cascade do |t|

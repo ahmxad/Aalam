@@ -1,28 +1,34 @@
-<footer class="footer sm:footer-horizontal bg-slate-300 text-base-content p-5">
-  <aside>
-    <%= image_tag 'logo.svg', alt: 'Website Logo', class: 'h-20 w-auto object-contain pl-4 cursor-pointer' %>
-    <p class="pl-5">
-      Aalam
-      <br />
-      Personal blog website (my own views and opinions)
-    </p>
-  </aside>
-  <nav>
-    <h6 class="footer-title">Social</h6>
-    <div class="grid grid-flow-col gap-4">
-  <!-- X -->
-  <div class="grid grid-flow-col gap-4">
-  <%= link_to "#" do %>
-    <%= image_tag "social_logos/twitter.svg", alt: "twitter", class: "h-6 w-6" %>
-  <% end %>
-
-  <%= link_to "#" do %>
-    <%= image_tag "social_logos/instagram.svg", alt: "Instagram", class: "h-6 w-6" %>
-  <% end %>
-
-  <%= link_to "#" do %>
-    <%= image_tag "social_logos/tiktok.svg", alt: "TikTok", class: "h-6 w-6" %>
-  <% end %>
-</div>
-  </nav>
+<footer class="mt-12 bg-neutral text-neutral-content border-t border-base-300">
+  <div class="mx-auto flex max-w-7xl flex-col items-center gap-3 px-5 py-3 sm:flex-row sm:justify-between">
+    <%# Brand and copyright %>
+    <div class="flex items-center gap-3">
+      <%= link_to root_path, "aria-label": "Aalam home", class: "rounded-md bg-base-content px-2 py-1" do %>
+        <%= image_tag "logo.svg", alt: "Aalam logo", class: "h-6 w-auto object-contain" %>
+      <% end %>
+      <p class="text-xs text-neutral-content/70">
+        &copy; <%= Time.current.year %> Aalam &middot; Personal blog, my own views and opinions
+      </p>
+    </div>
+    <%# Page links %>
+    <nav aria-label="Footer links">
+      <ul class="flex items-center gap-4 text-xs">
+        <li><%= link_to "Home", root_path, class: "hover:text-neutral-content hover:underline transition-colors" %></li>
+        <li><%= link_to "About", about_path, class: "hover:text-neutral-content hover:underline transition-colors" %></li>
+        <li><%= link_to "Explore", explore_path, class: "hover:text-neutral-content hover:underline transition-colors" %></li>
+        <li><%= link_to "Contact", contact_path, class: "hover:text-neutral-content hover:underline transition-colors" %></li>
+      </ul>
+    </nav>
+    <%# Social %>
+    <nav aria-label="Social links" class="flex items-center gap-2">
+      <%= link_to "#", "aria-label": "Twitter", class: "rounded-md bg-base-content p-1.5 transition hover:bg-primary" do %>
+        <%= image_tag "social_logos/twitter.svg", alt: "", class: "h-4 w-4" %>
+      <% end %>
+      <%= link_to "#", "aria-label": "Instagram", class: "rounded-md bg-base-content p-1.5 transition hover:bg-primary" do %>
+        <%= image_tag "social_logos/instagram.svg", alt: "", class: "h-4 w-4" %>
+      <% end %>
+      <%= link_to "#", "aria-label": "TikTok", class: "rounded-md bg-base-content p-1.5 transition hover:bg-primary" do %>
+        <%= image_tag "social_logos/tiktok.svg", alt: "", class: "h-4 w-4" %>
+      <% end %>
+    </nav>
+  </div>
 </footer>

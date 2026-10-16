@@ -1,18 +1,55 @@
-<div class="text-sm text-gray-500 mt-6 mb-6">
-  <%= @card.topic.title %> /
-  <%= @card.title %>
-</div>
-<div class="mt-12">
-  <h1 class="font-bold text-4xl bg-gray-200 w-full flex justify-center rounded-md">
-    <%= @card.title %>
-  </h1>
-  <p class="text-sm text-base-content/60 mt-2 mb-6">
-    Card created at: <%= @card.created_at.strftime("%d %b %Y") %>
-  </p>
-  <% @posts.each do |post| %>
-    <article class="flex flex-col m-4 border-b p-4">
-      <h2 class="font-bold text-red-400 text-5xl"><%= post.title %></h2>
-      <%= link_to "Read Post", topic_card_post_path(@topic.slug, @card.slug, post.slug), class: "btn btn-primary w-64" %>
-    </article>
+<% content_for :title, "#{@card.title} · #{@topic.title}" %>
+<div class="max-w-4xl mx-auto my-8 px-4">
+  <%# Breadcrumb %>
+  <div class="breadcrumbs text-sm mb-4">
+    <ul>
+      <li><%= link_to "Explore", explore_path %></li>
+      <li><%= link_to @topic.title, topic_path(@topic.slug) %></li>
+      <li><%= @card.title %></li>
+    </ul>
+  </div>
+  <%# Hero header %>
+  <header class="surface-hero" data-controller="reveal" data-reveal-trigger-value="load">
+    <% if @card.image.attached? %>
+      <%= image_tag @card.image.variant(:hero), alt: "", class: "surface-hero__media" %>
+    <% end %>
+    <div class="surface-hero__overlay"></div>
+    <div class="surface-hero__content">
+      <p class="text-xs font-semibold uppercase tracking-wide text-primary" data-reveal-item><%= @topic.title %></p>
+      <h1 class="surface-hero__title" data-reveal-item><%= @card.title %></h1>
+      <div class="flex flex-wrap items-center gap-3 mt-3" data-reveal-item>
+        <span class="badge badge-primary"><%= pluralize(@posts.size, "post") %></span>
+        <span class="text-sm text-base-content/70">
+          Created <%= @card.created_at.strftime("%d %b %Y") %>
+        </span>
+      </div>
+    </div>
+  </header>
+  <%# Posts section %>
+  <div class="section-heading">
+    <h2 class="section-heading__title">Posts</h2>
+  </div>
+  <% if @posts.any? %>
+    <div class="space-y-4" data-controller="reveal">
+      <% @posts.each do |post| %>
+        <article class="surface-row" data-reveal-item>
+          <div class="min-w-0">
+            <h2 class="surface-row__title"><%= post.title %></h2>
+            <p class="surface-row__text"><%= truncate(post.summary, length: 160) %></p>
+            <p class="surface-row__meta"><%= post.created_at.strftime("%d %b %Y") %></p>
+          </div>
+          <div class="shrink-0">
+            <%= cta_link_to "Read post", topic_card_post_path(@topic.slug, @card.slug, post.slug) %>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-16 text-base-content/60">
+      <p>No posts in this card yet.</p>
+    </div>
   <% end %>
+  <div class="mt-10">
+    <%= link_to "← Back to #{@topic.title}", topic_path(@topic.slug), class: "btn btn-ghost btn-sm" %>
+  </div>
 </div>

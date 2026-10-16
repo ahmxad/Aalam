@@ -1,35 +1,39 @@
 <%= form_with(model: admin_post, class: "contents") do |form| %>
-  <% if admin_post.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(admin_post.errors.count, "error") %> prohibited this admin_post from being saved:</h2>
-
-      <ul class="list-disc ml-6">
-        <% admin_post.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <div class="surface-panel">
+    <div class="surface-panel__body space-y-4">
+      <% if admin_post.errors.any? %>
+        <div role="alert" class="notice notice--error">
+          <div>
+            <p class="font-semibold"><%= pluralize(admin_post.errors.count, "error") %> prevented this post from being saved:</p>
+            <ul class="list-disc ml-5 text-sm">
+              <% admin_post.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+      <div class="flex flex-col gap-2">
+        <%= form.label :card_id, "Card", class: "font-semibold" %>
+        <%= form.grouped_collection_select :card_id, @topics, :cards, :title, :id, :title, { prompt: "Select a card" }, required: true, class: ["select select-bordered w-full", { "select-error": admin_post.errors[:card].any? }] %>
+      </div>
+      <div class="flex flex-col gap-2">
+        <%= form.label :title, class: "font-semibold" %>
+        <%= form.text_field :title, required: true, placeholder: "Post title", class: ["input input-bordered w-full", { "input-error": admin_post.errors[:title].any? || admin_post.errors[:slug].any? }] %>
+        <div id="post-slug-availability" class="text-sm"></div>
+      </div>
+      <div class="flex flex-col gap-2">
+        <%= form.label :summary, class: "font-semibold" %>
+        <%= form.text_field :summary, required: true, placeholder: "A short description shown in lists and search results", class: ["input input-bordered w-full", { "input-error": admin_post.errors[:summary].any? }] %>
+      </div>
+      <div class="flex flex-col gap-2">
+        <%= form.label :body, class: "font-semibold" %>
+        <%= form.textarea :body, required: true, rows: 10, placeholder: "Write the post content here", class: ["textarea textarea-bordered w-full", { "textarea-error": admin_post.errors[:body].any? }] %>
+      </div>
+      <div class="card-actions justify-end pt-2">
+        <%= link_to "Cancel", admin_posts_path, class: "btn btn-ghost" %>
+        <%= form.submit class: "btn btn-primary" %>
+      </div>
     </div>
-  <% end %>
-
-  <%= form.collection_select :card_id, @cards, :id, ->(card) { "#{card.topic.title} — #{card.title}" }, { prompt: "Select a card" }, { required: true } %>
-    
-  <div class="my-5">
-    <%= form.label :title %>
-    <div id="post-slug-availability" class="text-sm mt-2"></div>
-    <%= form.text_field :title, required: true, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_post.errors[:title].none?, "border-red-400 focus:outline-red-600": admin_post.errors[:title].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :summary %>
-    <%= form.text_field :summary, required: true, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_post.errors[:summary].none?, "border-red-400 focus:outline-red-600": admin_post.errors[:summary].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :body %>
-    <%= form.textarea :body, required: true, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": admin_post.errors[:body].none?, "border-red-400 focus:outline-red-600": admin_post.errors[:body].any?}] %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
