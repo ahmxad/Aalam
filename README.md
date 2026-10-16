@@ -40,3 +40,7 @@ Current structure:
 > rails specific (after switching to main)
 - bundle install
 - bin/rails db:migrate
+- bin/rails test
+- bin/rubocop
+- bin/importmap audit
+- bin/brakeman --no-pager

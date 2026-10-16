@@ -2,6 +2,7 @@
 <html data-theme="aalam">
   <head>
     <title><%= content_for(:title) || "Aalam" %></title>
+    <meta name="turbo-cache-control" content="no-preview">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Aalam">
@@ -26,12 +27,12 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body class="flex min-h-screen flex-col">
+  <body class="flex min-h-screen flex-col" <%= tag.attributes(data: { controller: ("smooth-scroll" unless controller_path.start_with?("admin/")) }) %>>
     <%= render "shared/navbar" %>
-    <main class="container mx-auto flex-1 px-5">
-      <%= render "shared/admin_nav" if controller_path.start_with?("admin/") %>
-      <%= yield %>
-    </main>
-    <%= render "shared/footer" %>
-  </body>
+    <main class="container mx-auto flex-1 px-5" data-page-transition>
+    <%= render "shared/admin_nav" if controller_path.start_with?("admin/") %>
+    <%= yield %>
+  </main>
+  <%= render "shared/footer" %>
+</body>
 </html>

@@ -10,3 +10,4 @@ config/credentials.yml.enc diff=rails_credentials
 
 
 app/assets/tailwind/*.mjs linguist-vendored
+vendor/javascript/** linguist-vendored

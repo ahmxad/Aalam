@@ -494,6 +494,20 @@
   }
 }
 
+/* Required by the smooth scroll library, which adds the "lenis" class to <html> */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
 /* Thin scrollbar in the theme colors, for the page and for any inner scroll area */
 * {
   scrollbar-width: thin;
