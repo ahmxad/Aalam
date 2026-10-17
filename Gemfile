@@ -71,3 +71,5 @@ group :test do
 end
 
 gem "json", "< 4.0.0"
+
+gem "redcarpet", "~> 3.6"

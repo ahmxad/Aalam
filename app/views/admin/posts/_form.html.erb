@@ -1,4 +1,4 @@
-<%= form_with(model: admin_post, class: "contents") do |form| %>
+<%= form_with(model: admin_post, class: "contents", data: { controller: "post-images markdown-file",  markdown_file_max_chars_value: Admin::Post::MAX_BODY_LENGTH, post_images_url_value: rails_direct_uploads_path, post_images_accept_value: ImageValidatable::ALLOWED_IMAGE_TYPES.to_json, post_images_max_bytes_value: ImageValidatable::MAX_IMAGE_SIZE,post_images_limit_value: Admin::Post::MAX_IMAGES }) do |form| %>
   <div class="surface-panel">
     <div class="surface-panel__body space-y-4">
       <% if admin_post.errors.any? %>
@@ -28,11 +28,54 @@
       </div>
       <div class="flex flex-col gap-2">
         <%= form.label :body, class: "font-semibold" %>
-        <%= form.textarea :body, required: true, rows: 10, placeholder: "Write the post content here", class: ["textarea textarea-bordered w-full", { "textarea-error": admin_post.errors[:body].any? }] %>
+        <div class="flex flex-col gap-1">
+          <input type="file" accept=".md,.markdown,text/markdown"
+                 aria-label="Load text from a Markdown file"
+                 class="file-input file-input-bordered file-input-sm w-full"
+                 data-markdown-file-target="input"
+                 data-action="change->markdown-file#load">
+          <p class="text-xs text-base-content/50">
+            Optional: choose a .md file to fill the text below. It is only read in your browser, nothing is stored.
+          </p>
+          <div role="status" class="notice hidden" data-markdown-file-target="message"></div>
+        </div>
+        <%= form.textarea :body, required: true, rows: 10, data: { post_images_target: "body", markdown_file_target: "body" }, placeholder: "Write the post content here", class: ["textarea textarea-bordered w-full", { "textarea-error": admin_post.errors[:body].any? }] %>
+        <p class="text-xs text-base-content/50">
+          Markdown is supported: # Heading, **bold**, *italic*, [link text](https://example.com), - list, &gt; quote, and ``` for code blocks.
+        </p>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="font-semibold">Images</label>
+        <%# Always sent, so removing every image works too %>
+        <%= hidden_field_tag "admin_post[images][]", "", id: nil %>
+        <%# No name on this input, so the chosen files themselves are never submitted with the form %>
+        <input type="file" multiple
+               accept="<%= ImageValidatable::ALLOWED_IMAGE_TYPES.join(",") %>"
+               aria-label="Add images"
+               class="file-input file-input-bordered w-full"
+               data-post-images-target="input"
+               data-action="change->post-images#select">
+        <p class="text-xs text-base-content/50">
+          JPEG, PNG or WebP, up to 5 MB each, at most <%= Admin::Post::MAX_IMAGES %> per post.
+          Press Insert to put an image into the text at the cursor.
+        </p>
+        <div role="status" class="notice notice--error hidden" data-post-images-target="message"></div>
+        <ul class="space-y-2" data-post-images-target="list">
+          <% admin_post.images.attachments.each do |attachment| %>
+            <%= render "admin/posts/image_item",
+                  signed_id: attachment.blob.signed_id,
+                  blob_id: attachment.blob_id,
+                  filename: attachment.filename.to_s,
+                  thumb_url: url_for(attachment.variant(:thumb)) %>
+          <% end %>
+        </ul>
+        <template data-post-images-target="template">
+          <%= render "admin/posts/image_item", signed_id: "", blob_id: "", filename: "", thumb_url: "" %>
+        </template>
       </div>
       <div class="card-actions justify-end pt-2">
         <%= link_to "Cancel", admin_posts_path, class: "btn btn-ghost" %>
-        <%= form.submit class: "btn btn-primary" %>
+        <%= form.submit class: "btn btn-primary", data: { post_images_target: "submit" } %>
       </div>
     </div>
   </div>

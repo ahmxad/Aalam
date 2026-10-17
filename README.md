@@ -43,4 +43,17 @@ Current structure:
 - bin/rails test
 - bin/rubocop
 - bin/importmap audit
-- bin/brakeman --no-pager
+- bin/brakeman --no-pager <br>
+when a new gem is added:
+- bin/bundler-audit
+
+
+
+> When Production:
+
+```ruby
+# config/recurring.yml , production:
+  purge_unused_images:
+    class: PurgeUnattachedBlobsJob
+    schedule: every day at 4am
+```

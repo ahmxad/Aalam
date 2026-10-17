@@ -90,8 +90,14 @@ end
       @topics = Admin::Topic.preload(:cards).order(:title)
     end
 
+  # Images the admin marked for removal in the form
+  # def remove_selected_images
+  #   ids = Array(params[:remove_image_ids]).compact_blank
+  #   @admin_post.images_attachments.where(id: ids).each(&:purge)
+  # end
+
   # Only allow a list of trusted parameters through.
   def admin_post_params
-    params.expect(admin_post: [ :card_id, :title, :summary, :body ])
+    params.expect(admin_post: [ :card_id, :title, :summary, :body, images: [] ])
   end
 end

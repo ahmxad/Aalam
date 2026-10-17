@@ -1,8 +1,11 @@
-
 <div class="p-6">
+  <% if notice.present? %>
+    <div role="alert" class="notice notice--success mb-6">
+      <span><%= notice %></span>
+    </div>
+  <% end %>
   <h1 class="text-3xl font-bold mb-2">Admin Dashboard</h1>
   <p class="text-base-content/70 mb-8">Welcome to Aalam administration.</p>
-
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <div class="card bg-base-200 shadow-sm">
       <div class="card-body">
@@ -11,7 +14,6 @@
         <%= link_to "Manage Topics", admin_topics_path, class: "btn btn-primary mt-4" %>
       </div>
     </div>
-
     <div class="card bg-base-200 shadow-sm">
       <div class="card-body">
         <h2 class="card-title">Cards</h2>
@@ -19,7 +21,6 @@
         <%= link_to "Manage Cards", admin_cards_path, class: "btn btn-primary mt-4" %>
       </div>
     </div>
-
     <div class="card bg-base-200 shadow-sm">
       <div class="card-body">
         <h2 class="card-title">Posts</h2>
@@ -28,7 +29,21 @@
       </div>
     </div>
   </div>
-
+  <div class="surface-panel mt-8">
+    <div class="surface-panel__body space-y-3">
+      <h2 class="text-xl font-semibold">Maintenance</h2>
+      <p class="text-sm text-base-content/70">
+        Images that were uploaded in the post form but never saved with a post are kept for two days,
+        then they are safe to delete.
+        <strong><%= pluralize(@unused_images_count, "unused image") %></strong> can be deleted now.
+      </p>
+      <%= button_to "Delete unused images", admin_purge_unused_images_path,
+            method: :post,
+            disabled: @unused_images_count.zero?,
+            class: "btn btn-primary",
+            data: { turbo_confirm: "Delete #{pluralize(@unused_images_count, 'unused image')} permanently?" } %>
+    </div>
+  </div>
   <div class="mt-8">
     <%= link_to "View Website", root_path, class: "btn btn-outline" %>
   </div>

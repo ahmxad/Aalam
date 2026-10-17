@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   namespace :admin do
     root "dashboard#index"
+    post "maintenance/unused_images", to: "maintenance#purge_unused_images", as: :purge_unused_images
     get "topics/check_slug", to: "topics#check_slug"
     get "cards/check_slug", to: "cards#check_slug"
     get "posts/check_slug", to: "posts#check_slug"
