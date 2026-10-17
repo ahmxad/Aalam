@@ -34,5 +34,9 @@
     <%= yield %>
   </main>
   <%= render "shared/footer" %>
+  <div class="throbber" role="status" aria-live="polite">
+    <span class="throbber__spinner" aria-hidden="true"></span>
+    <span class="throbber__label">Loading</span>
+  </div>
 </body>
 </html>
