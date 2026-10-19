@@ -40,3 +40,5 @@
 
 # daisyUI files
 !/app/assets/tailwind/*.mjs
+/script/project_map.rb
+/docs
