@@ -1,5 +1,8 @@
 @import "tailwindcss";
-@import "./components.css";
+@import "./components/surfaces.css";
+@import "./components/article.css";
+@import "./components/sidebar.css";
+@import "./components/interactive.css";
 
 @source not "./daisyui{,*}.mjs";
 
