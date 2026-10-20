@@ -12,7 +12,9 @@ class Admin::Topic < ApplicationRecord
            dependent: :destroy
 
   validates :title, presence: true
-  validates :slug, uniqueness: true
+  validates :slug,
+            presence: { message: "could not be generated: include at least one Latin letter or digit in the title" },
+            uniqueness: { allow_blank: true }
 
   before_validation :generate_slug, if: -> { slug.blank? || will_save_change_to_title? }
 

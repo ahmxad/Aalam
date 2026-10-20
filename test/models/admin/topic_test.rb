@@ -26,6 +26,29 @@ class Admin::TopicTest < ActiveSupport::TestCase
     assert_equal "hello-world", topic.slug
   end
 
+  test "rejects a title with no Latin letters or digits" do
+    topic = Admin::Topic.new(title: "عالم", image: sample_image)
+
+    assert_not topic.valid?
+    assert_includes topic.errors[:slug], "could not be generated: include at least one Latin letter or digit in the title"
+  end
+
+  test "accepts a title that mixes non-Latin text with Latin letters" do
+    topic = Admin::Topic.new(title: "Aalam عالم", image: sample_image)
+
+    assert topic.valid?
+    assert_equal "aalam", topic.slug
+  end
+
+  test "shows only the slug generation error when a broken record already has an empty slug" do
+    Admin::Topic.new(title: "Legacy", slug: "", image: sample_image).save!(validate: false)
+
+    topic = Admin::Topic.new(title: "عالم", image: sample_image)
+
+    assert_not topic.valid?
+    assert_equal [ "could not be generated: include at least one Latin letter or digit in the title" ], topic.errors[:slug]
+  end
+
   test "rejects a duplicate title, ignoring case" do
     Admin::Topic.create!(title: "Unique Name", image: sample_image)
     duplicate = Admin::Topic.new(title: "unique name", image: sample_image)
