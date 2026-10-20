@@ -59,6 +59,7 @@ export default class extends Controller {
 
   // Opens or closes the whole sidebar
   toggle() {
+    const wasOpen = this.isOpen;
     if (this.isWide) {
       this.saveWideState(!this.isOpen);
     } else if (this.isOpen) {
@@ -69,6 +70,9 @@ export default class extends Controller {
 
     this.syncButtons();
     if (this.isOpen) this.markCurrent();
+    if (wasOpen && this.hasPanelTarget && this.panelTarget.contains(document.activeElement)) {
+      this.toggleTargets[0]?.focus();
+    }
   }
 
   closeDrawer() {
