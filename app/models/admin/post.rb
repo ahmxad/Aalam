@@ -12,6 +12,7 @@ class Admin::Post < ApplicationRecord
   self.table_name = "posts"
 
   belongs_to :card, class_name: "Admin::Card"
+  before_validation :normalize_body_newlines
   validates :card, :title, :summary, :body, presence: true
   validates :body, length: { maximum: MAX_BODY_LENGTH }
   validates :title, uniqueness: { scope: :card_id, case_sensitive: false }
@@ -29,6 +30,10 @@ class Admin::Post < ApplicationRecord
   end
 
   private
+
+  def normalize_body_newlines
+    self.body = body.gsub(/\r\n?/, "\n") if body.is_a?(String)
+  end
 
   def images_type_and_size
     errors.add(:images, "can have at most #{MAX_IMAGES} files") if images.size > MAX_IMAGES
