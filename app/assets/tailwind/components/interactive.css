@@ -269,30 +269,46 @@ html.lenis body {
     overflow: clip;
 }
 
-/* Thin scrollbar in the theme colors, for the page and for any inner scroll area */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-primary) var(--color-base-100);
+/* Square scrollbars in the theme colors, for the page and for every inner scroll area
+   (the sidebar list, code blocks, tables). Chrome, Edge and Safari are styled with the
+   ::-webkit-scrollbar parts. Those parts are ignored once scrollbar-color or scrollbar-width is
+   set, so those two properties are only used for Firefox, further down. */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
 }
 
-/* Fallback for older browsers that do not support scrollbar-color */
-@supports not (scrollbar-color: auto) {
-    ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-    }
+/* A transparent track shows the color of whatever the scroll area sits on */
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
 
-    ::-webkit-scrollbar-track {
-        background: var(--color-base-100);
-    }
+/* The transparent border with padding-box makes a square thumb with a small gap around it */
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+    border-radius: 0;
+}
 
-    ::-webkit-scrollbar-thumb {
-        border: 2px solid var(--color-base-100);
-        border-radius: 0;
-        background: var(--color-primary);
-    }
+::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklab, var(--color-primary) 80%, white);
+}
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: color-mix(in oklab, var(--color-primary) 80%, white);
+/* DaisyUI sets scrollbar-color on the root, which would switch off the rules above for the page */
+@supports not (-moz-appearance: none) {
+    :root {
+        scrollbar-color: auto;
+    }
+}
+
+/* Firefox cannot change the shape of a scrollbar, only its width and colors */
+@supports (-moz-appearance: none) {
+
+    :root,
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-primary) var(--color-base-100);
     }
 }

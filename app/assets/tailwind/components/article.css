@@ -216,9 +216,22 @@
     }
 }
 
-/* Outside the layer, so it wins over the page-wide scrollbar rule: code blocks and tables sit on the
-   off-white paper, where the page's dark scrollbar track would look wrong */
-.article-body pre,
-.article-body table {
-    scrollbar-color: color-mix(in oklab, var(--ink) 55%, transparent) transparent;
+/* Code blocks and tables sit on the off-white paper, so their scrollbars use the ink color.
+   Square like the rest, drawn with the ::-webkit-scrollbar parts. */
+.article-body pre::-webkit-scrollbar-thumb,
+.article-body table::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklab, var(--ink) 55%, transparent);
+}
+
+.article-body pre::-webkit-scrollbar-thumb:hover,
+.article-body table::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklab, var(--ink) 75%, transparent);
+}
+
+@supports (-moz-appearance: none) {
+
+    .article-body pre,
+    .article-body table {
+        scrollbar-color: color-mix(in oklab, var(--ink) 55%, transparent) transparent;
+    }
 }
