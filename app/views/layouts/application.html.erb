@@ -1,38 +1,46 @@
 <!DOCTYPE html>
-<html data-theme="aalam">
+<html data-theme="aalam" <%= tag.attributes(data: { sidebar: sidebar_preference }) %>>
   <head>
     <title><%= content_for(:title) || "Aalam" %></title>
-    <meta name="turbo-cache-control" content="no-preview">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Aalam">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <%= yield :head %>
-    <!-- ====== NEW FAVICON CONFIGURATION START ====== -->
-    <!-- 1. The classic fallback icon -->
-    <%= favicon_link_tag 'favicon/favicon.ico' %>
-    <!-- 2. Standard browser tab icons (High-res and regular) -->
-    <%= favicon_link_tag 'favicon/favicon-32x32.png', rel: 'icon', type: 'image/png', sizes: '32x32' %>
-    <%= favicon_link_tag 'favicon/favicon-16x16.png', rel: 'icon', type: 'image/png', sizes: '16x16' %>
-    <!-- 3. Apple Devices Home Screen Icon -->
-    <%= favicon_link_tag 'favicon/apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180' %>
-    <!-- 4. Android Devices Webmanifest mapping -->
-    <link rel="manifest" href="/site.webmanifest">
-    <!-- ====== NEW FAVICON CONFIGURATION END ====== -->
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
-  <body class="flex min-h-screen flex-col" <%= tag.attributes(data: { controller: ("smooth-scroll" unless controller_path.start_with?("admin/")) }) %>>
-    <%= render "shared/navbar" %>
-    <main class="container mx-auto flex-1 px-5" data-page-transition>
+  <meta name="turbo-cache-control" content="no-preview">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Aalam">
+  <meta name="mobile-web-app-capable" content="yes">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <%= yield :head %>
+  <!-- ====== NEW FAVICON CONFIGURATION START ====== -->
+  <!-- 1. The classic fallback icon -->
+  <%= favicon_link_tag 'favicon/favicon.ico' %>
+  <!-- 2. Standard browser tab icons (High-res and regular) -->
+  <%= favicon_link_tag 'favicon/favicon-32x32.png', rel: 'icon', type: 'image/png', sizes: '32x32' %>
+  <%= favicon_link_tag 'favicon/favicon-16x16.png', rel: 'icon', type: 'image/png', sizes: '16x16' %>
+  <!-- 3. Apple Devices Home Screen Icon -->
+  <%= favicon_link_tag 'favicon/apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180' %>
+  <!-- 4. Android Devices Webmanifest mapping -->
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- ====== NEW FAVICON CONFIGURATION END ====== -->
+  <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="flex min-h-screen flex-col" <%= tag.attributes(data: { controller: [ ("smooth-scroll" unless controller_path.start_with?("admin/")), ("sidebar" if sidebar_visible?) ].compact.join(" ").presence }) %>>
+  <%= render "shared/navbar" %>
+
+  <div class="app-shell flex flex-1 items-start gap-6 px-3 <%= "app-shell--with-sidebar" if sidebar_visible? %>">
+  <%= render "shared/sidebar" if sidebar_visible? %>
+  <main class="min-w-0 flex-1" data-page-transition>
     <%= render "shared/admin_nav" if controller_path.start_with?("admin/") %>
     <%= yield %>
   </main>
-  <%= render "shared/footer" %>
+</div>
+<%= render "shared/footer" %>
+<div class="throbber" role="status" aria-live="polite">
+  <span class="throbber__spinner" aria-hidden="true"></span>
+  <span class="throbber__label">Loading</span>
+</div>
 </body>
 </html>

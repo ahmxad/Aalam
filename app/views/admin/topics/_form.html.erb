@@ -17,7 +17,7 @@
 
       <div class="flex flex-col gap-2">
         <%= form.label :title, class: "font-semibold" %>
-        <%= form.text_field :title, required: true, autofocus: true, placeholder: "Topic title", class: ["input input-bordered w-full", { "input-error": admin_topic.errors[:title].any? }] %>
+        <%= form.text_field :title, required: true, autofocus: true, placeholder: "Topic title", class: ["input input-bordered w-full", { "input-error": admin_topic.errors[:title].any? || admin_topic.errors[:slug].any? }] %>
         <div id="slug-availability" class="text-sm"></div>
       </div>
 

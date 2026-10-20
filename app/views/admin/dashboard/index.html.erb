@@ -1,35 +1,84 @@
-
-<div class="p-6">
-  <h1 class="text-3xl font-bold mb-2">Admin Dashboard</h1>
-  <p class="text-base-content/70 mb-8">Welcome to Aalam administration.</p>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="card bg-base-200 shadow-sm">
-      <div class="card-body">
-        <h2 class="card-title">Topics</h2>
-        <p class="text-4xl font-bold"><%= @topics_count %></p>
-        <%= link_to "Manage Topics", admin_topics_path, class: "btn btn-primary mt-4" %>
-      </div>
+<% content_for :title, "Dashboard" %>
+<% sections = [
+  [ "Topics", @topics_count, admin_topics_path ],
+  [ "Cards", @cards_count, admin_cards_path ],
+  [ "Posts", @posts_count, admin_posts_path ]
+] %>
+<div class="max-w-5xl mx-auto mt-12 px-4">
+  <% if notice.present? %>
+    <div role="alert" class="notice notice--success mb-6">
+      <span><%= notice %></span>
     </div>
-
-    <div class="card bg-base-200 shadow-sm">
-      <div class="card-body">
-        <h2 class="card-title">Cards</h2>
-        <p class="text-4xl font-bold"><%= @cards_count %></p>
-        <%= link_to "Manage Cards", admin_cards_path, class: "btn btn-primary mt-4" %>
-      </div>
+  <% end %>
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold">Dashboard</h1>
+      <p class="text-sm text-base-content/60">Welcome to Aalam administration.</p>
     </div>
-
-    <div class="card bg-base-200 shadow-sm">
-      <div class="card-body">
-        <h2 class="card-title">Posts</h2>
-        <p class="text-4xl font-bold"><%= @posts_count %></p>
-        <%= link_to "Manage Posts", admin_posts_path, class: "btn btn-primary mt-4" %>
-      </div>
-    </div>
+    <%= link_to "View website", root_path, class: "btn btn-outline btn-sm" %>
   </div>
-
-  <div class="mt-8">
-    <%= link_to "View Website", root_path, class: "btn btn-outline" %>
+  <%# Totals: each one links to its section %>
+  <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <% sections.each do |label, count, path| %>
+      <%= link_to path, class: "surface-card" do %>
+        <div class="surface-card__body">
+          <p class="surface-card__meta"><%= label %></p>
+          <p class="text-4xl font-bold text-primary"><%= count %></p>
+          <p class="surface-card__meta">Manage <%= label.downcase %> &rarr;</p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <%# Quick actions %>
+  <div class="mt-4 flex flex-wrap gap-2">
+    <%= link_to "New topic", new_admin_topic_path, class: "btn btn-primary btn-sm" %>
+    <%= link_to "New card", new_admin_card_path, class: "btn btn-primary btn-sm" %>
+    <%= link_to "New post", new_admin_post_path, class: "btn btn-primary btn-sm" %>
+  </div>
+  <%# Recently changed posts %>
+  <div class="section-heading">
+    <h2 class="section-heading__title">Recent posts</h2>
+    <%= link_to "View all", admin_posts_path, class: "ml-auto text-sm text-primary hover:underline order-last" %>
+  </div>
+  <% if @recent_posts.any? %>
+    <div class="space-y-3">
+      <% @recent_posts.each do |post| %>
+        <article class="surface-row">
+          <div class="min-w-0">
+            <h3 class="surface-row__title truncate"><%= post.title %></h3>
+            <p class="surface-row__meta">
+              <%= post.card.topic.title %> &rsaquo; <%= post.card.title %>
+              &middot; Updated <%= post.updated_at.strftime("%d %b %Y") %>
+            </p>
+          </div>
+          <div class="flex shrink-0 gap-2">
+            <%= link_to "View", admin_post_path(post), class: "btn btn-sm btn-ghost" %>
+            <%= link_to "Edit", edit_admin_post_path(post), class: "btn btn-sm btn-outline" %>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-sm text-base-content/60">
+      No posts yet. <%= link_to "Write the first one", new_admin_post_path, class: "text-primary hover:underline" %>.
+    </p>
+  <% end %>
+  <%# Maintenance %>
+  <div class="section-heading">
+    <h2 class="section-heading__title">Maintenance</h2>
+  </div>
+  <div class="surface-panel mb-12">
+    <div class="surface-panel__body space-y-3">
+      <p class="text-sm text-base-content/70">
+        Images that were uploaded in the post form but never saved with a post are kept for two days,
+        then they are safe to delete.
+        <strong><%= pluralize(@unused_images_count, "unused image") %></strong> can be deleted now.
+      </p>
+      <%= button_to "Delete unused images", admin_purge_unused_images_path,
+            method: :post,
+            disabled: @unused_images_count.zero?,
+            class: "btn btn-primary",
+            data: { turbo_confirm: "Delete #{pluralize(@unused_images_count, 'unused image')} permanently?" } %>
+    </div>
   </div>
 </div>

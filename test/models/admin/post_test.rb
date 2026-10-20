@@ -36,4 +36,18 @@ class Admin::PostTest < ActiveSupport::TestCase
     assert post.errors[:summary].any?
     assert post.errors[:body].any?
   end
+  test "rejects a body that is too long" do
+    post = build_post(title: "A long one", card: admin_cards(:one))
+    post.body = "a" * (Admin::Post::MAX_BODY_LENGTH + 1)
+
+    assert_not post.valid?
+    assert post.errors[:body].any?
+  end
+
+  test "accepts a body at the length limit" do
+    post = build_post(title: "Right at the limit", card: admin_cards(:one))
+    post.body = "a" * Admin::Post::MAX_BODY_LENGTH
+
+    assert post.valid?
+  end
 end

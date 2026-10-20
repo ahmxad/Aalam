@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   namespace :admin do
     root "dashboard#index"
+    post "maintenance/unused_images", to: "maintenance#purge_unused_images", as: :purge_unused_images
     get "topics/check_slug", to: "topics#check_slug"
     get "cards/check_slug", to: "cards#check_slug"
     get "posts/check_slug", to: "posts#check_slug"
@@ -20,4 +21,6 @@ Rails.application.routes.draw do
   get "explore", to: "pages#explore"
   get "contact", to: "pages#contact"
   get "up" => "rails/health#show", as: :rails_health_check
+  # Error pages, shown through config.exceptions_app. They can also be opened directly to preview them.
+  match "/:code", to: "errors#show", via: :all, constraints: { code: /400|404|405|406|409|413|422|500|501/ }
 end

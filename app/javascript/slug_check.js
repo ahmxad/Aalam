@@ -16,6 +16,15 @@ document.addEventListener("turbo:load", () => {
       return
     }
 
+    // The slug is made by stripping everything except Latin letters, digits and dashes,
+    // so a title without any of those can never be saved.
+    if (!/[a-z0-9]/i.test(title)) {
+      availability.textContent =
+        "Include at least one Latin letter or digit in the title"
+      availability.className = "text-sm mt-2 text-error"
+      return
+    }
+
     availability.textContent = "Checking..."
     availability.className = "text-sm mt-2"
 

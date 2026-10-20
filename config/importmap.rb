@@ -9,5 +9,8 @@ pin "slug_check", to: "slug_check.js"
 pin "card_slug_check", to: "card_slug_check.js"
 pin "post_slug_check", to: "post_slug_check.js"
 pin "page_transition", to: "page_transition.js"
+pin "throbber", to: "throbber.js"
+pin "image_loading", to: "image_loading.js"
+pin "@rails/activestorage", to: "activestorage.esm.js"
 pin "lenis" # @1.3.26
 pin "gsap" # @3.15.0

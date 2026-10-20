@@ -1,0 +1,53 @@
+<%# The topics sidebar. data-turbo-permanent keeps this element (scroll position, open groups) across page changes. %>
+<aside id="sidebar" class="sidebar" aria-label="Topics" data-turbo-permanent data-sidebar-target="panel">
+  <div class="sidebar__header">
+    <h2 class="sidebar__title">Topics</h2>
+    <button type="button" class="sidebar__close" aria-label="Close the topics menu" data-action="sidebar#toggle">
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="square" stroke-width="2" d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+  </div>
+  <%# data-lenis-prevent keeps the smooth scroll library away, so this list scrolls on its own %>
+  <nav class="sidebar__scroll" aria-label="Topics" data-lenis-prevent data-action="click->sidebar#select">
+    <% if sidebar_topics.any? %>
+      <ul class="sidebar__list">
+        <% sidebar_topics.each do |topic| %>
+          <% cards = topic.cards.sort_by { |card| card.title.to_s.downcase } %>
+          <% expanded = topic.id == @topic&.id %>
+          <li class="sidebar__group">
+            <div class="sidebar__row">
+              <%= link_to topic.title, topic_path(topic.slug), class: "sidebar__link", aria: { current: ("page" if expanded && @card.nil?) } %>
+              <% if cards.any? %>
+                <button type="button" class="sidebar__toggle"
+                        aria-expanded="<%= expanded %>"
+                        aria-controls="sidebar-topic-<%= topic.id %>"
+                        aria-label="Show the cards of <%= topic.title %>"
+                        data-action="sidebar#toggleGroup">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="square" stroke-width="2" d="m9 6 6 6-6 6" />
+                  </svg>
+                </button>
+              <% end %>
+            </div>
+            <% if cards.any? %>
+              <ul <%= tag.attributes(id: "sidebar-topic-#{topic.id}", class: "sidebar__cards", hidden: !expanded) %>>
+                <% cards.each do |card| %>
+                  <li>
+                    <%= link_to card.title, topic_card_path(topic.slug, card.slug),
+                          class: "sidebar__card",
+                          aria: { current: ("page" if card.id == @card&.id) } %>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="sidebar__empty">No topics yet.</p>
+    <% end %>
+  </nav>
+</aside>
+<%# The dark layer behind the sidebar when it is shown as a drawer on a narrow screen %>
+<div class="sidebar-backdrop" data-action="click->sidebar#closeDrawer"></div>
