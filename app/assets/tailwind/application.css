@@ -53,6 +53,7 @@
   --depth: 0;
   --noise: 0;
 }
+
 /* Squared design: the whole Tailwind radius scale is flat */
 @theme {
   --radius-xs: 0;
