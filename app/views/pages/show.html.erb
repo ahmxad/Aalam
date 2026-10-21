@@ -28,6 +28,7 @@
     <%# Body: keep this on one line, line breaks inside would show as blank lines %>
     <div class="article-body" data-controller="code-copy"><%= render_markdown(@post.body, images: @post.images) %></div>
   </article>
+  <%= render "shared/post_actions", post: @post %>
   <%# Previous / next %>
   <% if @previous_post || @next_post %>
     <div class="section-heading">

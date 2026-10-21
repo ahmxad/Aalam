@@ -5,6 +5,10 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
 
+  has_many :likes, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
+  has_many :comments, dependent: :destroy
+
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fill: [ 192, 192 ], format: :webp, saver: { quality: 80 }
   end

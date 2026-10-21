@@ -1,0 +1,9 @@
+<%# The buttons under a post. Turbo replaces this whole block when a button is pressed. %>
+<% liked = engaged_with?(:likes, post) %>
+<% saved = engaged_with?(:bookmarks, post) %>
+<div id="<%= dom_id(post, :actions) %>" class="flex flex-wrap items-center gap-1 border-y border-base-300 py-2">
+  <%= engagement_button path: post_like_path(post), active: liked, icon: :like,
+        text: (liked ? "Liked" : "Like"), count: post.likes_count %>
+  <%= engagement_button path: post_bookmark_path(post), active: saved, icon: :save,
+        text: (saved ? "Saved" : "Save"), count: post.bookmarks_count %>
+</div>

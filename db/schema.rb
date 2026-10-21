@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_21_030344) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_21_091154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -60,6 +60,39 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_030344) do
     t.index ["slug"], name: "index_admin_topics_on_slug", unique: true
   end
 
+  create_table "bookmarks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_bookmarks_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_bookmarks_on_user_id_and_post_id", unique: true
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.bigint "parent_id"
+    t.text "body", null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "replies_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["post_id", "created_at"], name: "index_comments_on_post_id_and_created_at"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "likeable_type", null: false
+    t.bigint "likeable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
+    t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_id_and_likeable_type_and_likeable_id", unique: true
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.string "summary"
@@ -68,6 +101,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_030344) do
     t.datetime "updated_at", null: false
     t.bigint "card_id", null: false
     t.string "slug"
+    t.integer "likes_count", default: 0, null: false
+    t.integer "bookmarks_count", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
+    t.integer "shares_count", default: 0, null: false
     t.index "card_id, lower((title)::text)", name: "index_posts_on_card_id_and_lower_title", unique: true
     t.index ["card_id", "slug"], name: "index_posts_on_card_id_and_slug", unique: true
     t.index ["card_id"], name: "index_posts_on_card_id"
@@ -109,6 +146,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_030344) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_cards", "admin_topics", column: "topic_id"
+  add_foreign_key "bookmarks", "posts"
+  add_foreign_key "bookmarks", "users"
+  add_foreign_key "comments", "comments", column: "parent_id"
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users"
+  add_foreign_key "likes", "users"
   add_foreign_key "posts", "admin_cards", column: "card_id"
   add_foreign_key "sessions", "users"
 end

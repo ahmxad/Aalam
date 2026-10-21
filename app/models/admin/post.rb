@@ -12,6 +12,9 @@ class Admin::Post < ApplicationRecord
   self.table_name = "posts"
 
   belongs_to :card, class_name: "Admin::Card"
+  has_many :likes, as: :likeable, dependent: :destroy
+  has_many :bookmarks, class_name: "Bookmark", foreign_key: :post_id, dependent: :destroy
+  has_many :comments, class_name: "Comment", foreign_key: :post_id, dependent: :destroy
   before_validation :normalize_body_newlines
   validates :card, :title, :summary, :body, presence: true
   validates :body, length: { maximum: MAX_BODY_LENGTH }

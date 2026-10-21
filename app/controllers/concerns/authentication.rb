@@ -30,8 +30,21 @@ module Authentication
     end
 
     def request_authentication
-      session[:return_to_after_authenticating] = request.url
-      redirect_to new_session_path
+      session[:return_to_after_authenticating] = return_location
+      flash[:alert] = "Please log in to continue." unless request.get?
+      redirect_to new_session_path, status: :see_other
+    end
+
+    # A signed out visitor who presses a button (a POST or DELETE) is sent back to the page that
+    # holds the button after logging in, not to the address that only accepts the button press.
+    # Only a path on this site is accepted from the Referer header.
+    def return_location
+      return request.url if request.get?
+
+      referer = URI.parse(request.referer.to_s)
+      referer.host == request.host ? referer.request_uri : nil
+    rescue URI::InvalidURIError
+      nil
     end
 
     def after_authentication_url
