@@ -34,6 +34,7 @@
   <%= render "shared/sidebar" if sidebar_visible? %>
   <main class="min-w-0 flex-1" data-page-transition>
     <%= render "shared/admin_nav" if controller_path.start_with?("admin/") %>
+    <%= render "shared/flash" %>
     <%= yield %>
   </main>
 </div>

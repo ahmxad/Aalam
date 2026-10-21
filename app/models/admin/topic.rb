@@ -1,10 +1,13 @@
 class Admin::Topic < ApplicationRecord
   include SlugHistoryTracking
   include ImageValidatable
+  include WebpConvertible
   has_one_attached :image do |attachable|
     attachable.variant :card, resize_to_fill: [ 600, 320 ], format: :webp, saver: { quality: 80 }
     attachable.variant :hero, resize_to_fill: [ 1600, 640 ], format: :webp, saver: { quality: 80 }
   end
+
+  converts_to_webp :image
 
   has_many :cards,
            class_name: "Admin::Card",

@@ -15,7 +15,7 @@ Rails.application.configure do
     policy.style_src   :self, "https://fonts.googleapis.com"
     policy.font_src    :self, "https://fonts.gstatic.com", :data
     # data: is needed because the UI framework embeds small SVG icons in its CSS
-    policy.img_src     :self, :data
+    policy.img_src     :self, :data, :blob
   end
 
   # A fresh random nonce for every request, so it also works for visitors without a session

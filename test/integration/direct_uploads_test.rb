@@ -31,7 +31,7 @@ class DirectUploadsTest < ActionDispatch::IntegrationTest
   end
 
   test "an admin can start a direct upload" do
-    admin = User.create!(email_address: "uploader@test.com", password: "password123!", admin: true)
+    admin = User.create!(username: "uploader", email_address: "uploader@test.com", password: "password123!", admin: true)
     sign_in_as(admin)
 
     assert_difference("ActiveStorage::Blob.count", 1) do

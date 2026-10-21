@@ -2,7 +2,7 @@ require "test_helper"
 
 class Admin::PostMarkdownFormTest < ActionDispatch::IntegrationTest
   setup do
-    admin = User.create!(email_address: "markdown-admin@test.com", password: "password123!", admin: true)
+    admin = User.create!(username: "markdown_admin", email_address: "markdown-admin@test.com", password: "password123!", admin: true)
     sign_in_as(admin)
   end
 

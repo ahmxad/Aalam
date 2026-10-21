@@ -1,0 +1,67 @@
+<% content_for :title, "Account | Aalam" %>
+<section class="mx-auto w-full max-w-md py-10">
+  <%= link_to "Back to profile", profile_path(@user.username_in_database), class: "link text-sm" %>
+  <h1 class="mb-6 mt-2 text-2xl font-bold">Account settings</h1>
+  <% if @user.errors.any? %>
+    <div role="alert" class="alert alert-error mb-4">
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="mb-6 flex items-center gap-4">
+    <%= user_avatar(@user, size_class: "w-24", letter_class: "text-4xl") %>
+    <% if @user.avatar_stored? %>
+      <%= button_to "Remove picture", account_avatar_path, method: :delete,
+            form: { data: { turbo_confirm: "Remove your profile picture?" } },
+            class: "btn btn-sm btn-ghost" %>
+    <% end %>
+  </div>
+  <%= form_with model: @user, url: account_path, method: :patch, class: "flex flex-col gap-4" do |f| %>
+    <h2 class="text-lg font-semibold">Profile</h2>
+    <div class="flex flex-col gap-1"
+         data-controller="username-availability"
+         data-username-availability-url-value="<%= username_availability_path %>">
+      <%= f.text_field :username, required: true, minlength: 3, maxlength: 20,
+            pattern: "[A-Za-z0-9_]+", autocomplete: "username",
+            placeholder: "Username", "aria-label": "Username",
+            class: "input input-bordered w-full",
+            data: { username_availability_target: "input", action: "input->username-availability#check" } %>
+      <p class="min-h-5 text-sm" aria-live="polite" data-username-availability-target="hint"></p>
+    </div>
+    <%= f.text_field :display_name, maxlength: 50, autocomplete: "name",
+          placeholder: "Display name (optional)", "aria-label": "Display name",
+          class: "input input-bordered w-full" %>
+    <%= f.text_area :bio, maxlength: 160, rows: 3,
+          placeholder: "Short bio (optional, up to 160 characters)", "aria-label": "Bio",
+          class: "textarea textarea-bordered w-full" %>
+    <div class="flex flex-col gap-1">
+    <div class="flex flex-col gap-1" data-controller="avatar-preview">
+      <%= f.label :avatar_upload, "Profile picture", class: "text-sm" %>
+      <%= f.file_field :avatar_upload, accept: "image/jpeg,image/png,image/webp",
+            class: "file-input file-input-bordered w-full",
+            data: { avatar_preview_target: "input", action: "change->avatar-preview#select" } %>
+      <p class="min-h-5 text-sm opacity-70" aria-live="polite"
+         data-avatar-preview-target="hint">JPEG, PNG or WebP, up to 10 MB. It is converted to WebP automatically.</p>
+    </div>
+    </div>
+    <input type="email" value="<%= @user.email_address %>" disabled aria-label="Email address"
+           class="input input-bordered w-full" />
+    <%= f.submit "Save profile", class: "btn btn-primary" %>
+  <% end %>
+  <%= form_with scope: :user, url: account_password_path, method: :patch, class: "mt-10 flex flex-col gap-4" do |f| %>
+    <h2 class="text-lg font-semibold">Change password</h2>
+    <%= f.password_field :current_password, required: true, autocomplete: "current-password",
+          placeholder: "Current password", "aria-label": "Current password",
+          class: "input input-bordered w-full" %>
+    <%= f.password_field :password, required: true, minlength: 8, autocomplete: "new-password",
+          placeholder: "New password (at least 8 characters)", "aria-label": "New password",
+          class: "input input-bordered w-full" %>
+    <%= f.password_field :password_confirmation, required: true, autocomplete: "new-password",
+          placeholder: "Confirm new password", "aria-label": "Confirm new password",
+          class: "input input-bordered w-full" %>
+    <%= f.submit "Change password", class: "btn btn-primary" %>
+  <% end %>
+</section>

@@ -4,6 +4,7 @@ require "test_helper"
 class Admin::DashboardControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = User.create!(
+      username: "dashboard_admin",
       email_address: "dashboard-admin@test.com",
       password: "password123!",
       admin: true

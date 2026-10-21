@@ -2,7 +2,7 @@ require "test_helper"
 
 class Admin::PostImagesTest < ActionDispatch::IntegrationTest
   setup do
-    admin = User.create!(email_address: "images-admin@test.com", password: "password123!", admin: true)
+    admin = User.create!(username: "images_admin", email_address: "images-admin@test.com", password: "password123!", admin: true)
     sign_in_as(admin)
     @card = admin_cards(:one)
   end

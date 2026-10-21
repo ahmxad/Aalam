@@ -4,6 +4,7 @@ class Admin::PostsControllerTest < ActionDispatch::IntegrationTest
   setup do
   @admin_post = admin_posts(:one)
   @user = User.create!(
+    username: "posts_admin",
     email_address: "admin@test.com",
     password: "password123!",
     admin: true

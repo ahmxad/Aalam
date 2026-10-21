@@ -5,6 +5,7 @@ class Admin::TopicsControllerTest < ActionDispatch::IntegrationTest
     @admin_topic = admin_topics(:one)
 
     @user = User.create!(
+      username: "topics_admin",
       email_address: "admin@test.com",
       password: "password123!",
       admin: true
