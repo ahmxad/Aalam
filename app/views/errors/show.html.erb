@@ -1,14 +1,12 @@
 <% content_for :title, "#{@title} · Aalam" %>
 
 <div class="max-w-3xl mx-auto my-16 px-4">
-  <section class="page-hero" data-controller="reveal" data-reveal-trigger-value="load">
-    <p class="page-hero__eyebrow" data-reveal-item>Error <%= @status %></p>
-    <h1 class="page-hero__title" data-reveal-item><%= @title %></h1>
+  <section class="flex flex-col items-center" data-controller="reveal" data-reveal-trigger-value="load">
+    <h1 class="page-hero__eyebrow" data-reveal-item><%= @title %></h1>
+    <p class="page-hero__title" data-reveal-item>Error <%= @status %></p>
     <p class="page-hero__text" data-reveal-item><%= @message %></p>
-
     <div class="page-hero__actions" data-reveal-item>
       <%= link_to "Back to home", root_path, class: "btn btn-primary" %>
-      <%= link_to "Explore topics", explore_path, class: "btn btn-outline" %>
     </div>
   </section>
 </div>

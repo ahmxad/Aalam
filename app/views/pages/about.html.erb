@@ -1,59 +1,52 @@
 <% content_for :title, "About" %>
-
 <% structure = [
-  [ "Topics", "The big subjects. Each topic works like a shelf that groups related ideas together." ],
-  [ "Cards", "Smaller themes inside a topic. A card collects the posts that belong together." ],
+  [ "Topics", "The big subjects. Each topic have multiple small topics named cards." ],
+  [ "Cards or Sub catagories", "Smaller themes inside a topic. A card collects the posts that belong together." ],
   [ "Posts", "The actual writing. Every post lives inside one card, inside one topic." ]
 ] %>
-
-<div class="max-w-5xl mx-auto my-8 px-4">
-
+<div class="max-w-5xl mx-auto my-8 px-4 space-y-32">
   <%# Hero %>
   <section class="page-hero" data-controller="reveal" data-reveal-trigger-value="load">
     <p class="page-hero__eyebrow" data-reveal-item>About Aalam</p>
-    <h1 class="page-hero__title" data-reveal-item>A small corner of the <span class="page-hero__accent">world</span></h1>
-    <p class="page-hero__text" data-reveal-item>
-      Aalam means world. This is a personal blog where I write down what I learn, build and think about.
+    <%# <h1 class="page-hero__title" data-reveal-item>A small corner of the <span class="page-hero__accent">world</span></h1> %>
+    <p class="mt-12 text-2xl" data-reveal-item>
+      This is a personal <span class="page-hero__accent">blog website</span> where I write down what I learn, build and think about.
       Everything here is my own views and opinions.
     </p>
   </section>
-
   <%# How the site is organised %>
-  <div class="section-heading">
-    <h2 class="section-heading__title">How Aalam is organised</h2>
-  </div>
-
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-3" data-controller="reveal">
-    <% structure.each_with_index do |(title, text), index| %>
-      <div class="surface-panel" data-reveal-item>
-        <div class="surface-panel__body space-y-2">
-          <span class="badge badge-primary badge-sm"><%= index + 1 %></span>
-          <h3 class="text-lg font-semibold"><%= title %></h3>
-          <p class="text-sm text-base-content/70"><%= text %></p>
+  <section class="space-y-16">
+    <div class="section-heading">
+      <h2 class="section-heading__title">How Aalam is organised</h2>
+    </div>
+    <h1 class="my-8 text-2xl">Aalam is divided into three different sections.</h1>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3" data-controller="reveal">
+      <% structure.each_with_index do |(title, text), index| %>
+        <div class="surface-panel" data-reveal-item>
+          <div class="surface-panel__body space-y-2">
+            <h3 class="text-lg font-semibold page-hero__accent"><%= title %></h3>
+            <p class="text-sm text-base-content/70"><%= text %></p>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </div>
-
+      <% end %>
+    </div>
+  </section>
   <%# About the author %>
   <div class="section-heading">
-    <h2 class="section-heading__title">About the author</h2>
+    <h2 class="section-heading__title">About Me</h2>
   </div>
-
-  <div class="surface-panel">
+  <div class="surface-panel-custom">
     <div class="surface-panel__body space-y-3">
       <p>
-        Write a short introduction about yourself here: who you are, what you study or build,
-        and why you started this blog.
+        I'm a CS student currently doing my Bachelor's. I love coding and designing. 
       </p>
       <p class="text-base-content/70">
         A second paragraph is a good place for your interests and what readers can expect to find here.
       </p>
     </div>
   </div>
-
   <div class="mt-10 flex flex-wrap gap-3">
-    <%= link_to "Explore topics", explore_path, class: "btn btn-primary" %>
+    <%= link_to "Visit Portfolio", "https://ahmxad.netlify.app/", class: "btn btn-primary", target: "_blank", rel: "noopener" %>
     <%= link_to "Get in touch", contact_path, class: "btn btn-ghost" %>
   </div>
 </div>

@@ -16,7 +16,6 @@
         outline: none;
         cursor: pointer;
         text-decoration: none;
-        /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$########################### */
         border-radius: var(--radius);
         background-color: var(--cta-bg);
         transition: all 0.2s ease;
@@ -31,7 +30,6 @@
         display: block;
         position: relative;
         overflow: hidden;
-        /* ######################################################### */
         border-radius: inherit;
         padding: var(--cta-pad-y) var(--cta-pad-x);
         font-size: var(--cta-font-size);
@@ -74,7 +72,6 @@
         right: -15%;
         bottom: 25%;
         top: -100%;
-        /* ################################################################## */
         border-radius: 50%;
         background-color: rgba(255, 255, 255, 0.12);
     }
@@ -84,7 +81,6 @@
         right: 6%;
         top: 12%;
         bottom: 40%;
-        /* ################################################################## */
         border-radius: var(--radius) var(--radius) 0 0;
         box-shadow: inset 0 10px 8px -10px rgba(255, 255, 255, 0.8);
         background: linear-gradient(180deg,
