@@ -8,7 +8,8 @@ class SessionsController < ApplicationController
   def create
     if user = User.authenticate_by(login_attributes)
       start_new_session_for user
-      redirect_to after_authentication_url
+      # Someone who never proved their email address is taken to the page where they can do it
+      redirect_to user.email_verified? ? after_authentication_url : email_verification_path
     else
       redirect_to new_session_path, alert: "Try another username, email address or password."
     end

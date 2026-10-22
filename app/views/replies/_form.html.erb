@@ -4,8 +4,7 @@
 <details id="<%= dom_id(target, :reply_form) %>" class="mt-1" <%= "open" if local_assigns[:opened] %>>
   <summary class="link link-hover cursor-pointer text-xs opacity-70">Reply</summary>
   <%# A signed out visitor is sent to the log in page, which must open as a whole page, not inside the window %>
-  <%= form_with model: reply, url: comment_replies_path(target), class: "mt-2 flex flex-col gap-2",
-        data: { turbo_frame: (authenticated? ? nil : "_top") } do |form| %>
+  <%= form_with model: reply, url: comment_replies_path(target), class: "mt-2 flex flex-col gap-2", data: { turbo_frame: (can_engage? ? nil : "_top") } do |form| %>
     <% if reply.errors.any? %>
       <p role="alert" class="text-sm text-error"><%= reply.errors.full_messages.to_sentence %></p>
     <% end %>

@@ -2,6 +2,7 @@ class RepliesController < ApplicationController
   PER_PAGE = 5
 
   allow_unauthenticated_access only: :index
+  before_action :require_verified_email, only: :create
   before_action :set_comment
 
   rate_limit to: 10, within: 1.minute, only: :create, by: -> { Current.session.user_id }, name: "create",

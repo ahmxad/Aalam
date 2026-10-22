@@ -1,0 +1,5 @@
+<%# Shown to a signed in user whose email address is not verified yet %>
+<div role="status" class="alert alert-warning mb-4">
+  <span>Your email address is not verified yet. Verify it to like, save and comment.</span>
+  <%= link_to "Verify now", email_verification_path, class: "btn btn-sm" %>
+</div>

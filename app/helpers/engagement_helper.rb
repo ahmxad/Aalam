@@ -45,4 +45,24 @@ module EngagementHelper
       engagement_content(icon: icon, text: text, count: count)
     end
   end
+
+  # Whether the visitor is signed in with a verified email address, which the buttons need
+  def can_engage?
+    authenticated? && Current.session.user.email_verified?
+  end
+
+  def email_verification_pending?
+    authenticated? && !Current.session.user.email_verified?
+  end
+
+  # The small line under a box for writing, which also says what a press will lead to
+  def writing_hint(ready_text)
+    if !authenticated?
+      "You will be asked to log in"
+    elsif !can_engage?
+      "You will be asked to verify your email"
+    else
+      ready_text
+    end
+  end
 end

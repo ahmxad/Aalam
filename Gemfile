@@ -73,3 +73,5 @@ end
 gem "json", "< 4.0.0"
 
 gem "redcarpet", "~> 3.6"
+
+gem "letter_opener_web", "~> 3.0", group: :development

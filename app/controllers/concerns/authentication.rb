@@ -29,6 +29,16 @@ module Authentication
       Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
     end
 
+    # Buttons that need a verified email send everyone else to the verification page.
+    # The page the button was on is remembered, so the person returns there afterwards.
+    def require_verified_email
+      return if Current.session.user.email_verified?
+
+      session[:return_to_after_authenticating] = return_location
+      redirect_to email_verification_path, status: :see_other,
+                  alert: "Verify your email first. Then you can like, save and comment."
+    end
+
     def request_authentication
       session[:return_to_after_authenticating] = return_location
       flash[:alert] = "Please log in to continue." unless request.get?

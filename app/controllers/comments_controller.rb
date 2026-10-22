@@ -2,6 +2,7 @@ class CommentsController < ApplicationController
   include PostScoped
 
   allow_unauthenticated_access only: :index
+  before_action :require_verified_email, only: :create
   skip_before_action :set_post, only: :destroy
   before_action :set_comment, only: :destroy
 

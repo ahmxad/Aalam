@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_21_091154) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_105931) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -83,6 +83,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_091154) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "email_verification_codes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "email", null: false
+    t.string "code_digest", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "consumed_at"
+    t.integer "attempts", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "created_at"], name: "index_email_verification_codes_on_user_id_and_created_at"
+  end
+
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "likeable_type", null: false
@@ -139,6 +151,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_091154) do
     t.string "display_name"
     t.string "username", null: false
     t.string "bio", limit: 160
+    t.datetime "email_verified_at"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
@@ -151,6 +164,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_091154) do
   add_foreign_key "comments", "comments", column: "parent_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "email_verification_codes", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "admin_cards", column: "card_id"
   add_foreign_key "sessions", "users"

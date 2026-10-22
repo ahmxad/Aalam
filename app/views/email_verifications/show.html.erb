@@ -1,0 +1,25 @@
+<% content_for :title, "Verify your email | Aalam" %>
+<section class="mx-auto w-full max-w-md py-10">
+  <h1 class="mb-2 text-2xl font-bold">Verify your email</h1>
+  <% if @code %>
+    <p class="mb-6 text-sm">
+      We sent a 6 digit code to <strong><%= masked_email(@user.email_address) %></strong>.
+      It expires in <%= EmailVerificationCode::EXPIRES_IN.in_minutes.to_i %> minutes.
+    </p>
+    <%= form_with url: email_verification_path, class: "flex flex-col gap-4" do |f| %>
+      <%= f.text_field :otp, required: true, autofocus: true, inputmode: "numeric", autocomplete: "one-time-code",
+            placeholder: "000000", "aria-label": "Verification code",
+            class: "input input-bordered w-full text-center text-2xl tracking-widest",
+            data: { controller: "otp-input", action: "input->otp-input#format" } %>
+      <%= f.submit "Verify email", class: "btn btn-primary" %>
+    <% end %>
+    <p class="mt-6 text-sm">Did not get it? Check your spam folder, or ask for a new code.</p>
+  <% else %>
+    <p class="mb-6 text-sm">
+      We will send a 6 digit code to <strong><%= masked_email(@user.email_address) %></strong>
+      to make sure the address is yours.
+    </p>
+  <% end %>
+  <%= button_to (@code ? "Send a new code" : "Send me a code"), resend_email_verification_path,
+        class: "btn btn-ghost btn-sm mt-2" %>
+</section>

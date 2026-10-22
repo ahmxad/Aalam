@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   resource :session
   resource :registration, only: %i[new create]
+  resource :email_verification, path: "verify-email", only: %i[show create] do
+    post :resend
+  end
   resource :username_availability, only: :show
   resource :account, only: %i[edit update]
   patch "account/password", to: "accounts#update_password", as: :account_password

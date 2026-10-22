@@ -1,6 +1,7 @@
 class LikesController < ApplicationController
   include PostScoped
 
+  before_action :require_verified_email
   def create
     @post.likes.find_or_create_by(user_id: Current.session.user_id)
     render_post_actions

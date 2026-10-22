@@ -2,7 +2,7 @@
 <% liked = authenticated? && comment.likes.exists?(user_id: Current.session.user_id) %>
 <div id="<%= dom_id(comment, :like) %>" class="inline-flex">
   <%# A signed out visitor is sent to the log in page, which must open as a whole page, not inside the window %>
-  <%= button_to comment_like_path(comment), method: (liked ? :delete : :post), class: [ "btn btn-xs btn-ghost gap-1 px-1", ("text-primary" if liked) ], aria: { pressed: liked, label: "#{liked ? 'Unlike' : 'Like'} (#{comment.likes_count})" },form: { data: { turbo_frame: (authenticated? ? nil : "_top") } } do %>
+  <%= button_to comment_like_path(comment), method: (liked ? :delete : :post), class: [ "btn btn-xs btn-ghost gap-1 px-1", ("text-primary" if liked) ], aria: { pressed: liked, label: "#{liked ? 'Unlike' : 'Like'} (#{comment.likes_count})" },form: { data: { turbo_frame: (can_engage? ? nil : "_top") } } do %>
     <%= engagement_icon(:like, filled: liked, size_class: "h-4 w-4") %>
     <span class="tabular-nums"><%= number_with_delimiter(comment.likes_count) %></span>
   <% end %>

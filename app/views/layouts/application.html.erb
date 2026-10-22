@@ -34,6 +34,7 @@
   <%= render "shared/sidebar" if sidebar_visible? %>
   <main class="min-w-0 flex-1" data-page-transition>
     <%= render "shared/admin_nav" if controller_path.start_with?("admin/") %>
+    <%= render "shared/verify_email_notice" if email_verification_pending? && controller_name != "email_verifications" %>
     <%= render "shared/flash" %>
     <%= yield %>
   </main>

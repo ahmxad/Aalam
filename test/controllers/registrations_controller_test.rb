@@ -64,18 +64,19 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
   # Creating an account
 
-  test "create makes the account, signs the user in and shows a welcome message" do
+  test "create makes the account, signs the user in and sends them to verify their email" do
     assert_difference "User.count", 1 do
       post registration_path, params: valid_params
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to email_verification_path
     assert cookies[:session_id]
-    assert_equal "Welcome to Aalam!", flash[:notice]
+    assert_includes flash[:notice], "Welcome to Aalam!"
 
     user = User.find_by!(username: "fresh_user")
     assert_equal "fresh@example.com", user.email_address
     assert_equal 1, user.sessions.count
+    assert_not user.email_verified?
   end
 
   test "create normalizes the username and the email address" do
@@ -85,13 +86,14 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "fresh@example.com", user.email_address
   end
 
-  test "create returns the user to the page they were trying to open" do
+  test "create remembers the page the user was trying to open, for after the verification" do
     get admin_root_path
     assert_redirected_to new_session_path
 
     post registration_path, params: valid_params
 
-    assert_redirected_to admin_root_url
+    assert_redirected_to email_verification_path
+    assert_equal admin_root_url, session[:return_to_after_authenticating]
   end
 
   test "create never makes the new user an admin" do
@@ -100,13 +102,13 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_not User.find_by!(username: "fresh_user").admin?
   end
 
-  test "the new user can log in with the username and the password" do
+  test "the new user can log in with the username and the password, and lands on the verification page" do
     post registration_path, params: valid_params
     delete session_path
 
     post session_path, params: { login: "fresh_user", password: "password123" }
 
-    assert_redirected_to root_path
+    assert_redirected_to email_verification_path
     assert cookies[:session_id]
   end
 

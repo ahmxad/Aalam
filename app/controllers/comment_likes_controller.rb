@@ -1,6 +1,7 @@
 # Likes and unlikes a comment or a reply, for the signed in user
 class CommentLikesController < ApplicationController
   rate_limit to: 60, within: 1.minute, by: -> { Current.session.user_id }, with: -> { head :too_many_requests }
+  before_action :require_verified_email
   before_action :set_comment
 
   def create
