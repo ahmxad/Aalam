@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_22_105931) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_121419) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -95,6 +95,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_105931) do
     t.index ["user_id", "created_at"], name: "index_email_verification_codes_on_user_id_and_created_at"
   end
 
+  create_table "identities", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "provider", null: false
+    t.string "uid", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider", "uid"], name: "index_identities_on_provider_and_uid", unique: true
+    t.index ["user_id", "provider"], name: "index_identities_on_user_id_and_provider", unique: true
+  end
+
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "likeable_type", null: false
@@ -165,6 +175,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_105931) do
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "email_verification_codes", "users"
+  add_foreign_key "identities", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "admin_cards", column: "card_id"
   add_foreign_key "sessions", "users"

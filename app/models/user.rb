@@ -2,6 +2,20 @@ class User < ApplicationRecord
   RESERVED_USERNAMES = %w[admin administrator root support aalam system me].freeze
   MAX_AVATAR_SIZE = 2.megabytes
 
+  # A free username close to the given text, for people who sign up through another service
+  def self.suggest_username(text)
+    base = text.to_s.downcase.gsub(/[^a-z0-9_]+/, "_").gsub(/\A_+|_+\z/, "").first(16)
+    base = "user" if base.length < 3
+
+    candidate = base
+    counter = 1
+    while RESERVED_USERNAMES.include?(candidate) || exists?(username: candidate)
+      counter += 1
+      candidate = "#{base}#{counter}"
+    end
+    candidate
+  end
+
   has_secure_password
   has_many :sessions, dependent: :destroy
 
@@ -9,6 +23,7 @@ class User < ApplicationRecord
   has_many :bookmarks, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :email_verification_codes, dependent: :destroy
+  has_many :identities, dependent: :destroy
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fill: [ 192, 192 ], format: :webp, saver: { quality: 80 }

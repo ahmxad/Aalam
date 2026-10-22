@@ -1,0 +1,9 @@
+<%# Buttons for signing in with another service. Each one starts the sign in at that service. %>
+<div class="mt-6 flex flex-col gap-2">
+  <div class="divider my-0 text-xs opacity-70">or</div>
+  <% Identity::PROVIDER_NAMES.each do |provider, name| %>
+    <%# Turbo is switched off on purpose: the answer is a redirect to another website %>
+    <%= button_to "Continue with #{name}", "#{OmniAuth.config.path_prefix}/#{provider}",
+          method: :post, class: "btn btn-outline w-full", form: { data: { turbo: false } } %>
+  <% end %>
+</div>

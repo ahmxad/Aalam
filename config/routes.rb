@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   resource :account, only: %i[edit update]
   patch "account/password", to: "accounts#update_password", as: :account_password
   get "u/:username", to: "profiles#show", as: :profile, constraints: { username: /[A-Za-z0-9_]+/ }
+  get "auth/failure", to: "omniauth_callbacks#failure"
+  get "auth/:provider/callback", to: "omniauth_callbacks#create", constraints: { provider: /github/ }
+  get "signup/finish", to: "oauth_signups#new", as: :new_oauth_signup
+  post "signup/finish", to: "oauth_signups#create", as: :oauth_signup
   get "saved", to: "saved_posts#index", as: :saved_posts
   resources :posts, only: [] do
     resource :like, only: %i[create destroy]

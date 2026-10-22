@@ -11,6 +11,7 @@
           class: "input input-bordered w-full" %>
     <%= f.submit "Log in", class: "btn btn-primary" %>
   <% end %>
+  <%= render "shared/social_login" %>
   <div class="mt-4 flex flex-col gap-1 text-sm">
     <p>No account? <%= link_to "Create one", signup_path, class: "link" %></p>
     <p><%= link_to "Forgot your password?", new_password_path, class: "link" %></p>

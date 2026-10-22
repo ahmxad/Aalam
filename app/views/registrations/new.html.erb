@@ -55,6 +55,7 @@
     </div>
     <%= f.submit "Sign up", class: "btn btn-primary" %>
   <% end %>
+  <%= render "shared/social_login" %>
   <p class="mt-4 text-sm">
     Already have an account? <%= link_to "Log in", new_session_path, class: "link" %>
   </p>

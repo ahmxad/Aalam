@@ -1,6 +1,6 @@
 <%# Active link gets the primary color, the rest stay subtle %>
 <% link_class = ->(path) { [ "btn btn-sm", current_page?(path) ? "btn-primary" : "btn-ghost" ] } %>
-<% auth_page = %w[sessions registrations].include?(controller_name) %>
+<% auth_page = %w[sessions registrations oauth_signups].include?(controller_name) %>
 <header id="site-header" class="sticky top-0 z-50 px-3 pt-2">
   <input id="navbar-toggle" class="peer hidden" type="checkbox" />
   <%# Closes the mobile menu when clicking anywhere outside it %>

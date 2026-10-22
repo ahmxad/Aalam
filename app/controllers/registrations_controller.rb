@@ -1,4 +1,6 @@
 class RegistrationsController < ApplicationController
+  include EmailVerificationFlow
+
   allow_unauthenticated_access only: %i[new create]
   before_action :redirect_if_authenticated
   rate_limit to: 10, within: 3.minutes, only: :create,
@@ -28,15 +30,5 @@ class RegistrationsController < ApplicationController
 
     def redirect_if_authenticated
       redirect_to root_path if authenticated?
-    end
-
-    # The new account must prove its email address before it can like, save or comment.
-    # The page the person came from stays remembered, and they return there after verifying.
-    def announce_verification_code(user)
-      if EmailVerificationCode.deliver_to(user) == :sent
-        flash[:notice] = "Welcome to Aalam! We sent a 6 digit code to #{helpers.masked_email(user.email_address)}."
-      else
-        flash[:alert] = "Your account is ready, but we could not send the code. Press \"Send me a code\" to try again."
-      end
     end
 end
