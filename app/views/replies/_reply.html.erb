@@ -1,0 +1,24 @@
+<li id="<%= dom_id(reply) %>" class="flex gap-2">
+  <%= link_to profile_path(reply.user.username), data: { turbo_frame: "_top" }, class: "shrink-0",
+        aria: { label: "#{reply.user.public_name} profile" } do %>
+    <%= user_avatar(reply.user, size_class: "w-6", letter_class: "text-xs") %>
+  <% end %>
+  <div class="min-w-0 flex-1">
+    <p class="text-sm">
+      <%= link_to reply.user.public_name, profile_path(reply.user.username),
+            data: { turbo_frame: "_top" }, class: "font-semibold" %>
+      <span class="opacity-60"><%= time_ago_in_words(reply.created_at) %> ago</span>
+    </p>
+    <p class="whitespace-pre-line wrap-break-words text-sm"><%= reply.body %></p>
+    <div class="mt-1 flex flex-wrap items-center gap-3 text-xs opacity-70">
+      <%= render "comments/like", comment: reply %>
+      <%= render "comments/stats", comment: reply %>
+      <% if authenticated? && reply.deletable_by?(Current.session.user) %>
+        <%= button_to "Delete", comment_path(reply), method: :delete,
+              class: "link link-hover text-error",
+              form: { class: "inline", data: { turbo_confirm: "Delete this reply?" } } %>
+      <% end %>
+    </div>
+    <%= render "replies/form", target: reply %>
+  </div>
+</li>

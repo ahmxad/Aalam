@@ -1,0 +1,2 @@
+<%= turbo_stream.replace dom_id(@target, :reply_form), partial: "replies/form",
+      locals: { target: @target, reply: @reply, opened: true } %>

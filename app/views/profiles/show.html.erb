@@ -18,4 +18,14 @@
       <p class="text-sm opacity-70">Joined <%= l @user.created_at.to_date, format: :long %></p>
     </div>
   </div>
+  <%# Only the owner gets this part. Nothing of it is in the page for anyone else. %>
+  <% if @own_profile %>
+    <section id="saved-posts" class="mt-10">
+      <h2 class="text-lg font-semibold">Saved posts</h2>
+      <p class="mb-3 text-xs opacity-70">Only you can see this list.</p>
+      <%= turbo_frame_tag "saved_posts", src: saved_posts_path do %>
+        <p class="py-6 text-sm opacity-70">Loading saved posts...</p>
+      <% end %>
+    </section>
+  <% end %>
 </section>

@@ -11,13 +11,19 @@
       <span class="opacity-60"><%= time_ago_in_words(comment.created_at) %> ago</span>
     </p>
     <p class="whitespace-pre-line wrap-break-words text-sm"><%= comment.body %></p>
-    <div class="mt-1 flex items-center gap-3 text-xs opacity-70">
-      <span><%= pluralize(comment.likes_count, "like") %> &middot; <%= pluralize(comment.replies_count, "reply") %></span>
+    <div class="mt-1 flex flex-wrap items-center gap-3 text-xs opacity-70">
+      <%= render "comments/like", comment: comment %>
+      <%= render "comments/stats", comment: comment %>
       <% if authenticated? && comment.deletable_by?(Current.session.user) %>
         <%= button_to "Delete", comment_path(comment), method: :delete,
               class: "link link-hover text-error",
-              form: { class: "inline", data: { turbo_confirm: "Delete this comment?" } } %>
+              form: { class: "inline", data: { turbo_confirm: "Delete this comment and its replies?" } } %>
       <% end %>
+    </div>
+    <%= render "replies/form", target: comment %>
+    <div class="mt-3">
+      <%= render "replies/area", comment: comment, replies: local_assigns[:expanded_replies],
+            next_cursor: local_assigns[:next_cursor] %>
     </div>
   </div>
 </li>

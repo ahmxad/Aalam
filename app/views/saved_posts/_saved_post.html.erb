@@ -1,0 +1,15 @@
+<% post = bookmark.post %>
+<li id="<%= dom_id(post, :saved) %>" class="flex items-start gap-3 border border-base-300 p-3">
+  <div class="min-w-0 flex-1">
+    <p class="truncate text-xs opacity-70"><%= post.card.topic.title %> / <%= post.card.title %></p>
+    <%# The profile page is the whole page, so the post opens as a normal page %>
+    <%= link_to post.title, topic_card_post_path(post.card.topic.slug, post.card.slug, post.slug),
+          data: { turbo_frame: "_top" }, class: "link link-hover font-semibold" %>
+    <% if post.summary.present? %>
+      <p class="line-clamp-2 text-sm opacity-70"><%= post.summary %></p>
+    <% end %>
+    <p class="mt-1 text-xs opacity-60">Saved <%= time_ago_in_words(bookmark.created_at) %> ago</p>
+  </div>
+  <%= button_to "Remove", post_bookmark_path(post, from: "saved"), method: :delete,
+        class: "btn btn-xs btn-ghost", form: { data: { turbo_confirm: "Remove this post from your saved posts?" } } %>
+</li>

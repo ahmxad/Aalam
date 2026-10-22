@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
   skip_before_action :set_post, only: :destroy
   before_action :set_comment, only: :destroy
 
-  rate_limit to: 10, within: 1.minute, only: :create, by: -> { Current.session.user_id },
+  rate_limit to: 10, within: 1.minute, only: :create, by: -> { Current.session.user_id }, name: "create",
              with: -> { render_invalid_form("You are commenting too fast. Please wait a minute and try again.", :too_many_requests) }
 
   def index
@@ -43,8 +43,10 @@ class CommentsController < ApplicationController
   def destroy
     return head :forbidden unless @comment.deletable_by?(Current.session.user)
 
+    parent = @comment.parent
     @comment.destroy
     @post.reload
+    @parent = parent&.reload
 
     respond_to do |format|
       format.turbo_stream

@@ -1,0 +1,9 @@
+<%# The replies of a comment: a link while closed, the newest replies once opened %>
+<%= turbo_frame_tag dom_id(comment, :replies) do %>
+  <% if replies %>
+    <%= render "replies/list", comment: comment, replies: replies, next_cursor: next_cursor %>
+  <% elsif comment.replies_count.positive? %>
+    <%= link_to "View #{pluralize(comment.replies_count, 'reply')}", comment_replies_path(comment),
+          class: "link link-hover text-xs" %>
+  <% end %>
+<% end %>

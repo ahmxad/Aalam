@@ -1,0 +1,4 @@
+<%# The number of replies under a comment. A reply has none. %>
+<span id="<%= dom_id(comment, :stats) %>">
+  <% unless comment.reply? %><%= pluralize(comment.replies_count, "reply") %><% end %>
+</span>

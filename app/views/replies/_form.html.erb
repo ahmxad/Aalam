@@ -1,0 +1,20 @@
+<%# The "Reply" box under a comment or a reply. Turbo replaces it after a failed attempt. %>
+<% reply = local_assigns[:reply] || Comment.new %>
+<% prefill = target.reply? ? "@#{target.user.username} " : nil %>
+<details id="<%= dom_id(target, :reply_form) %>" class="mt-1" <%= "open" if local_assigns[:opened] %>>
+  <summary class="link link-hover cursor-pointer text-xs opacity-70">Reply</summary>
+  <%# A signed out visitor is sent to the log in page, which must open as a whole page, not inside the window %>
+  <%= form_with model: reply, url: comment_replies_path(target), class: "mt-2 flex flex-col gap-2",
+        data: { turbo_frame: (authenticated? ? nil : "_top") } do |form| %>
+    <% if reply.errors.any? %>
+      <p role="alert" class="text-sm text-error"><%= reply.errors.full_messages.to_sentence %></p>
+    <% end %>
+    <%= form.text_area :body, value: (reply.body.presence || prefill), rows: 2, required: true,
+          maxlength: Comment::MAX_LENGTH, placeholder: "Write a reply...",
+          "aria-label": "Reply to #{target.user.public_name}",
+          class: "textarea textarea-bordered w-full" %>
+    <div class="flex justify-end">
+      <%= form.submit "Reply", class: "btn btn-xs btn-primary" %>
+    </div>
+  <% end %>
+</details>

@@ -1,0 +1,5 @@
+<%# The numbers under a comment or a reply. Only a comment has replies. %>
+<span id="<%= dom_id(comment, :stats) %>">
+  <%= pluralize(comment.likes_count, "like") %>
+  <% unless comment.reply? %>&middot; <%= pluralize(comment.replies_count, "reply") %><% end %>
+</span>

@@ -5,12 +5,17 @@ Rails.application.routes.draw do
   resource :account, only: %i[edit update]
   patch "account/password", to: "accounts#update_password", as: :account_password
   get "u/:username", to: "profiles#show", as: :profile, constraints: { username: /[A-Za-z0-9_]+/ }
+  get "saved", to: "saved_posts#index", as: :saved_posts
   resources :posts, only: [] do
     resource :like, only: %i[create destroy]
     resource :bookmark, only: %i[create destroy]
     resources :comments, only: %i[index create]
+    resource :share, only: :create
   end
-  resources :comments, only: :destroy
+  resources :comments, only: :destroy do
+    resources :replies, only: %i[index create]
+    resource :like, only: %i[create destroy], controller: "comment_likes"
+  end
   delete "account/avatar", to: "accounts#destroy_avatar", as: :account_avatar
   get "signup", to: "registrations#new", as: :signup
   resources :passwords, param: :token
