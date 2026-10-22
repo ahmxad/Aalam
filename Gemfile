@@ -75,3 +75,7 @@ gem "json", "< 4.0.0"
 gem "redcarpet", "~> 3.6"
 
 gem "letter_opener_web", "~> 3.0", group: :development
+
+gem "omniauth", "~> 2.1"
+gem "omniauth-rails_csrf_protection", "~> 2.0"
+gem "omniauth-github", "~> 2.0"
