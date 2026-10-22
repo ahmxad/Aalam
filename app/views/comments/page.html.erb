@@ -1,0 +1,9 @@
+<%# The next batch of comments. It replaces the "Load more" button that asked for it. %>
+<%= turbo_frame_tag "comments_more_#{params[:cursor]}" do %>
+  <div class="space-y-4">
+    <ul class="space-y-4">
+      <%= render partial: "comments/comment", collection: @comments, as: :comment %>
+    </ul>
+    <%= render "comments/more", post: @post, sort: @sort, cursor: @next_cursor %>
+  </div>
+<% end %>

@@ -1,0 +1,7 @@
+<%# The button that loads the next batch. It sits in its own frame, which the next batch replaces. %>
+<% if cursor %>
+  <%= turbo_frame_tag "comments_more_#{cursor}" do %>
+    <%= link_to "Load more comments", post_comments_path(post, sort: sort, cursor: cursor),
+          class: "btn btn-sm btn-ghost w-full" %>
+  <% end %>
+<% end %>

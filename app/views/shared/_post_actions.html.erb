@@ -4,6 +4,11 @@
 <div id="<%= dom_id(post, :actions) %>" class="flex flex-wrap items-center gap-1 border-y border-base-300 py-2">
   <%= engagement_button path: post_like_path(post), active: liked, icon: :like,
         text: (liked ? "Liked" : "Like"), count: post.likes_count %>
-  <%= engagement_button path: post_bookmark_path(post), active: saved, icon: :save,
-        text: (saved ? "Saved" : "Save"), count: post.bookmarks_count %>
+  <%= engagement_link path: post_comments_path(post), icon: :comment, text: "Comments",
+        count: post.comments_count,
+        data: { turbo_frame: "comments_panel", action: "click->comments-modal#open" } %>
+  <div class="ml-auto">
+    <%= engagement_button path: post_bookmark_path(post), active: saved, icon: :save,
+          text: (saved ? "Saved" : "Save"), count: post.bookmarks_count %>
+  </div>
 </div>

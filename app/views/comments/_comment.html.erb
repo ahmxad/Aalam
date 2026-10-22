@@ -1,0 +1,23 @@
+<li id="<%= dom_id(comment) %>" class="flex gap-3">
+  <%# Links to profiles leave the window and open as a normal page %>
+  <%= link_to profile_path(comment.user.username), data: { turbo_frame: "_top" }, class: "shrink-0",
+        aria: { label: "#{comment.user.public_name} profile" } do %>
+    <%= user_avatar(comment.user, size_class: "w-8", letter_class: "text-sm") %>
+  <% end %>
+  <div class="min-w-0 flex-1">
+    <p class="text-sm">
+      <%= link_to comment.user.public_name, profile_path(comment.user.username),
+            data: { turbo_frame: "_top" }, class: "font-semibold" %>
+      <span class="opacity-60"><%= time_ago_in_words(comment.created_at) %> ago</span>
+    </p>
+    <p class="whitespace-pre-line wrap-break-words text-sm"><%= comment.body %></p>
+    <div class="mt-1 flex items-center gap-3 text-xs opacity-70">
+      <span><%= pluralize(comment.likes_count, "like") %> &middot; <%= pluralize(comment.replies_count, "reply") %></span>
+      <% if authenticated? && comment.deletable_by?(Current.session.user) %>
+        <%= button_to "Delete", comment_path(comment), method: :delete,
+              class: "link link-hover text-error",
+              form: { class: "inline", data: { turbo_confirm: "Delete this comment?" } } %>
+      <% end %>
+    </div>
+  </div>
+</li>

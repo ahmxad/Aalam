@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   resources :posts, only: [] do
     resource :like, only: %i[create destroy]
     resource :bookmark, only: %i[create destroy]
+    resources :comments, only: %i[index create]
   end
+  resources :comments, only: :destroy
   delete "account/avatar", to: "accounts#destroy_avatar", as: :account_avatar
   get "signup", to: "registrations#new", as: :signup
   resources :passwords, param: :token

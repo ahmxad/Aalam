@@ -1,0 +1,28 @@
+<%# The inside of the comments window %>
+<%= turbo_frame_tag "comments_panel" do %>
+  <div class="flex items-center justify-between border-b border-base-300 px-4 py-3">
+    <h2 class="font-semibold">
+      Comments <span id="comments_count" class="tabular-nums opacity-70"><%= number_with_delimiter(@post.comments_count) %></span>
+    </h2>
+    <button type="button" class="btn btn-sm btn-square btn-ghost" aria-label="Close comments"
+            data-action="comments-modal#close">&times;</button>
+  </div>
+  <div role="tablist" aria-label="Sort comments" class="tabs tabs-border px-2">
+    <% { "latest" => "Latest", "replies" => "Most replies", "likes" => "Most liked" }.each do |key, label| %>
+      <%= link_to label, post_comments_path(@post, sort: key), role: "tab",
+            class: [ "tab", ("tab-active" if @sort == key) ], aria: { selected: @sort == key } %>
+    <% end %>
+  </div>
+  <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4">
+    <div class="space-y-4">
+      <ul id="comments_list" class="space-y-4">
+        <% if @comments.empty? %>
+          <li id="comments_empty" class="py-8 text-center text-sm opacity-70">No comments yet.</li>
+        <% end %>
+        <%= render partial: "comments/comment", collection: @comments, as: :comment %>
+      </ul>
+      <%= render "comments/more", post: @post, sort: @sort, cursor: @next_cursor %>
+    </div>
+  </div>
+  <%= render "comments/form", post: @post, comment: Comment.new %>
+<% end %>

@@ -28,7 +28,19 @@
     <%# Body: keep this on one line, line breaks inside would show as blank lines %>
     <div class="article-body" data-controller="code-copy"><%= render_markdown(@post.body, images: @post.images) %></div>
   </article>
-  <%= render "shared/post_actions", post: @post %>
+  <div data-controller="comments-modal">
+    <%= render "shared/post_actions", post: @post %>
+    <%# The comments window, opened by the Comments button above %>
+    <dialog class="modal modal-bottom sm:modal-middle" aria-label="Comments" data-lenis-prevent
+            data-comments-modal-target="dialog"
+            data-action="click->comments-modal#closeOnBackdrop wheel->comments-modal#keepScrollInside:passive touchmove->comments-modal#keepScrollInside:passive">
+      <div class="modal-box flex h-[80vh] max-h-[80vh] w-full flex-col overflow-hidden p-0 sm:max-w-lg">
+        <%= turbo_frame_tag "comments_panel", class: "flex min-h-0 flex-1 flex-col" do %>
+          <p class="p-6 text-sm opacity-70">Loading comments...</p>
+        <% end %>
+      </div>
+    </dialog>
+  </div>
   <%# Previous / next %>
   <% if @previous_post || @next_post %>
     <div class="section-heading">
