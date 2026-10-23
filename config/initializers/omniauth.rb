@@ -5,6 +5,15 @@ Rails.application.config.middleware.use OmniAuth::Builder do
            Rails.application.credentials.dig(:github, :client_id),
            Rails.application.credentials.dig(:github, :client_secret),
            scope: "user:email"
+
+  # access_type online: we only need to know who the person is, not to keep access to their Google account.
+  # select_account: Google always asks which account to use, which helps people who have several.
+  provider :google_oauth2,
+           Rails.application.credentials.dig(:google, :client_id),
+           Rails.application.credentials.dig(:google, :client_secret),
+           scope: "email,profile",
+           access_type: "online",
+           prompt: "select_account"
 end
 
 OmniAuth.config.logger = Rails.logger

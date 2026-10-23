@@ -6,7 +6,7 @@ Rails.application.configure do
   config.content_security_policy do |policy|
     policy.default_src :self
     policy.base_uri    :self
-    policy.form_action :self, "https://github.com"
+    policy.form_action :self, "https://github.com", "https://accounts.google.com"
     policy.frame_ancestors :self
     policy.object_src  :none
     policy.script_src  :self

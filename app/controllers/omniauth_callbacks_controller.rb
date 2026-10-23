@@ -54,8 +54,7 @@ class OmniauthCallbacksController < ApplicationController
     end
 
     def continue_without_identity(auth)
-      # The strategy only gives an email address that the service has verified
-      email = auth.info.email.presence
+      email = verified_email(auth)
       existing = email && User.find_by(email_address: email)
 
       if existing&.email_verified?
@@ -64,7 +63,7 @@ class OmniauthCallbacksController < ApplicationController
       else
         # Nobody proved the address on that other account, so it does not keep it
         existing&.destroy
-        remember_pending_signup(auth)
+        remember_pending_signup(auth, email)
         redirect_to new_oauth_signup_path
       end
     end
@@ -81,16 +80,29 @@ class OmniauthCallbacksController < ApplicationController
     end
 
     # What the "Finish signing up" page needs. It lives in the session, which only this browser can read.
-    def remember_pending_signup(auth)
+    def remember_pending_signup(auth, email)
       info = auth.info
+      # Only a suggestion. GitHub has a nickname, Google does not, so the start of the email address is used.
+      suggestion = info.nickname.presence || info.email.to_s.split("@").first.presence || info.name
 
       session[:pending_oauth] = {
         "provider" => auth.provider,
         "uid" => auth.uid.to_s,
-        "email" => info.email.presence,
+        "email" => email,
         "name" => info.name.to_s.strip.first(50).presence,
-        "username" => User.suggest_username(info.nickname)
+        "username" => User.suggest_username(suggestion)
       }
+    end
+
+    # The email address that the service itself has verified, or nil.
+    # GitHub only returns an address when it is the primary one and verified.
+    # For Google the answer is checked here as well, because the address is what an account is matched on.
+    def verified_email(auth)
+      email = auth.info.email.presence
+      return unless email
+      return email unless auth.provider == "google_oauth2"
+
+      email if auth.info.email_verified.in?([ true, "true" ])
     end
 
     def fail_login(message = "We could not sign you in with that service. Please try again or use another way to log in.")

@@ -3,7 +3,10 @@
   <div class="divider my-0 text-xs opacity-70">or</div>
   <% Identity::PROVIDER_NAMES.each do |provider, name| %>
     <%# Turbo is switched off on purpose: the answer is a redirect to another website %>
-    <%= button_to "Continue with #{name}", "#{OmniAuth.config.path_prefix}/#{provider}",
-          method: :post, class: "btn btn-outline w-full", form: { data: { turbo: false } } %>
+    <%= button_to "#{OmniAuth.config.path_prefix}/#{provider}", method: :post,
+          class: "btn btn-outline w-full gap-3", form: { data: { turbo: false } } do %>
+      <%= provider_logo(provider) %>
+      <span>Continue with <%= name %></span>
+    <% end %>
   <% end %>
 </div>

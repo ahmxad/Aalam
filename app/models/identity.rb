@@ -1,6 +1,6 @@
 # A way of signing in that belongs to a user, such as their GitHub account
 class Identity < ApplicationRecord
-  PROVIDER_NAMES = { "github" => "GitHub" }.freeze
+  PROVIDER_NAMES = { "github" => "GitHub", "google_oauth2" => "Google" }.freeze
 
   belongs_to :user
 
