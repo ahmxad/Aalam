@@ -4,13 +4,18 @@ module PostScoped
 
   included do
     before_action :set_post
-    rate_limit to: 60, within: 1.minute, by: -> { Current.session&.user_id || request.remote_ip },
-               with: -> { head :too_many_requests }
+    rate_limit to: 60, within: 1.minute, by: -> { rate_limit_key }, with: -> { head :too_many_requests }
   end
 
   private
     def set_post
       @post = Admin::Post.find(params[:post_id])
+    end
+
+    # Signed in people are counted one by one, visitors by their address.
+    # Asking whether someone is signed in also reads their session, which pages open to visitors do not do otherwise.
+    def rate_limit_key
+      authenticated? ? Current.session.user_id : request.remote_ip
     end
 
     def post_page_path

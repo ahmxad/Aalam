@@ -6,7 +6,7 @@ class SharesController < ApplicationController
 
   # Stricter than the limit shared by the other buttons, because every request raises a public number
   rate_limit to: 10, within: 1.minute, only: :create, name: "create",
-             by: -> { Current.session&.user_id || request.remote_ip },
+             by: -> { rate_limit_key },
              with: -> { head :too_many_requests }
 
   def create
