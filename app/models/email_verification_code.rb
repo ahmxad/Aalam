@@ -33,16 +33,18 @@ class EmailVerificationCode < ApplicationRecord
     end
   end
 
-  # Makes a code and emails it. Returns :sent, or :failed when the email could not be delivered.
+  # Makes a code and emails it to the address. Returns :sent, or :failed when the email could not be delivered.
   # Raises Throttled when a code was asked for too soon.
-  def self.deliver_to(user)
-    record, code = issue(user)
+  def self.deliver_to(user, email: user.email_address)
+    record, code = issue(user, email: email)
 
     begin
       EmailVerificationMailer.code(user, record.email, code).deliver_now
       :sent
     rescue StandardError => error
       Rails.logger.error("Verification email failed: #{error.class}: #{error.message}")
+      # A code that never arrived must not look like it was sent, or hold back the next try
+      record.destroy
       :failed
     end
   end

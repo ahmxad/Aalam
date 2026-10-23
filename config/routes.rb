@@ -2,12 +2,15 @@ Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   resource :session
   resource :registration, only: %i[new create]
-  resource :email_verification, path: "verify-email", only: %i[show create] do
+  resource :email_verification, path: "verify-email", only: %i[show create destroy] do
     post :resend
   end
   resource :username_availability, only: :show
   resource :account, only: %i[edit update]
   patch "account/password", to: "accounts#update_password", as: :account_password
+  post "account/password/setup", to: "accounts#request_password_setup", as: :account_password_setup
+  post "account/email", to: "accounts#request_email_change", as: :account_email
+  resources :identities, only: :destroy
   get "u/:username", to: "profiles#show", as: :profile, constraints: { username: /[A-Za-z0-9_]+/ }
   get "auth/failure", to: "omniauth_callbacks#failure"
   get "auth/:provider/callback", to: "omniauth_callbacks#create", constraints: { provider: /github|google_oauth2/ }

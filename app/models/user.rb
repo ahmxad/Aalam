@@ -24,6 +24,8 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :email_verification_codes, dependent: :destroy
   has_many :identities, dependent: :destroy
+  # Setting a password, whichever way it happens, means the user now knows one
+  before_update :mark_password_as_set, if: :will_save_change_to_password_digest?
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fill: [ 192, 192 ], format: :webp, saver: { quality: 80 }
@@ -61,6 +63,12 @@ class User < ApplicationRecord
     update!(email_verified_at: Time.current)
   end
 
+  # The ways to sign in are a password the user knows, and the connected services.
+  # The last one cannot be removed, or the account would be lost.
+  def can_disconnect?(identity)
+    password_set? || identities.where.not(id: identity.id).exists?
+  end
+
   # True only for a picture that is already saved, not one waiting on a failed form
   def avatar_stored?
     avatar.attached? && avatar.attachment.persisted?
@@ -91,5 +99,8 @@ class User < ApplicationRecord
     end
     def avatar_upload_must_be_usable
       errors.add(:avatar, @avatar_upload_error) if @avatar_upload_error
+    end
+    def mark_password_as_set
+      self.password_set = true
     end
 end

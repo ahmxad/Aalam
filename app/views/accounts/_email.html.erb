@@ -1,0 +1,34 @@
+<%# The email address of the account, and how to change it %>
+<% pending = EmailVerificationCode.current_for(user) %>
+<section id="email" class="mt-10 flex flex-col gap-3">
+  <h2 class="text-lg font-semibold">Email address</h2>
+  <p class="text-sm">
+    <strong><%= user.email_address %></strong>
+    <% if user.email_verified? %>
+      <span class="badge badge-success badge-sm">Verified</span>
+    <% else %>
+      <span class="badge badge-warning badge-sm">Not verified</span>
+    <% end %>
+  </p>
+  <% if pending && pending.email != user.email_address %>
+    <p class="text-sm">
+      Waiting for you to confirm <strong><%= pending.email %></strong>.
+      <%= link_to "Enter the code", email_verification_path, class: "link" %>
+    </p>
+  <% end %>
+  <% if user.password_set? || !user.email_verified? %>
+    <%= form_with url: account_email_path, class: "flex flex-col gap-3" do |f| %>
+      <%= f.email_field :email_address, required: true, autocomplete: "email",
+            placeholder: "New email address", "aria-label": "New email address",
+            class: "input input-bordered w-full" %>
+      <% if user.password_set? %>
+        <%= f.password_field :current_password, required: true, autocomplete: "current-password",
+              placeholder: "Current password", "aria-label": "Current password, to change the email address",
+              class: "input input-bordered w-full" %>
+      <% end %>
+      <%= f.submit "Send a code to the new address", class: "btn btn-outline btn-sm self-start" %>
+    <% end %>
+  <% else %>
+    <p class="text-sm opacity-70">To change your email address, first set a password below.</p>
+  <% end %>
+</section>

@@ -27,4 +27,16 @@ module PostBuilder
   def create_user(username = "person_#{SecureRandom.hex(3)}")
     User.create!(username: username, email_address: "#{username}@example.com", password: "password123")
   end
+  # A person who signed up but has not proved their email address yet
+  def create_unverified_user(username = "person_#{SecureRandom.hex(3)}")
+    create_user(username)
+  end
+  # A person who signed up through other services and has no password of their own
+  def create_oauth_user(username = "oauth_only", providers: %w[github], verified: true)
+    user = create_user(username)
+    user.update_columns(password_set: false)
+    user.verify_email! if verified
+    providers.each { |provider| user.identities.create!(provider: provider, uid: "#{provider}_#{username}") }
+    user
+  end
 end

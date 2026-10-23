@@ -38,30 +38,20 @@
           placeholder: "Short bio (optional, up to 160 characters)", "aria-label": "Bio",
           class: "textarea textarea-bordered w-full" %>
     <div class="flex flex-col gap-1">
-    <div class="flex flex-col gap-1" data-controller="avatar-preview">
-      <%= f.label :avatar_upload, "Profile picture", class: "text-sm" %>
-      <%= f.file_field :avatar_upload, accept: "image/jpeg,image/png,image/webp",
+      <div class="flex flex-col gap-1" data-controller="avatar-preview">
+        <%= f.label :avatar_upload, "Profile picture", class: "text-sm" %>
+        <%= f.file_field :avatar_upload, accept: "image/jpeg,image/png,image/webp",
             class: "file-input file-input-bordered w-full",
             data: { avatar_preview_target: "input", action: "change->avatar-preview#select" } %>
-      <p class="min-h-5 text-sm opacity-70" aria-live="polite"
+        <p class="min-h-5 text-sm opacity-70" aria-live="polite"
          data-avatar-preview-target="hint">JPEG, PNG or WebP, up to 10 MB. It is converted to WebP automatically.</p>
-    </div>
+      </div>
     </div>
     <input type="email" value="<%= @user.email_address %>" disabled aria-label="Email address"
            class="input input-bordered w-full" />
     <%= f.submit "Save profile", class: "btn btn-primary" %>
   <% end %>
-  <%= form_with scope: :user, url: account_password_path, method: :patch, class: "mt-10 flex flex-col gap-4" do |f| %>
-    <h2 class="text-lg font-semibold">Change password</h2>
-    <%= f.password_field :current_password, required: true, autocomplete: "current-password",
-          placeholder: "Current password", "aria-label": "Current password",
-          class: "input input-bordered w-full" %>
-    <%= f.password_field :password, required: true, minlength: 8, autocomplete: "new-password",
-          placeholder: "New password (at least 8 characters)", "aria-label": "New password",
-          class: "input input-bordered w-full" %>
-    <%= f.password_field :password_confirmation, required: true, autocomplete: "new-password",
-          placeholder: "Confirm new password", "aria-label": "Confirm new password",
-          class: "input input-bordered w-full" %>
-    <%= f.submit "Change password", class: "btn btn-primary" %>
-  <% end %>
+  <%= render "accounts/email", user: @user %>
+  <%= render "accounts/connected_accounts", user: @user %>
+  <%= render "accounts/password", user: @user %>
 </section>

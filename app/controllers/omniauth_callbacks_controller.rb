@@ -61,8 +61,8 @@ class OmniauthCallbacksController < ApplicationController
         # The address was proved twice, here and at the service, so both belong to the same person
         connect_and_sign_in(existing, auth)
       else
-        # Nobody proved the address on that other account, so it does not keep it
-        existing&.destroy
+        # An admin account is never removed this way
+        existing.destroy if existing && !existing.admin?
         remember_pending_signup(auth, email)
         redirect_to new_oauth_signup_path
       end

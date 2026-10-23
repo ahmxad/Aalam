@@ -19,6 +19,7 @@ class OauthSignupsController < ApplicationController
     @user.display_name = @pending["name"]
     # Nobody knows this password. It can be replaced through "Forgot your password?" or the account page.
     @user.password = SecureRandom.base64(32)
+    @user.password_set = false
     @user.identities.build(provider: @pending["provider"], uid: @pending["uid"])
 
     if @user.save

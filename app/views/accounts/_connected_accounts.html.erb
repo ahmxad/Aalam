@@ -1,0 +1,30 @@
+<%# The services that can be used to sign in to this account %>
+<section id="connected-accounts" class="mt-10 flex flex-col gap-3">
+  <h2 class="text-lg font-semibold">Connected accounts</h2>
+  <ul class="flex flex-col gap-2">
+    <% Identity::PROVIDER_NAMES.each do |provider, name| %>
+      <% identity = user.identities.find { |item| item.provider == provider } %>
+      <li class="flex items-center gap-3 border border-base-300 p-3">
+        <%= provider_logo(provider) %>
+        <div class="min-w-0 flex-1">
+          <p class="font-semibold"><%= name %></p>
+          <p class="text-xs opacity-70"><%= identity ? "Connected" : "Not connected" %></p>
+        </div>
+        <% if identity.nil? %>
+          <%# Turbo is switched off on purpose: the answer is a redirect to another website %>
+          <%= button_to "Connect", "#{OmniAuth.config.path_prefix}/#{provider}", method: :post,
+                class: "btn btn-sm", form: { data: { turbo: false } } %>
+        <% elsif user.can_disconnect?(identity) %>
+          <%= button_to "Disconnect", identity_path(identity), method: :delete,
+                class: "btn btn-sm btn-ghost",
+                form: { data: { turbo_confirm: "Disconnect #{name} from your account?" } } %>
+        <% else %>
+          <span class="text-xs opacity-70">Your only way to sign in</span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+  <% unless user.password_set? %>
+    <p class="text-xs opacity-70">Set a password below to be able to disconnect your only sign in service.</p>
+  <% end %>
+</section>
