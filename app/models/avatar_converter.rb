@@ -16,6 +16,8 @@ class AvatarConverter
   end
 
   def convert
+    raise InvalidImage, "must be a JPEG, PNG or WebP" unless @upload.respond_to?(:tempfile)
+
     check_size
     check_type
     process

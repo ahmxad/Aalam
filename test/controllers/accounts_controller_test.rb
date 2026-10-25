@@ -174,6 +174,15 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     assert @user.reload.avatar_stored?
   end
 
+  test "update with a scalar avatar shows a validation error" do
+    patch account_path, params: { user: { avatar_upload: "not a file", display_name: "Unsaved Name" } }
+
+    assert_response 422
+    assert_select "[role=alert] li", "Avatar must be a JPEG, PNG or WebP"
+    assert_nil @user.reload.display_name
+    assert_not @user.avatar.attached?
+  end
+
   test "the remove button only shows when there is a picture" do
     get edit_account_path
     assert_select "form[action=?]", account_avatar_path, 0

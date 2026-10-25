@@ -41,6 +41,13 @@ class AvatarConverterTest < ActiveSupport::TestCase
     assert_equal "must be smaller than 10 MB", error.message
   end
 
+  test "rejects inputs that are not uploaded files" do
+    [ "not a file", 42, nil, true ].each do |upload|
+      error = assert_raises(AvatarConverter::InvalidImage) { AvatarConverter.convert(upload) }
+      assert_equal "must be a JPEG, PNG or WebP", error.message
+    end
+  end
+
   test "rejects an image that looks like a JPEG but is broken" do
     broken = "\xFF\xD8\xFF\xE0".b + ("garbage" * 20).b
     upload = uploaded_file(broken, filename: "broken.jpg", content_type: "image/jpeg")
