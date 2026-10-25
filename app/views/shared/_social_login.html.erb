@@ -9,4 +9,6 @@
       <span>Continue with <%= name %></span>
     <% end %>
   <% end %>
+  <%= render "shared/legal_agreement",
+        action: "continuing with #{Identity::PROVIDER_NAMES.values.to_sentence(two_words_connector: ' or ', last_word_connector: ', or ')}" %>
 </div>

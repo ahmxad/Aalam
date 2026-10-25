@@ -1,0 +1,56 @@
+<% content_for :title, "Privacy Policy | Aalam" %>
+<div class="mx-auto my-8 max-w-3xl px-4">
+  <header class="mb-8">
+    <h1 class="article-title">Privacy Policy</h1>
+    <p class="mt-4 text-sm text-base-content/60">Last updated <%= l Rails.application.config.x.legal_updated_on, format: :long %></p>
+    <p class="article-lead">This page explains what Aalam collects about you, why, and what you can do about it.</p>
+  </header>
+  <div class="article-body">
+    <h2>Who runs Aalam</h2>
+    <p>Aalam is a personal blog run by its owner, who decides what is collected and why. Reading the blog needs no account. For anything about this page or your information, <%= render "pages/legal_contact" %>.</p>
+    <h2>What Aalam collects</h2>
+    <p>Reading collects nothing about you beyond what every website server sees. If you make an account or use the buttons under a post, this is kept:</p>
+    <ul>
+      <li>
+        <strong>Account details:</strong> your email address, username and password hash. Passwords are hashed rather than stored in plain text, so the original password cannot ordinarily be recovered from the stored hash. You may also add a display name, short bio and profile picture.
+      </li>
+      <li><strong>Signing in with GitHub or Google:</strong> the service tells Aalam your account id, your name, and your email address when the service has verified it. Aalam does not receive your password there, does not keep any access to your account there, and does not read or post anything for you.</li>
+      <li><strong>What you do:</strong> your likes, saved posts, comments and replies. Comments and replies are public and show your username, display name and picture. Likes and saves are only counted, and only you can see which posts you saved.</li>
+      <li><strong>Shares:</strong> pressing Share raises a counter on the post. Nothing about who shared is kept.</li>
+      <li><strong>Security details:</strong> each time you sign in, the IP address and browser details are stored with that login session. The server also keeps ordinary logs of requests, and temporary counters by IP address or account, to stop abuse.</li>
+      <li><strong>Email codes:</strong> a one-time code sent to check your address is stored only as a scrambled value.</li>
+    </ul>
+    <h2>Emails</h2>
+    <p>Aalam sends emails only about your account: verification codes, password reset links, and a notice to your old address when your email address is changed. There are no newsletters or promotions.</p>
+    <h2>Cookies and similar storage</h2>
+    <p>Aalam uses a few essential cookies: one keeps you signed in until you log out, one protects forms against forgery and carries short messages, and a small preference remembers whether the topics menu is open. Aalam does not use advertising cookies and does not run analytics.</p>
+    <h2>Who else sees your information</h2>
+    <ul>
+      <li><strong>Everyone who visits:</strong> your username, display name, picture and bio on your profile page, and your public comments.</li>
+      <li><strong>GitHub and Google,</strong> only if you choose to sign in with them. Their own privacy policies apply to what they do.</li>
+      <li><strong>Service providers:</strong> the companies that host the website and deliver its emails handle your data on Aalam's behalf, only to run the site.</li>
+    </ul>
+    <p>Aalam does not sell your information.</p>
+    <h2>How long it is kept</h2>
+    <ul>
+      <li>Your account and what you wrote stay until you ask for them to be deleted.</li>
+      <li>An account whose email address was never verified is deleted after about a day.</li>
+      <li>Verification codes are deleted after a couple of days.</li>
+      <li>A login session ends when you log out, and your other devices are signed out when your password or email address changes.</li>
+    </ul>
+    <h2>Your choices</h2>
+    <ul>
+      <li>In Account settings you can change your username, display name, bio, picture, email address and password, and connect or disconnect GitHub and Google.</li>
+      <li>You can delete your own comments and replies, and remove saved posts.</li>
+      <li>You can ask for your account and its data to be deleted, or ask what is kept about you, using the contact details below.</li>
+    </ul>
+    <h2>Security</h2>
+    <p>Passwords are stored scrambled, forms are protected against forgery, and Aalam is meant to be used over an encrypted connection (HTTPS). No system is perfectly secure, so please use a password that you do not use anywhere else.</p>
+    <h2>Children</h2>
+    <p>Aalam is not meant for children under 13, and they should not make accounts.</p>
+    <h2>Changes</h2>
+    <p>When this page changes, the date at the top changes too.</p>
+    <h2>Contact</h2>
+    <p>For questions or requests about your information, <%= render "pages/legal_contact" %>.</p>
+  </div>
+</div>

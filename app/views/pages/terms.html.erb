@@ -1,0 +1,40 @@
+<% content_for :title, "Terms of Use | Aalam" %>
+<div class="mx-auto my-8 max-w-3xl px-4">
+  <header class="mb-8">
+    <h1 class="article-title">Terms of Use</h1>
+    <p class="mt-4 text-sm text-base-content/60">Last updated <%= l Rails.application.config.x.legal_updated_on, format: :long %></p>
+    <p class="article-lead">These are the rules for using Aalam. They are short on purpose.</p>
+  </header>
+  <div class="article-body">
+    <h2>Using Aalam</h2>
+    <p>By using Aalam you agree to these terms and to the <%= link_to "Privacy Policy", privacy_path %>. If you do not agree, please do not use it. You must be at least 13 years old to make an account.</p>
+    <h2>Your account</h2>
+    <ul>
+      <li>Give a real email address that you can read, and keep your password to yourself. You are responsible for what happens through your account.</li>
+      <li>Your email address has to be verified with a code before you can like, save or comment. An account that is not verified within about a day is deleted.</li>
+    </ul>
+    <h2>What you post</h2>
+    <p>Your comments, replies and profile details stay yours. By posting them you allow Aalam to show them on the site, to anyone who visits, for as long as they stay there. Please do not post:</p>
+    <ul>
+      <li>anything illegal, or anything that harasses, threatens or spreads hatred against people,</li>
+      <li>spam, advertising, or links meant to cause harm,</li>
+      <li>private information about other people, or anything that pretends you are someone else,</li>
+      <li>anything that you have no right to share.</li>
+    </ul>
+    <p>The owner may remove content, and may suspend or delete accounts that break these rules, with or without notice. You can delete your own comments at any time.</p>
+    <h2>The content of the blog</h2>
+    <p>The posts, images and other content published by the owner belong to the owner or to the people credited. You may read, link to and share them. Please do not copy them in bulk or republish them as your own without permission. Quoting a small part with credit and a link is fine.</p>
+    <h2>Opinions and information</h2>
+    <p>Aalam is a personal blog and its posts show the views of its owner. They are written for information and learning, may contain mistakes, and are not professional advice.</p>
+    <h2>No guarantees</h2>
+    <p>Aalam is provided as it is. It may change, be unavailable, or lose data, and the owner is not responsible for losses from using it, as far as the law allows.</p>
+    <h2>Other websites and services</h2>
+    <p>Links to other websites, and signing in with GitHub or Google, are covered by the terms and policies of those services, not by these.</p>
+    <h2>Stopping</h2>
+    <p>You can stop using Aalam at any time and ask for your account to be deleted. The owner may suspend an account that breaks these terms.</p>
+    <h2>Changes</h2>
+    <p>These terms may change. The date at the top shows when. Using Aalam after a change means you accept the new terms.</p>
+    <h2>Contact</h2>
+    <p>For questions about these terms, <%= render "pages/legal_contact" %>.</p>
+  </div>
+</div>

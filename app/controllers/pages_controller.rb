@@ -26,6 +26,13 @@ class PagesController < ApplicationController
 
   def about
   end
+
+  def privacy
+  end
+
+  def terms
+  end
+
   def show
     siblings = @card.posts
     @previous_post = siblings.where("id < ?", @post.id).order(id: :desc).first

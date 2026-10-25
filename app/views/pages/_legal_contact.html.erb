@@ -1,0 +1,3 @@
+<%# Where to reach the owner, written to continue a sentence. The email address appears only when it is set. %>
+<% contact_email = Rails.application.config.x.contact_email %>
+use the <%= link_to "Contact page", contact_path %><% if contact_email.present? %> or write to <%= mail_to contact_email %><% end %>

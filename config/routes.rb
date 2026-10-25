@@ -49,6 +49,8 @@ Rails.application.routes.draw do
   get "about", to: "pages#about"
   get "explore", to: "pages#explore"
   get "contact", to: "pages#contact"
+  get "privacy", to: "pages#privacy"
+  get "terms", to: "pages#terms"
   get "up" => "rails/health#show", as: :rails_health_check
   # Error pages, shown through config.exceptions_app. They can also be opened directly to preview them.
   match "/:code", to: "errors#show", via: :all, constraints: { code: /400|404|405|406|409|413|422|500|501/ }

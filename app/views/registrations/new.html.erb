@@ -53,6 +53,7 @@
       <p class="min-h-5 text-sm opacity-70" aria-live="polite"
          data-avatar-preview-target="hint">Optional. JPEG, PNG or WebP, up to 10 MB.</p>
     </div>
+    <%= render "shared/legal_agreement", action: "creating an account" %>
     <%= f.submit "Sign up", class: "btn btn-primary" %>
   <% end %>
   <%= render "shared/social_login" %>
