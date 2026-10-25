@@ -85,4 +85,13 @@ class UsernameAvailabilitiesControllerTest < ActionDispatch::IntegrationTest
     assert_equal false, result["available"]
     assert_equal "Username has already been taken", result["message"]
   end
+  test "an admin sees a reserved name as available, a normal user does not" do
+    sign_in_as(users(:two))
+    assert_equal true, check("admin")["available"]
+
+    sign_in_as(users(:one))
+    result = check("admin")
+    assert_equal false, result["available"]
+    assert_equal "Username is not available", result["message"]
+  end
 end

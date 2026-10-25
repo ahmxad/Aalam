@@ -40,7 +40,7 @@ class User < ApplicationRecord
                        uniqueness: true,
                        length: { in: 3..20 },
                        format: { with: /\A[a-z0-9_]+\z/, message: "can only contain letters, numbers and underscores" },
-                       exclusion: { in: RESERVED_USERNAMES, message: "is not available" }
+                       exclusion: { in: RESERVED_USERNAMES, message: "is not available", unless: :admin? }
   validates :display_name, length: { maximum: 50 }
   validates :bio, length: { maximum: 160 }
   validates :email_address, presence: true,

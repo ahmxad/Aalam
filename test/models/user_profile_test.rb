@@ -60,6 +60,10 @@ class UserProfileTest < ActiveSupport::TestCase
       assert_includes user.errors[:username], "is not available"
     end
   end
+  test "an admin may use a reserved username, other people may not" do
+    assert build_user(username: "admin", admin: true).valid?
+    assert_not build_user(username: "admin", admin: false).valid?
+  end
 
   # Email and password
 

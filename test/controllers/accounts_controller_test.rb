@@ -35,6 +35,15 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     }
   end
 
+  test "an admin can take a reserved username" do
+    sign_in_as(users(:two))
+
+    patch account_path, params: { user: { username: "admin" } }
+
+    assert_redirected_to profile_path("admin")
+    assert_equal "admin", users(:two).reload.username
+  end
+
   # The page
 
   test "edit shows the profile form and the password form" do
