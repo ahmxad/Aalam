@@ -28,11 +28,25 @@ class Comment < ApplicationRecord
     relation = all
 
     if column
-      relation = relation.where("(comments.#{column}, comments.id) < (?, ?)", *values) if values
-      relation.order(column => :desc, id: :desc).limit(limit)
+      if values
+        relation = case column
+        when :replies_count
+                     relation.where(
+                       "(comments.replies_count, comments.id) < (?, ?)",
+                       *values
+                     )
+        when :likes_count
+                   relation.where(
+                     "(comments.likes_count, comments.id) < (?, ?)",
+                     *values
+                   )
+        end
+      end
+
+    relation.order(column => :desc, id: :desc).limit(limit)
     else
-      relation = relation.where("comments.id < ?", values.first) if values
-      relation.order(id: :desc).limit(limit)
+    relation = relation.where("comments.id < ?", values.first) if values
+    relation.order(id: :desc).limit(limit)
     end
   end
 
