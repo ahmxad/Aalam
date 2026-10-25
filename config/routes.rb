@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   get "about", to: "pages#about"
   get "explore", to: "pages#explore"
   get "contact", to: "pages#contact"
+  post "contact", to: "contact_messages#create"
   get "privacy", to: "pages#privacy"
   get "terms", to: "pages#terms"
   get "up" => "rails/health#show", as: :rails_health_check

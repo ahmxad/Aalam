@@ -18,6 +18,7 @@ class PagesController < ApplicationController
   end
 
   def contact
+    @contact_message = ContactMessage.new(reason: params[:reason])
   end
 
   def explore

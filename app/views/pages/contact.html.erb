@@ -1,4 +1,39 @@
-<div class="mt-12">
-  <h1 class="font-bold text-4xl">Pages#contact</h1>
-  <p>Find me in app/views/pages/contact.html.erb</p>
-</div>
+<% content_for :title, "Contact | Aalam" %>
+<section class="mx-auto w-full max-w-md py-10">
+  <h1 class="mb-2 text-2xl font-bold">Contact</h1>
+  <p class="mb-6 text-sm opacity-70">
+    Send a question, a bug report or any other message. It goes straight to the owner's inbox.
+  </p>
+  <% if Rails.application.config.x.contact_email.blank? %>
+    <div role="alert" class="alert alert-warning">
+      <span>The contact form is not available right now.</span>
+    </div>
+  <% else %>
+    <% if @contact_message.errors.any? %>
+      <div role="alert" class="alert alert-error mb-4">
+        <ul>
+          <% @contact_message.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= form_with model: @contact_message, url: contact_path, method: :post, class: "flex flex-col gap-4" do |f| %>
+      <%= f.select :reason, ContactMessage::REASONS.map { |key, label| [ label, key ] }, {},
+            "aria-label": "Reason", class: "select select-bordered w-full" %>
+      <%= f.text_field :name, required: true, maxlength: 50, autocomplete: "name",
+            placeholder: "Your name", "aria-label": "Your name",
+            class: "input input-bordered w-full" %>
+      <%= f.email_field :email_address, required: true, autocomplete: "email",
+            placeholder: "Your email address", "aria-label": "Your email address",
+            class: "input input-bordered w-full" %>
+      <%= f.text_area :body, required: true, rows: 6, maxlength: ContactMessage::MAX_BODY_LENGTH,
+            placeholder: "Your message", "aria-label": "Your message",
+            class: "textarea textarea-bordered w-full" %>
+      <div class="hidden" aria-hidden="true">
+        <%= f.text_field :website, tabindex: -1, autocomplete: "off", "aria-label": "Leave this field empty" %>
+      </div>
+      <%= f.submit "Send message", class: "btn btn-primary" %>
+    <% end %>
+  <% end %>
+</section>
