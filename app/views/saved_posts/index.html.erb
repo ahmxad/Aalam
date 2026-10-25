@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "saved_posts" do %>
+  <%= render "saved_posts/empty", visible: @bookmarks.empty? %>
+  <ul id="saved_posts_list" class="space-y-3">
+    <%= render partial: "saved_posts/saved_post", collection: @bookmarks, as: :bookmark %>
+  </ul>
+  <%= render "saved_posts/more", cursor: @next_cursor %>
+<% end %>

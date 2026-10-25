@@ -1,0 +1,4 @@
+<%# Opens the replies of a comment, in place of the "View replies" link %>
+<%= turbo_frame_tag dom_id(@parent, :replies) do %>
+  <%= render "replies/list", comment: @parent, replies: @replies, next_cursor: @next_cursor %>
+<% end %>

@@ -1,0 +1,5 @@
+<%# The comment is drawn again, so its replies are open with the new one on top and every number is fresh %>
+<%= turbo_stream.replace dom_id(@parent), partial: "comments/comment",
+      locals: { comment: @parent, expanded_replies: @replies, next_cursor: @next_cursor } %>
+<%= turbo_stream.update "comments_count", number_with_delimiter(@post.comments_count) %>
+<%= turbo_stream.replace dom_id(@post, :actions), partial: "shared/post_actions", locals: { post: @post } %>

@@ -12,7 +12,7 @@ class Admin::MaintenanceTest < ActionDispatch::IntegrationTest
   end
 
   def sign_in_admin
-    sign_in_as(User.create!(email_address: "maintenance@test.com", password: "password123!", admin: true))
+    sign_in_as(User.create!(username: "maintenance_admin", email_address: "maintenance@test.com", password: "password123!", admin: true))
   end
 
   test "a guest cannot delete unused images" do

@@ -1,0 +1,31 @@
+<% content_for :title, "#{@user.public_name} (@#{@user.username}) | Aalam" %>
+<section class="mx-auto w-full max-w-2xl py-10">
+  <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+    <%= user_avatar(@user, size_class: "w-32", letter_class: "text-5xl") %>
+    <div class="flex flex-col gap-3 text-center sm:text-left">
+      <div class="flex flex-col items-center gap-3 sm:flex-row">
+        <h1 class="text-2xl font-bold">@<%= @user.username %></h1>
+        <% if @own_profile %>
+          <%= link_to "Edit profile", edit_account_path, class: "btn btn-sm btn-primary" %>
+        <% end %>
+      </div>
+      <% if @user.display_name.present? %>
+        <p class="font-semibold"><%= @user.display_name %></p>
+      <% end %>
+      <% if @user.bio.present? %>
+        <p class="whitespace-pre-line"><%= @user.bio %></p>
+      <% end %>
+      <p class="text-sm opacity-70">Joined <%= l @user.created_at.to_date, format: :long %></p>
+    </div>
+  </div>
+  <%# Only the owner gets this part. Nothing of it is in the page for anyone else. %>
+  <% if @own_profile %>
+    <section id="saved-posts" class="mt-10">
+      <h2 class="text-lg font-semibold">Saved posts</h2>
+      <p class="mb-3 text-xs opacity-70">Only you can see this list.</p>
+      <%= turbo_frame_tag "saved_posts", src: saved_posts_path do %>
+        <p class="py-6 text-sm opacity-70">Loading saved posts...</p>
+      <% end %>
+    </section>
+  <% end %>
+</section>

@@ -1,0 +1,18 @@
+<%# The box for writing a comment. Turbo replaces it after every attempt. %>
+<div id="comment_form" class="border-t border-base-300 p-3">
+  <%# A signed out visitor is sent to the log in page, which must open as a whole page, not inside the window %>
+  <%= form_with model: comment, url: post_comments_path(post), class: "flex flex-col gap-2", data: { turbo_frame: (can_engage? ? nil : "_top") } do |form| %>
+    <% if comment.errors.any? %>
+      <p role="alert" class="text-sm text-error"><%= comment.errors.full_messages.to_sentence %></p>
+    <% end %>
+    <%= form.text_area :body, rows: 2, required: true, maxlength: Comment::MAX_LENGTH,
+          placeholder: "Add a comment...", "aria-label": "Comment",
+          class: "textarea textarea-bordered w-full" %>
+    <div class="flex items-center justify-between gap-2">
+      <p class="text-xs opacity-70">
+        <%= writing_hint("Up to #{Comment::MAX_LENGTH} characters") %>
+      </p>
+      <%= form.submit "Post", class: "btn btn-sm btn-primary" %>
+    </div>
+  <% end %>
+</div>

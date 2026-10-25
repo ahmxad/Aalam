@@ -3,7 +3,8 @@
 # It inherits from ActionController::Base on purpose, not from ApplicationController: an error page
 # must not need a login, a session or a database query, since it is shown when something already failed.
 class ErrorsController < ActionController::Base
-  layout "application"
+    helper_method :authenticated?
+    layout "application"
 
   # The request that failed may be a POST with a rejected token, which must not fail again here
   skip_forgery_protection
@@ -32,4 +33,14 @@ class ErrorsController < ActionController::Base
     @title, @message = PAGES.fetch(status)
     render :show, status: status, formats: [ :html ]
   end
+  private
+    # The navbar asks this. An error page must still render when the session or the database
+    # is the thing that failed, so any problem here simply counts as signed out.
+    def authenticated?
+      session_id = cookies.signed[:session_id]
+      Current.session ||= Session.find_by(id: session_id) if session_id
+      Current.session.present?
+    rescue StandardError
+      false
+    end
 end

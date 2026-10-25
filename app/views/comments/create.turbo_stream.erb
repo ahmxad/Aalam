@@ -1,0 +1,5 @@
+<%= turbo_stream.remove "comments_empty" %>
+<%= turbo_stream.prepend "comments_list", partial: "comments/comment", locals: { comment: @comment } %>
+<%= turbo_stream.replace "comment_form", partial: "comments/form", locals: { post: @post, comment: Comment.new } %>
+<%= turbo_stream.update "comments_count", number_with_delimiter(@post.comments_count) %>
+<%= turbo_stream.replace dom_id(@post, :actions), partial: "shared/post_actions", locals: { post: @post } %>

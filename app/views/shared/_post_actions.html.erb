@@ -1,0 +1,26 @@
+<%# The buttons under a post. Turbo replaces this whole block when a button is pressed. %>
+<% liked = engaged_with?(:likes, post) %>
+<% saved = engaged_with?(:bookmarks, post) %>
+<div id="<%= dom_id(post, :actions) %>" class="flex flex-wrap items-center gap-1 border-y border-base-300 py-2">
+  <%= engagement_button path: post_like_path(post), active: liked, icon: :like,
+        text: (liked ? "Liked" : "Like"), count: post.likes_count %>
+  <%= engagement_link path: post_comments_path(post), icon: :comment, text: "Comments",
+        count: post.comments_count,
+        data: { turbo_frame: "comments_panel", action: "click->comments-modal#open" } %>
+  <%# Share: the phone's share menu or a copied link. The hidden form reports a successful share. %>
+  <div class="flex items-center gap-1" data-controller="share"
+       data-share-url-value="<%= topic_card_post_url(post.card.topic.slug, post.card.slug, post.slug) %>"
+       data-share-title-value="<%= post.title %>">
+    <button type="button" class="btn btn-sm btn-ghost gap-2" aria-label="Share" data-action="click->share#share">
+      <%= engagement_icon(:share) %>
+      <span class="hidden sm:inline">Share</span>
+      <span id="<%= dom_id(post, :shares_count) %>" class="tabular-nums"><%= number_with_delimiter(post.shares_count) %></span>
+    </button>
+    <span role="status" class="text-xs opacity-70" data-share-target="status"></span>
+    <%= button_to "Count share", post_share_path(post), form: { hidden: true, data: { share_target: "form" } } %>
+  </div>
+  <div class="ml-auto">
+    <%= engagement_button path: post_bookmark_path(post), active: saved, icon: :save,
+          text: (saved ? "Saved" : "Save"), count: post.bookmarks_count %>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<% content_for :title, "Sign up | Aalam" %>
+<section class="mx-auto w-full max-w-md py-10">
+  <h1 class="mb-6 text-2xl font-bold">Create your account</h1>
+  <%= form_with model: @user, url: registration_path, class: "flex flex-col gap-4" do |f| %>
+    <% if @user.errors.any? %>
+      <div role="alert" class="alert alert-error">
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="flex flex-col gap-1"
+         data-controller="username-availability"
+         data-username-availability-url-value="<%= username_availability_path %>">
+      <%= f.text_field :username, required: true, minlength: 3, maxlength: 20, autofocus: true,
+            pattern: "[A-Za-z0-9_]+", autocomplete: "username",
+            placeholder: "Username (letters, numbers, underscores)", "aria-label": "Username",
+            class: "input input-bordered w-full",
+            data: { username_availability_target: "input", action: "input->username-availability#check" } %>
+      <p class="min-h-5 text-sm" aria-live="polite" data-username-availability-target="hint"></p>
+    </div>
+    <%= f.email_field :email_address, required: true, autocomplete: "email",
+          placeholder: "Email address", "aria-label": "Email address",
+          class: "input input-bordered w-full" %>
+    <div class="flex flex-col gap-1" data-controller="password-strength">
+      <%= f.password_field :password, required: true, minlength: 8, autocomplete: "new-password",
+            placeholder: "Password (at least 8 characters)", "aria-label": "Password",
+            class: "input input-bordered w-full",
+            data: { password_strength_target: "input", action: "input->password-strength#update" } %>
+      <progress class="progress w-full" max="3" value="0" aria-hidden="true"
+                data-password-strength-target="meter"></progress>
+      <p class="min-h-5 text-sm" aria-live="polite" data-password-strength-target="label"></p>
+    </div>
+    <%= f.password_field :password_confirmation, required: true, autocomplete: "new-password",
+          placeholder: "Confirm password", "aria-label": "Confirm password",
+          class: "input input-bordered w-full" %>
+    <div class="flex flex-col gap-2" data-controller="avatar-preview">
+      <div class="flex items-center gap-4">
+        <div class="avatar avatar-placeholder">
+          <div class="w-20 bg-base-300 text-base-content">
+            <img hidden alt="Selected profile picture preview" class="object-cover"
+                 data-avatar-preview-target="image">
+            <span class="text-sm" data-avatar-preview-target="placeholder">Photo</span>
+          </div>
+        </div>
+        <%= f.file_field :avatar_upload, accept: "image/jpeg,image/png,image/webp",
+              "aria-label": "Profile picture (optional)",
+              class: "file-input file-input-bordered min-w-0 flex-1",
+              data: { avatar_preview_target: "input", action: "change->avatar-preview#select" } %>
+      </div>
+      <p class="min-h-5 text-sm opacity-70" aria-live="polite"
+         data-avatar-preview-target="hint">Optional. JPEG, PNG or WebP, up to 10 MB.</p>
+    </div>
+    <%= f.submit "Sign up", class: "btn btn-primary" %>
+  <% end %>
+  <%= render "shared/social_login" %>
+  <p class="mt-4 text-sm">
+    Already have an account? <%= link_to "Log in", new_session_path, class: "link" %>
+  </p>
+</section>

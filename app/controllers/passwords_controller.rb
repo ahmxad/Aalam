@@ -18,11 +18,15 @@ class PasswordsController < ApplicationController
   end
 
   def update
-    if @user.update(params.permit(:password, :password_confirmation))
+    attributes = params.permit(:password, :password_confirmation)
+
+    if attributes[:password].blank?
+      redirect_to edit_password_path(params[:token]), alert: "Password can't be blank."
+    elsif @user.update(attributes)
       @user.sessions.destroy_all
       redirect_to new_session_path, notice: "Password has been reset."
     else
-      redirect_to edit_password_path(params[:token]), alert: "Passwords did not match."
+      redirect_to edit_password_path(params[:token]), alert: @user.errors.full_messages.to_sentence
     end
   end
 

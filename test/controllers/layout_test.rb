@@ -8,7 +8,7 @@ class LayoutTest < ActionDispatch::IntegrationTest
   end
 
   test "admin pages include the loading indicator" do
-    sign_in_as(User.create!(email_address: "layout-admin@test.com", password: "password123!", admin: true))
+    sign_in_as(User.create!(username: "layout_admin", email_address: "layout-admin@test.com", password: "password123!", admin: true))
 
     get admin_root_url
 

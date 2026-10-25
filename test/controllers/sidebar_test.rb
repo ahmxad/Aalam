@@ -88,7 +88,7 @@ class SidebarTest < ActionDispatch::IntegrationTest
   end
 
   test "the admin area has no sidebar and no button for it" do
-    sign_in_as(User.create!(email_address: "sidebar-admin@test.com", password: "password123!", admin: true))
+    sign_in_as(User.create!(username: "sidebar_admin", email_address: "sidebar-admin@test.com", password: "password123!", admin: true))
 
     get admin_root_url
 

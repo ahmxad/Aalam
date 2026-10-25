@@ -1,0 +1,45 @@
+<% content_for :title, "Finish signing up | Aalam" %>
+<section class="mx-auto w-full max-w-md py-10">
+  <h1 class="mb-2 text-2xl font-bold">Finish signing up</h1>
+  <p class="mb-6 text-sm">
+    You are signing up with <%= Identity::PROVIDER_NAMES.fetch(@pending["provider"]) %>. Choose a username to finish.
+  </p>
+  <%= form_with model: @user, url: oauth_signup_path, class: "flex flex-col gap-4" do |f| %>
+    <% if @user.errors.any? %>
+      <div role="alert" class="alert alert-error">
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="flex flex-col gap-1"
+         data-controller="username-availability"
+         data-username-availability-url-value="<%= username_availability_path %>">
+      <%= f.text_field :username, required: true, minlength: 3, maxlength: 20, autofocus: true,
+            pattern: "[A-Za-z0-9_]+", autocomplete: "username",
+            placeholder: "Username (letters, numbers, underscores)", "aria-label": "Username",
+            class: "input input-bordered w-full",
+            data: { username_availability_target: "input", action: "input->username-availability#check" } %>
+      <p class="min-h-5 text-sm" aria-live="polite" data-username-availability-target="hint"></p>
+    </div>
+    <% if @pending["email"] %>
+      <p class="text-sm">
+        Email address: <strong><%= @pending["email"] %></strong>
+        <span class="opacity-70">(already verified by <%= Identity::PROVIDER_NAMES.fetch(@pending["provider"]) %>)</span>
+      </p>
+    <% else %>
+      <div class="flex flex-col gap-1">
+        <%= f.email_field :email_address, required: true, autocomplete: "email",
+              placeholder: "Email address", "aria-label": "Email address",
+              class: "input input-bordered w-full" %>
+        <p class="text-sm opacity-70">
+          <%= Identity::PROVIDER_NAMES.fetch(@pending["provider"]) %> did not share a verified email address.
+          We will send a code to this one to check that it is yours.
+        </p>
+      </div>
+    <% end %>
+    <%= f.submit "Create account", class: "btn btn-primary" %>
+  <% end %>
+</section>

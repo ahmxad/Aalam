@@ -1,0 +1,6 @@
+<%= turbo_stream.remove dom_id(@comment) %>
+<% if @parent %>
+  <%= turbo_stream.replace dom_id(@parent, :stats), partial: "comments/stats", locals: { comment: @parent } %>
+<% end %>
+<%= turbo_stream.update "comments_count", number_with_delimiter(@post.comments_count) %>
+<%= turbo_stream.replace dom_id(@post, :actions), partial: "shared/post_actions", locals: { post: @post } %>

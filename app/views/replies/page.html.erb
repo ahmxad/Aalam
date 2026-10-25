@@ -1,0 +1,4 @@
+<%# The next batch of replies. It replaces the "View more replies" link that asked for it. %>
+<%= turbo_frame_tag "replies_more_#{@parent.id}_#{params[:cursor]}" do %>
+  <%= render "replies/list", comment: @parent, replies: @replies, next_cursor: @next_cursor %>
+<% end %>

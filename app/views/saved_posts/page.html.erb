@@ -1,0 +1,9 @@
+<%# The next batch. It replaces the "Load more" button that asked for it. %>
+<%= turbo_frame_tag "saved_more_#{params[:cursor]}" do %>
+  <div class="space-y-3">
+    <ul class="space-y-3">
+      <%= render partial: "saved_posts/saved_post", collection: @bookmarks, as: :bookmark %>
+    </ul>
+    <%= render "saved_posts/more", cursor: @next_cursor %>
+  </div>
+<% end %>

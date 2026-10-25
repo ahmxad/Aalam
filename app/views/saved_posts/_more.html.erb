@@ -1,0 +1,6 @@
+<%# The button that loads the next batch. It sits in its own frame, which the next batch replaces. %>
+<% if cursor %>
+  <%= turbo_frame_tag "saved_more_#{cursor}", class: "mt-3 block" do %>
+    <%= link_to "Load more", saved_posts_path(cursor: cursor), class: "btn btn-sm btn-ghost w-full" %>
+  <% end %>
+<% end %>

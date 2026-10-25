@@ -31,7 +31,7 @@ class ErrorPagesTest < ActionDispatch::IntegrationTest
   end
 
   test "a missing record in the admin area shows the 404 page" do
-    sign_in_as(User.create!(email_address: "errors-admin@test.com", password: "password123!", admin: true))
+    sign_in_as(User.create!(username: "errors_admin", email_address: "errors-admin@test.com", password: "password123!", admin: true))
 
     get admin_topic_url("never-existed")
 

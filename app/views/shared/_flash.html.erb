@@ -1,0 +1,8 @@
+<%# Shows notice and alert messages set by controllers %>
+<% { notice: "alert-success", alert: "alert-error" }.each do |type, css_class| %>
+  <% if flash[type].present? %>
+    <div role="alert" class="alert <%= css_class %> mb-4">
+      <span><%= flash[type] %></span>
+    </div>
+  <% end %>
+<% end %>

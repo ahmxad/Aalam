@@ -1,0 +1,4 @@
+<p>Hi <%= @user.public_name %>,</p>
+<p>The email address of your Aalam account (@<%= @user.username %>) was changed to <strong><%= masked_email(@user.email_address) %></strong>.</p>
+<p>If you made this change, there is nothing more to do.</p>
+<p>If you did not, someone else may have access to your account. Please contact the owner of the site as soon as you can.</p>

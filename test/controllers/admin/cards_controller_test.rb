@@ -9,6 +9,7 @@ class Admin::CardsControllerTest < ActionDispatch::IntegrationTest
     )
     @admin_card.update!(topic: @topic)
     @user = User.create!(
+      username: "cards_admin",
       email_address: "admin@test.com",
       password: "password123!",
       admin: true

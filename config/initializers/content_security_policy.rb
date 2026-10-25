@@ -6,7 +6,7 @@ Rails.application.configure do
   config.content_security_policy do |policy|
     policy.default_src :self
     policy.base_uri    :self
-    policy.form_action :self
+    policy.form_action :self, "https://github.com", "https://accounts.google.com"
     policy.frame_ancestors :self
     policy.object_src  :none
     policy.script_src  :self
@@ -15,7 +15,7 @@ Rails.application.configure do
     policy.style_src   :self, "https://fonts.googleapis.com"
     policy.font_src    :self, "https://fonts.gstatic.com", :data
     # data: is needed because the UI framework embeds small SVG icons in its CSS
-    policy.img_src     :self, :data
+    policy.img_src     :self, :data, :blob
   end
 
   # A fresh random nonce for every request, so it also works for visitors without a session
