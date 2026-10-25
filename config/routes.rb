@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     post :resend
   end
   resource :username_availability, only: :show
-  resource :account, only: %i[edit update]
+  resource :account, only: %i[edit update destroy]
   patch "account/password", to: "accounts#update_password", as: :account_password
   post "account/password/setup", to: "accounts#request_password_setup", as: :account_password_setup
   post "account/email", to: "accounts#request_email_change", as: :account_email

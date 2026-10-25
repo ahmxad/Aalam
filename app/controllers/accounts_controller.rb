@@ -8,6 +8,9 @@ class AccountsController < ApplicationController
   rate_limit to: 5, within: 10.minutes, only: :request_email_change, name: "email_change",
              with: -> { redirect_to edit_account_path(anchor: "email"), alert: "Try again later." }
 
+  rate_limit to: 5, within: 10.minutes, only: :destroy, name: "account_delete",
+             with: -> { redirect_to edit_account_path(anchor: "delete"), alert: "Try again later." }
+
   # Works on its own copy of the signed in user. The navbar uses Current.session.user,
   # so a form that fails validation must never leave unsaved values on that object.
   before_action :set_user
@@ -37,6 +40,20 @@ class AccountsController < ApplicationController
     end
 
     render :edit, status: :unprocessable_content
+  end
+
+  # Deletes the signed in account. Typing the username is the confirmation, so it works the
+  # same for people with a password and for people who only sign in through another service.
+  def destroy
+    if @user.admin?
+      redirect_to edit_account_path(anchor: "delete"), alert: "Admin accounts can't be deleted here."
+    elsif params[:confirm_username].to_s.strip.downcase == @user.username
+      @user.destroy!
+      cookies.delete(:session_id)
+      redirect_to root_path, status: :see_other, notice: "Your account has been deleted."
+    else
+      redirect_to edit_account_path(anchor: "delete"), alert: "The username you typed does not match."
+    end
   end
 
   def destroy_avatar
