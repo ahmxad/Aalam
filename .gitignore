@@ -40,7 +40,7 @@
 
 # daisyUI files
 !/app/assets/tailwind/*.mjs
-/script/project_map.rb
+# /script/project_map.rb
 /docs
 # Ignore key files for decrypting credentials and more.
 /config/credentials/*.key
