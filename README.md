@@ -2,47 +2,43 @@
 
 A personal blog built with Rails 8. Readers can browse posts by topic and card, and signed-in readers can like, save, comment, reply and share. An admin area manages topics, cards and posts.
 
-<!--
-Screenshots: add your images to the screenshots/ folder, then remove this comment.
 
-![Home page](screenshots/home.png)
-![Post page with comments](screenshots/post.png)
-![Profile](screenshots/profile.png)
-![Account settings](screenshots/account.png)
--->
+<table>
+  <tr>
+    <td><img src="screenshots/home.png" alt="Home page" width="100%"></td>
+    <td><img src="screenshots/post.png" alt="Post page with comments" width="100%"></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/profile.png" alt="Public profile" width="100%"></td>
+    <td><img src="screenshots/account.png" alt="Account settings" width="100%"></td>
+  </tr>
+</table>
 
 ## Features
 
 **Blog**
-- Topics, cards and posts with Markdown rendering, search, and slugs that keep old URLs working with a redirect
-- Images are converted to WebP (topic and card images on the server, post images in the browser before upload)
+- Topics, sub categories and posts with Markdown rendering, search, and slugs that keep old URLs working with a redirect
 
 **Accounts**
-- Sign up with username, email, password and avatar; log in with either username or email
-- Live username availability check and password strength meter
-- Avatars are converted to 512x512 WebP
-- Log in with GitHub or Google (OmniAuth)
-- Email verification with a 6 digit code (expires after 10 minutes, limited attempts and resends); accounts that stay unverified for 24 hours are deleted by a recurring job
-- Change email (code sent to the new address, notice sent to the old one), set or change a password, connect or disconnect GitHub and Google
-- Public profile pages and account settings
-- Delete your own account, confirmed by typing your username
+- Sign up with username and email. Log in with either username or email
+- Log in with GitHub or Google
+- Email verification with a 6 digit code
+- Delete your own account
 
 **Engagement**
-- Like, save and share posts
-- Comments with replies, comment likes, sorting, "load more" and delete
+- Like, save, Comments and share posts
 - Unverified users cannot like, save or comment
 
 **Other**
 - Contact form that emails the site owner (messages are not stored)
 - Privacy Policy and Terms of Use pages
-- Rate limits on sign in, account actions and engagement
 - Strict Content Security Policy
 
 ## Stack
 
 - Ruby 4.0.6, Rails 8.1.4
 - PostgreSQL
-- Hotwire (Turbo and Stimulus) with importmap
+- Hotwire (Turbo and Stimulus)
 - Tailwind CSS v4 and daisyUI, Propshaft
 - Solid Queue and Solid Cache
 - Active Storage (local disk in development, Cloudflare R2 in production)
@@ -64,17 +60,6 @@ bin/setup
 
 Emails in development are not sent. Open http://127.0.0.1:3000/letter_opener to read them, for example the verification codes.
 
-### Credentials
-
-Secrets are stored in encrypted Rails credentials, and the key files are never committed. The repository contains the encrypted files, but not the keys to open them, so create your own development credentials:
-
-```bash
-rm config/credentials/development.yml.enc
-bin/rails credentials:edit --environment development
-```
-
-Sign in with GitHub or Google needs your own OAuth apps. Add their keys under `github:` and `google:` (`client_id` and `client_secret`) in that file. Without them, the social login buttons will not work, but the rest of the app does.
-
 ## Tests
 
 ```bash
@@ -93,4 +78,4 @@ The app ships with a `Dockerfile` and a Kamal configuration. Production settings
 Background jobs run inside Puma when `SOLID_QUEUE_IN_PUMA` is set, which suits a single small server.
 
 
-> It's ready to go live but the hosting is too much expensive bro.
+> It's ready to go live but the hosting is too much expensive man.
