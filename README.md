@@ -78,4 +78,8 @@ The app ships with a `Dockerfile` and a Kamal configuration. Production settings
 Background jobs run inside Puma when `SOLID_QUEUE_IN_PUMA` is set, which suits a single small server.
 
 
+## License
+
+Released under the [MIT License](LICENSE).
+
 > It's ready to go live but the hosting is too much expensive man.
