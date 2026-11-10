@@ -76,7 +76,7 @@ gem "redcarpet", "~> 3.6"
 
 gem "letter_opener_web", "~> 3.0", group: :development
 
-gem "omniauth", "~> 2.1"
+gem "omniauth", "~> 2.3"
 gem "omniauth-rails_csrf_protection", "~> 2.0"
 gem "omniauth-github", "~> 2.0"
 
@@ -84,4 +84,4 @@ gem "omniauth-google-oauth2", "~> 1.2"
 
 gem "minitest-mock", "~> 5.27", group: :test
 
-gem "aws-sdk-s3", "~> 1.237", require: false
+gem "aws-sdk-s3", "~> 1.239", require: false
